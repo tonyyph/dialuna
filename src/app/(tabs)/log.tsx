@@ -1,10 +1,3 @@
-import { EmptyState } from '@/components/ui/EmptyState';
-import { Screen } from '@/components/ui/Screen';
+import { LogScreen } from '@/features/log/LogScreen';
 
-export default function ComingSoon() {
-  return (
-    <Screen>
-      <EmptyState emoji="🌙" title="Dialuna" body="…" />
-    </Screen>
-  );
-}
+export default LogScreen;

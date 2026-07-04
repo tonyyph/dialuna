@@ -11,7 +11,7 @@ export type AiIntent =
   | 'sleep'
   | 'general';
 
-type TFunction = (key: string, opts?: object) => string;
+type TFunction = (key: string, opts?: Record<string, unknown>) => string;
 
 const INTENT_KEYWORDS: Record<Exclude<AiIntent, 'general'>, string[]> = {
   // Order matters: first match wins. Specific intents before broad ones.
