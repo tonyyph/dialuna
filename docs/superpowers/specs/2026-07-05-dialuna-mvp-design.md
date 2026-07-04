@@ -81,7 +81,7 @@ src/
 - **PremiumState**: isPremium, plan, aiQuestionsUsedToday, lastResetDate
 
 Enums: `CyclePhase` (menstrual | follicular | ovulation | luteal), `FlowLevel`,
-`Symptom` (8 values), `Mood` (7 values), `WorkoutType` (6 values), `Goal` (7 values).
+`Symptom` (8 values), `Mood` (6 values), `WorkoutType` (6 values), `Goal` (7 values).
 
 ## 6. Cycle Engine (pure, tested)
 
