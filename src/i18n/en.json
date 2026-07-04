@@ -1,0 +1,429 @@
+{
+  "common": {
+    "appName": "Dialuna",
+    "continue": "Continue",
+    "next": "Next",
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "close": "Close",
+    "done": "Done",
+    "skip": "Skip",
+    "gotIt": "Got it",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "today": "Today",
+    "day": "Day",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "free": "Free",
+    "premium": "Premium",
+    "unlock": "Unlock",
+    "loading": "Loading…",
+    "cycleDay": "Cycle Day {{day}}"
+  },
+  "phases": {
+    "menstrual": "Menstrual Phase",
+    "follicular": "Follicular Phase",
+    "ovulation": "Ovulation Window",
+    "luteal": "Luteal Phase",
+    "pms": "PMS Window",
+    "lateLuteal": "Late Luteal Phase"
+  },
+  "flow": {
+    "none": "None",
+    "spotting": "Spotting",
+    "light": "Light",
+    "medium": "Medium",
+    "heavy": "Heavy"
+  },
+  "symptoms": {
+    "cramps": "Cramps",
+    "headache": "Headache",
+    "bloating": "Bloating",
+    "acne": "Acne",
+    "breastTenderness": "Breast tenderness",
+    "backPain": "Back pain",
+    "nausea": "Nausea",
+    "fatigue": "Fatigue"
+  },
+  "moods": {
+    "happy": "Happy",
+    "calm": "Calm",
+    "anxious": "Anxious",
+    "sad": "Sad",
+    "angry": "Angry",
+    "sensitive": "Sensitive"
+  },
+  "workouts": {
+    "none": "Rest day",
+    "walking": "Walking",
+    "yoga": "Yoga",
+    "strength": "Strength",
+    "cardio": "Cardio",
+    "hiit": "HIIT"
+  },
+  "goals": {
+    "understandCycle": "Understand my cycle",
+    "reducePms": "Reduce PMS",
+    "improveMood": "Improve mood",
+    "planWorkouts": "Plan workouts",
+    "skinInsights": "Skin & acne insights",
+    "pregnancyPlanning": "Pregnancy planning",
+    "betterSleep": "Better sleep"
+  },
+  "ageRanges": {
+    "18-24": "18–24",
+    "25-30": "25–30",
+    "31-35": "31–35",
+    "36-45": "36–45",
+    "46+": "46+"
+  },
+  "disclaimer": {
+    "short": "AI insights are educational and not medical advice. If symptoms are severe, consider talking to a healthcare professional.",
+    "ai": "Dialuna is a wellness companion, not a medical device. Answers are educational estimates based on your logged data.",
+    "full": "Dialuna is a wellness and lifestyle app. It does not diagnose, treat, or prevent any medical condition, and it is not a substitute for professional medical advice. Cycle predictions and AI insights are estimates based on the information you log. Always consult a qualified healthcare professional about medical concerns, and never delay seeking care because of something you read in this app.",
+    "predictions": "Predictions are estimates, not medical advice."
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Understand your cycle with AI",
+      "subtitle": "Dialuna learns from your daily logs to forecast your energy, mood, and wellbeing — like a personal Hormone Twin.",
+      "cta": "Get started"
+    },
+    "disclaimerScreen": {
+      "title": "A gentle note before we begin",
+      "body": "Dialuna is a wellness companion. It helps you notice patterns in your cycle, mood, and energy.\n\nIt is not a medical device. It does not diagnose conditions, confirm pregnancy, or replace your doctor. Predictions are estimates that improve as you log.",
+      "cta": "I understand"
+    },
+    "profile": {
+      "title": "Tell us about you",
+      "subtitle": "This helps your Hormone Twin get started. You can change it anytime.",
+      "nickname": "Name or nickname",
+      "nicknamePlaceholder": "How should we call you?",
+      "ageRange": "Age range",
+      "cycleLength": "Average cycle length",
+      "periodLength": "Average period length",
+      "daysUnit": "days"
+    },
+    "lastPeriod": {
+      "title": "When did your last period start?",
+      "subtitle": "Pick the first day of your most recent period.",
+      "durationLabel": "How many days did it last?",
+      "notSure": "Not sure? Your average is fine — you can adjust later."
+    },
+    "goals": {
+      "title": "What brings you to Dialuna?",
+      "subtitle": "Choose everything that applies."
+    },
+    "notifications": {
+      "title": "Stay gently in sync",
+      "subtitle": "We can remind you at the right moments. You stay in control.",
+      "daily": "Daily insight reminder",
+      "period": "Period reminder",
+      "pms": "PMS heads-up",
+      "note": "You can change these anytime in Settings."
+    },
+    "paywallPreview": {
+      "title": "Dialuna Premium",
+      "subtitle": "Your full Hormone Twin experience",
+      "continueFree": "Continue free"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Good morning, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
+    },
+    "twinScore": "Hormone Twin",
+    "twinScoreCaption": "Today's overall wellbeing estimate",
+    "periodIn_one": "Period likely in {{count}} day",
+    "periodIn_other": "Period likely in {{count}} days",
+    "periodToday": "Period likely starting today",
+    "insightTitle": "Today's insight",
+    "forecast": {
+      "energy": "Energy",
+      "mood": "Mood",
+      "pain": "Comfort",
+      "focus": "Focus"
+    },
+    "level": {
+      "low": "Low",
+      "steady": "Steady",
+      "high": "High"
+    },
+    "askAi": "Ask AI",
+    "logCta": "How are you today?",
+    "logCtaBody": "Log your symptoms, mood, and energy to sharpen your forecasts.",
+    "logNow": "Log today",
+    "weekForecast": "7-day forecast",
+    "premiumBanner": {
+      "title": "Unlock your full Hormone Twin",
+      "body": "Unlimited AI coach, 7-day forecasts, and monthly reports.",
+      "cta": "See Premium"
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "legend": {
+      "period": "Period",
+      "predicted": "Predicted period",
+      "fertile": "Fertile estimate",
+      "ovulation": "Ovulation est.",
+      "pms": "PMS window",
+      "energy": "High energy",
+      "logged": "Logged"
+    },
+    "detail": {
+      "title": "Forecast",
+      "logDay": "Log this day",
+      "viewLog": "View log"
+    }
+  },
+  "log": {
+    "title": "Daily log",
+    "subtitle": "A minute of logging makes your forecasts smarter.",
+    "flow": "Flow",
+    "symptoms": "Symptoms",
+    "mood": "Mood",
+    "energy": "Energy",
+    "sleep": "Sleep quality",
+    "stress": "Stress",
+    "workout": "Movement",
+    "note": "Notes",
+    "notePlaceholder": "Anything else about today? Cravings, skin, thoughts…",
+    "save": "Save today's log",
+    "saved": "Saved ✨",
+    "reflectionTitle": "From your Hormone Twin",
+    "reflection": {
+      "menstrual": "Thanks for logging, {{name}}. Cramps or low energy may fit your menstrual phase. Warmth, hydration, and rest can help today.",
+      "follicular": "Thanks for logging, {{name}}. Your follicular phase often brings rising energy — a lovely time to build momentum.",
+      "ovulation": "Thanks for logging, {{name}}. Around ovulation many people feel more social and confident. Enjoy the lift.",
+      "luteal": "Thanks for logging, {{name}}. In the luteal phase mood and energy can soften. Gentle pacing counts as progress.",
+      "pms": "Thanks for logging, {{name}}. Your entries may reflect your pre-period window. Extra rest, magnesium-rich food, and gentle movement may help.",
+      "symptomNote": "You logged {{symptom}} — this may be related to your cycle. Not medical advice."
+    }
+  },
+  "ai": {
+    "title": "AI Coach",
+    "subtitle": "Personal answers from your cycle data",
+    "placeholder": "Ask about your body today…",
+    "remaining_one": "{{count}} free question left today",
+    "remaining_other": "{{count}} free questions left today",
+    "unlimited": "Unlimited questions",
+    "typing": "Your coach is thinking…",
+    "limitReached": "You've used your 3 free questions today. Premium unlocks unlimited coaching.",
+    "emptyTitle": "Ask me anything about your cycle",
+    "emptyBody": "I use your logs and cycle phase to answer. Try a suggestion below.",
+    "prompts": {
+      "p1": "Why am I feeling tired today?",
+      "p2": "Can I do HIIT today?",
+      "p3": "Why am I craving sweets?",
+      "p4": "Is my mood related to my cycle?",
+      "p5": "What should I eat today?",
+      "p6": "How can I reduce cramps?",
+      "p7": "What should I expect this week?"
+    },
+    "answer": {
+      "tired": "It makes sense you feel tired, {{name}}. You're on cycle day {{cycleDay}}, in your {{phase}}, and energy often dips here.",
+      "workout": "On cycle day {{cycleDay}} ({{phase}}), your body has its own pace for training.",
+      "cravings": "Cravings are very common in the {{phase}}, especially with your period about {{daysUntilPeriod}} days away.",
+      "mood": "Your mood can genuinely track your cycle. Right now you're in your {{phase}}, which often shapes emotional sensitivity.",
+      "food": "In your {{phase}}, food that steadies blood sugar and supports iron and magnesium tends to feel best.",
+      "cramps": "Cramps around your {{phase}} are common and usually cycle-related.",
+      "week": "Here's your week ahead, {{name}}: your period is estimated in about {{daysUntilPeriod}} days.",
+      "sleep": "Sleep can feel different across your cycle. In your {{phase}}, body temperature and hormones can affect how deeply you rest.",
+      "general": "Here's what your cycle suggests today, {{name}}: you're on day {{cycleDay}} in your {{phase}}."
+    },
+    "why": {
+      "menstrual": "During your period, energy and iron levels are often at their lowest, so your body asks for more rest.",
+      "follicular": "After your period, rising estrogen typically lifts energy, focus, and motivation.",
+      "ovulation": "Around ovulation, many people feel a natural peak in confidence and social energy.",
+      "luteal": "After ovulation, progesterone rises — this can soften energy and heighten emotional sensitivity.",
+      "pms": "In the few days before your period, hormone shifts can raise stress sensitivity, cravings, and discomfort."
+    },
+    "try": {
+      "tired": {
+        "high": "Today, try steady hydration, a protein-rich breakfast, and a short walk in daylight to lift alertness.",
+        "low": "Today, honor the dip: lighter tasks, an earlier night, and gentle movement like stretching or a slow walk."
+      },
+      "workout": {
+        "high": "Green light for stronger sessions — strength, cardio, or HIIT should feel good. Warm up well and listen to your body.",
+        "low": "Favor gentler movement today — yoga, walking, or light strength. Save max-effort HIIT for your higher-energy days."
+      },
+      "cravings": {
+        "high": "Pair sweets with protein or fiber, keep water nearby, and don't skip meals — stable blood sugar calms cravings.",
+        "low": "Try pairing something sweet with protein, magnesium-rich snacks like nuts or dark chocolate, and regular meals."
+      },
+      "mood": {
+        "high": "Ride the good wave: plan social time or a task you've been putting off while your mood is supported.",
+        "low": "Be extra kind to yourself: reduce stimulation, journal for five minutes, and protect your sleep tonight."
+      },
+      "food": {
+        "high": "Fresh, colorful meals with lean protein and complex carbs support your natural energy right now.",
+        "low": "Warm, comforting meals with iron and magnesium — leafy greens, legumes, dark chocolate — may feel especially good."
+      },
+      "cramps": {
+        "high": "Gentle heat, hydration, and light stretching can ease occasional cramps.",
+        "low": "A warm compress, slow stretching, magnesium-rich food, and rest often help. Track it in your log so I can learn."
+      },
+      "week": {
+        "high": "Expect stronger energy days ahead — a good window for demanding work and workouts before your next shift.",
+        "low": "Energy may soften toward your period — front-load important tasks, plan gentler evenings, and prioritize sleep."
+      },
+      "sleep": {
+        "high": "Keep your rhythm steady: consistent bedtime, morning light, and caffeine before noon.",
+        "low": "Wind down earlier tonight: dim lights, a warm shower, and putting screens away 30 minutes before bed can deepen rest."
+      },
+      "general": {
+        "high": "It's a supported time of your cycle — lean into energy while keeping meals and sleep steady.",
+        "low": "It's a softer time of your cycle — pace yourself, hydrate, and let rest be productive."
+      }
+    }
+  },
+  "coach": {
+    "menstrual": "Your body is doing quiet, important work. Slower movement, warmth, and earlier sleep can feel especially good today.",
+    "follicular": "Energy is on the rise. It's a natural window for fresh starts, harder workouts, and focused work.",
+    "ovulation": "You may feel a natural peak in confidence and social energy today. Enjoy it — and keep hydration up.",
+    "luteal": "Your body may prefer slower movement today. Try a walk, light stretching, and earlier sleep.",
+    "pms": "Your pre-period window may raise sensitivity and cravings. Gentle movement, magnesium-rich food, and rest can help."
+  },
+  "tips": {
+    "food": {
+      "menstrual": ["Iron-rich foods like spinach and lentils", "Warm soups and stews", "Dark chocolate in small comforting doses"],
+      "follicular": ["Fresh salads with lean protein", "Fermented foods for gut support", "Colorful fruit for antioxidants"],
+      "ovulation": ["Light meals with plenty of vegetables", "Hydrating foods like cucumber and berries", "Whole grains for steady energy"],
+      "luteal": ["Complex carbs to steady mood", "Magnesium-rich nuts and seeds", "Calcium-rich foods like yogurt"],
+      "pms": ["Magnesium-rich snacks like almonds", "Pair sweets with protein", "Reduce salt to ease bloating"]
+    },
+    "workout": {
+      "menstrual": ["Gentle yoga or stretching", "Short easy walks", "Rest is completely valid"],
+      "follicular": ["Strength training", "Cardio or running", "Try something new — energy supports it"],
+      "ovulation": ["Group classes or team sports", "Moderate-high intensity training", "Dance or anything social"],
+      "luteal": ["Moderate strength or pilates", "Steady-state cardio", "Lower intensity as your period nears"],
+      "pms": ["Slow yoga or stretching", "Walking in fresh air", "Light mobility work"]
+    },
+    "selfcare": {
+      "menstrual": ["A warm compress for cramps", "Earlier bedtime tonight", "Permission to slow down"],
+      "follicular": ["Plan something you look forward to", "Morning light exposure", "Start a small new habit"],
+      "ovulation": ["Connect with someone you love", "Say yes to social plans", "Celebrate a small win"],
+      "luteal": ["Five minutes of journaling", "A calming evening routine", "Lower the bar — done is enough"],
+      "pms": ["Extra gentleness with yourself", "A warm bath or shower", "Screens off earlier tonight"]
+    }
+  },
+  "insights": {
+    "title": "Insights",
+    "subtitle": "Patterns from your logs",
+    "empty": {
+      "title": "Your patterns are loading…",
+      "body": "Log at least 3 days and Dialuna will start finding your personal patterns."
+    },
+    "cycleCard": {
+      "title": "Cycle overview",
+      "avgLength": "Average cycle length",
+      "regularity": "Regularity",
+      "regular": "Looks regular",
+      "variable": "Somewhat variable"
+    },
+    "symptomsCard": {
+      "title": "Most logged symptoms",
+      "timesLogged_one": "{{count}} time",
+      "timesLogged_other": "{{count}} times"
+    },
+    "energyCard": {
+      "title": "Energy by phase",
+      "caption": "Average of your logged energy (1–10)"
+    },
+    "sleepCard": {
+      "title": "Sleep pattern",
+      "text": "Your sleep quality averages {{pmsSleep}}/10 in your pre-period window vs {{otherSleep}}/10 otherwise."
+    },
+    "pmsCard": {
+      "title": "Next PMS window",
+      "text": "Estimated {{start}} – {{end}}. Plan gentler days if you can."
+    },
+    "summaryCard": {
+      "title": "Monthly AI summary",
+      "text": "This month, your energy tends to drop 3–4 days before your period. Sleep quality often dips in the same window. Gentle planning around those days may help."
+    },
+    "locked": {
+      "title": "Deeper patterns are Premium",
+      "body": "Unlock energy, sleep, and PMS pattern analysis.",
+      "cta": "Unlock insights"
+    }
+  },
+  "paywall": {
+    "title": "Your full Hormone Twin",
+    "subtitle": "Go deeper with Dialuna Premium",
+    "benefit": {
+      "b1": "Unlimited AI Coach conversations",
+      "b2": "Advanced Hormone Twin forecast",
+      "b3": "7-day mood, energy & comfort prediction",
+      "b4": "Personalized food & workout plans",
+      "b5": "Monthly AI wellness report",
+      "b6": "Cycle pattern analysis"
+    },
+    "plans": {
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "lifetime": "Lifetime",
+      "perMonth": "/month",
+      "perYear": "/year",
+      "once": "one time"
+    },
+    "saveBadge": "Save 52%",
+    "popularBadge": "Most popular",
+    "cta": "Start Premium",
+    "restore": "Restore purchase",
+    "success": "Welcome to Premium ✨",
+    "mockNote": "Demo build: no real payment is processed.",
+    "finePrint": "Subscription renews automatically until cancelled. Wellness guidance only — not medical advice."
+  },
+  "settings": {
+    "title": "Settings",
+    "sections": {
+      "profile": "Profile",
+      "cycle": "Cycle settings",
+      "notifications": "Notifications",
+      "preferences": "Preferences",
+      "privacy": "Privacy & data",
+      "about": "About"
+    },
+    "nickname": "Nickname",
+    "ageRange": "Age range",
+    "cycleLength": "Average cycle length",
+    "periodLength": "Average period length",
+    "lastPeriodStart": "Last period start",
+    "language": "Language",
+    "languageEn": "English",
+    "languageVi": "Tiếng Việt",
+    "notifDaily": "Daily insight",
+    "notifPeriod": "Period reminder",
+    "notifPms": "PMS heads-up",
+    "notifDeferred": "Reminders will activate in a future update.",
+    "privacyTitle": "Your data stays on this device",
+    "privacyBody": "Dialuna stores everything you log locally on your phone. Nothing is uploaded, sold, or shared. There is no account and no tracking. If you delete the app or use 'Delete all data', your information is gone for good.",
+    "medicalTitle": "Medical disclaimer",
+    "exportData": "Export data",
+    "exportSoon": "Coming soon",
+    "premiumStatus": "Premium status",
+    "premiumActive": "Premium active — {{plan}}",
+    "premiumInactive": "Free plan",
+    "managePremium": "Manage subscription",
+    "devToggle": "Dev: toggle premium",
+    "deleteData": "Delete all data",
+    "deleteConfirmTitle": "Delete everything?",
+    "deleteConfirmBody": "This permanently removes your profile, logs, and settings from this device. This cannot be undone.",
+    "deleteConfirmCta": "Delete all data",
+    "version": "Version"
+  },
+  "tabs": {
+    "home": "Home",
+    "calendar": "Calendar",
+    "log": "Log",
+    "ai": "AI",
+    "insights": "Insights"
+  }
+}

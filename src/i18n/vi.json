@@ -1,0 +1,425 @@
+{
+  "common": {
+    "appName": "Dialuna",
+    "continue": "Tiếp tục",
+    "next": "Tiếp",
+    "back": "Quay lại",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "close": "Đóng",
+    "done": "Xong",
+    "skip": "Bỏ qua",
+    "gotIt": "Đã hiểu",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "confirm": "Xác nhận",
+    "today": "Hôm nay",
+    "day": "Ngày",
+    "days_other": "{{count}} ngày",
+    "free": "Miễn phí",
+    "premium": "Premium",
+    "unlock": "Mở khóa",
+    "loading": "Đang tải…",
+    "cycleDay": "Ngày {{day}} chu kỳ"
+  },
+  "phases": {
+    "menstrual": "Kỳ hành kinh",
+    "follicular": "Pha nang trứng",
+    "ovulation": "Cửa sổ rụng trứng",
+    "luteal": "Pha hoàng thể",
+    "pms": "Giai đoạn PMS",
+    "lateLuteal": "Cuối pha hoàng thể"
+  },
+  "flow": {
+    "none": "Không",
+    "spotting": "Rất ít",
+    "light": "Ít",
+    "medium": "Vừa",
+    "heavy": "Nhiều"
+  },
+  "symptoms": {
+    "cramps": "Đau bụng kinh",
+    "headache": "Đau đầu",
+    "bloating": "Đầy hơi",
+    "acne": "Mụn",
+    "breastTenderness": "Căng tức ngực",
+    "backPain": "Đau lưng",
+    "nausea": "Buồn nôn",
+    "fatigue": "Mệt mỏi"
+  },
+  "moods": {
+    "happy": "Vui vẻ",
+    "calm": "Bình yên",
+    "anxious": "Lo lắng",
+    "sad": "Buồn",
+    "angry": "Cáu gắt",
+    "sensitive": "Nhạy cảm"
+  },
+  "workouts": {
+    "none": "Ngày nghỉ",
+    "walking": "Đi bộ",
+    "yoga": "Yoga",
+    "strength": "Tập tạ",
+    "cardio": "Cardio",
+    "hiit": "HIIT"
+  },
+  "goals": {
+    "understandCycle": "Hiểu chu kỳ của mình",
+    "reducePms": "Giảm PMS",
+    "improveMood": "Cải thiện tâm trạng",
+    "planWorkouts": "Lên lịch tập luyện",
+    "skinInsights": "Chăm sóc da & mụn",
+    "pregnancyPlanning": "Chuẩn bị mang thai",
+    "betterSleep": "Ngủ ngon hơn"
+  },
+  "ageRanges": {
+    "18-24": "18–24",
+    "25-30": "25–30",
+    "31-35": "31–35",
+    "36-45": "36–45",
+    "46+": "46+"
+  },
+  "disclaimer": {
+    "short": "Thông tin AI mang tính giáo dục, không phải tư vấn y khoa. Nếu triệu chứng nghiêm trọng, hãy trao đổi với chuyên gia y tế.",
+    "ai": "Dialuna là người bạn đồng hành wellness, không phải thiết bị y tế. Câu trả lời là ước tính dựa trên dữ liệu bạn ghi lại.",
+    "full": "Dialuna là ứng dụng wellness và lối sống. Ứng dụng không chẩn đoán, điều trị hay phòng ngừa bất kỳ bệnh lý nào, và không thay thế tư vấn y khoa chuyên nghiệp. Dự đoán chu kỳ và thông tin AI chỉ là ước tính dựa trên dữ liệu bạn ghi. Hãy luôn tham khảo chuyên gia y tế có chuyên môn về các vấn đề sức khỏe, và đừng trì hoãn việc thăm khám vì nội dung trong ứng dụng này.",
+    "predictions": "Dự đoán chỉ là ước tính, không phải tư vấn y khoa."
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Hiểu chu kỳ của bạn cùng AI",
+      "subtitle": "Dialuna học từ nhật ký hằng ngày để dự báo năng lượng, tâm trạng và sức khỏe của bạn — như một Hormone Twin cá nhân.",
+      "cta": "Bắt đầu"
+    },
+    "disclaimerScreen": {
+      "title": "Một lưu ý nhỏ trước khi bắt đầu",
+      "body": "Dialuna là người bạn đồng hành wellness, giúp bạn nhận ra quy luật của chu kỳ, tâm trạng và năng lượng.\n\nĐây không phải thiết bị y tế. Ứng dụng không chẩn đoán bệnh, không xác nhận mang thai và không thay thế bác sĩ. Dự đoán là ước tính và sẽ chính xác hơn khi bạn ghi nhật ký đều.",
+      "cta": "Tôi đã hiểu"
+    },
+    "profile": {
+      "title": "Kể cho chúng mình nghe về bạn",
+      "subtitle": "Thông tin này giúp Hormone Twin khởi động. Bạn có thể đổi bất cứ lúc nào.",
+      "nickname": "Tên hoặc biệt danh",
+      "nicknamePlaceholder": "Bạn muốn được gọi là gì?",
+      "ageRange": "Độ tuổi",
+      "cycleLength": "Độ dài chu kỳ trung bình",
+      "periodLength": "Số ngày hành kinh trung bình",
+      "daysUnit": "ngày"
+    },
+    "lastPeriod": {
+      "title": "Kỳ kinh gần nhất bắt đầu khi nào?",
+      "subtitle": "Chọn ngày đầu tiên của kỳ kinh gần đây nhất.",
+      "durationLabel": "Kéo dài bao nhiêu ngày?",
+      "notSure": "Không chắc? Dùng số trung bình cũng được — bạn có thể chỉnh sau."
+    },
+    "goals": {
+      "title": "Điều gì đưa bạn đến Dialuna?",
+      "subtitle": "Chọn tất cả những gì phù hợp."
+    },
+    "notifications": {
+      "title": "Nhẹ nhàng đồng hành cùng bạn",
+      "subtitle": "Dialuna có thể nhắc bạn đúng lúc. Bạn luôn là người quyết định.",
+      "daily": "Nhắc insight hằng ngày",
+      "period": "Nhắc kỳ kinh sắp đến",
+      "pms": "Báo trước giai đoạn PMS",
+      "note": "Bạn có thể thay đổi trong Cài đặt bất cứ lúc nào."
+    },
+    "paywallPreview": {
+      "title": "Dialuna Premium",
+      "subtitle": "Trải nghiệm Hormone Twin trọn vẹn",
+      "continueFree": "Tiếp tục bản miễn phí"
+    }
+  },
+  "home": {
+    "greeting": {
+      "morning": "Chào buổi sáng, {{name}}",
+      "afternoon": "Chào buổi chiều, {{name}}",
+      "evening": "Chào buổi tối, {{name}}"
+    },
+    "twinScore": "Hormone Twin",
+    "twinScoreCaption": "Ước tính trạng thái tổng thể hôm nay",
+    "periodIn_other": "Kỳ kinh dự kiến trong {{count}} ngày",
+    "periodToday": "Kỳ kinh có thể bắt đầu hôm nay",
+    "insightTitle": "Insight hôm nay",
+    "forecast": {
+      "energy": "Năng lượng",
+      "mood": "Tâm trạng",
+      "pain": "Dễ chịu",
+      "focus": "Tập trung"
+    },
+    "level": {
+      "low": "Thấp",
+      "steady": "Ổn định",
+      "high": "Cao"
+    },
+    "askAi": "Hỏi AI",
+    "logCta": "Hôm nay bạn thế nào?",
+    "logCtaBody": "Ghi lại triệu chứng, tâm trạng và năng lượng để dự báo chính xác hơn.",
+    "logNow": "Ghi hôm nay",
+    "weekForecast": "Dự báo 7 ngày",
+    "premiumBanner": {
+      "title": "Mở khóa Hormone Twin trọn vẹn",
+      "body": "AI coach không giới hạn, dự báo 7 ngày và báo cáo hằng tháng.",
+      "cta": "Xem Premium"
+    }
+  },
+  "calendar": {
+    "title": "Lịch",
+    "legend": {
+      "period": "Kỳ kinh",
+      "predicted": "Kỳ kinh dự đoán",
+      "fertile": "Cửa sổ thụ thai (ước tính)",
+      "ovulation": "Rụng trứng (ước tính)",
+      "pms": "Giai đoạn PMS",
+      "energy": "Năng lượng cao",
+      "logged": "Đã ghi nhật ký"
+    },
+    "detail": {
+      "title": "Dự báo",
+      "logDay": "Ghi cho ngày này",
+      "viewLog": "Xem nhật ký"
+    }
+  },
+  "log": {
+    "title": "Nhật ký hôm nay",
+    "subtitle": "Một phút ghi lại giúp dự báo của bạn thông minh hơn.",
+    "flow": "Lượng kinh",
+    "symptoms": "Triệu chứng",
+    "mood": "Tâm trạng",
+    "energy": "Năng lượng",
+    "sleep": "Chất lượng giấc ngủ",
+    "stress": "Căng thẳng",
+    "workout": "Vận động",
+    "note": "Ghi chú",
+    "notePlaceholder": "Còn gì khác về hôm nay? Cơn thèm ăn, làn da, suy nghĩ…",
+    "save": "Lưu nhật ký hôm nay",
+    "saved": "Đã lưu ✨",
+    "reflectionTitle": "Từ Hormone Twin của bạn",
+    "reflection": {
+      "menstrual": "Cảm ơn bạn đã ghi lại, {{name}}. Đau bụng hay ít năng lượng có thể phù hợp với kỳ hành kinh. Hơi ấm, uống đủ nước và nghỉ ngơi sẽ giúp ích hôm nay.",
+      "follicular": "Cảm ơn bạn đã ghi lại, {{name}}. Pha nang trứng thường mang năng lượng đi lên — thời điểm đẹp để tạo đà.",
+      "ovulation": "Cảm ơn bạn đã ghi lại, {{name}}. Quanh ngày rụng trứng, nhiều người thấy tự tin và cởi mở hơn. Tận hưởng nhé.",
+      "luteal": "Cảm ơn bạn đã ghi lại, {{name}}. Trong pha hoàng thể, tâm trạng và năng lượng có thể dịu xuống. Đi chậm lại cũng là tiến bộ.",
+      "pms": "Cảm ơn bạn đã ghi lại, {{name}}. Những gì bạn ghi có thể phản ánh giai đoạn trước kỳ kinh. Nghỉ ngơi thêm, ăn thực phẩm giàu magie và vận động nhẹ có thể giúp ích.",
+      "symptomNote": "Bạn đã ghi {{symptom}} — điều này có thể liên quan đến chu kỳ. Không phải tư vấn y khoa."
+    }
+  },
+  "ai": {
+    "title": "AI Coach",
+    "subtitle": "Câu trả lời cá nhân từ dữ liệu chu kỳ của bạn",
+    "placeholder": "Hỏi về cơ thể bạn hôm nay…",
+    "remaining_other": "Còn {{count}} câu hỏi miễn phí hôm nay",
+    "unlimited": "Không giới hạn câu hỏi",
+    "typing": "Coach đang suy nghĩ…",
+    "limitReached": "Bạn đã dùng hết 3 câu hỏi miễn phí hôm nay. Premium mở khóa coaching không giới hạn.",
+    "emptyTitle": "Hỏi mình bất cứ điều gì về chu kỳ",
+    "emptyBody": "Mình dùng nhật ký và pha chu kỳ của bạn để trả lời. Thử một gợi ý bên dưới nhé.",
+    "prompts": {
+      "p1": "Sao hôm nay mình mệt thế?",
+      "p2": "Hôm nay tập HIIT được không?",
+      "p3": "Sao mình thèm đồ ngọt?",
+      "p4": "Tâm trạng mình có liên quan chu kỳ không?",
+      "p5": "Hôm nay nên ăn gì?",
+      "p6": "Làm sao giảm đau bụng kinh?",
+      "p7": "Tuần này mình nên chuẩn bị gì?"
+    },
+    "answer": {
+      "tired": "Cảm giác mệt của bạn là dễ hiểu, {{name}}. Bạn đang ở ngày {{cycleDay}} của chu kỳ, trong {{phase}}, và năng lượng thường chùng xuống ở giai đoạn này.",
+      "workout": "Ở ngày {{cycleDay}} ({{phase}}), cơ thể bạn có nhịp tập luyện riêng.",
+      "cravings": "Thèm ăn rất phổ biến trong {{phase}}, nhất là khi kỳ kinh chỉ còn khoảng {{daysUntilPeriod}} ngày.",
+      "mood": "Tâm trạng thực sự có thể đi theo chu kỳ. Hiện bạn đang trong {{phase}}, giai đoạn thường ảnh hưởng đến độ nhạy cảm xúc.",
+      "food": "Trong {{phase}}, những món giữ đường huyết ổn định và bổ sung sắt, magie thường hợp nhất.",
+      "cramps": "Đau bụng quanh {{phase}} là điều phổ biến và thường liên quan đến chu kỳ.",
+      "week": "Tuần sắp tới của bạn đây, {{name}}: kỳ kinh ước tính trong khoảng {{daysUntilPeriod}} ngày nữa.",
+      "sleep": "Giấc ngủ có thể thay đổi theo chu kỳ. Trong {{phase}}, thân nhiệt và hormone có thể ảnh hưởng độ sâu giấc ngủ.",
+      "general": "Chu kỳ của bạn hôm nay gợi ý thế này, {{name}}: bạn đang ở ngày {{cycleDay}}, trong {{phase}}."
+    },
+    "why": {
+      "menstrual": "Trong kỳ kinh, năng lượng và sắt thường ở mức thấp nhất, nên cơ thể cần nghỉ ngơi nhiều hơn.",
+      "follicular": "Sau kỳ kinh, estrogen tăng dần thường nâng năng lượng, sự tập trung và động lực.",
+      "ovulation": "Quanh ngày rụng trứng, nhiều người cảm thấy tự tin và giàu năng lượng xã hội một cách tự nhiên.",
+      "luteal": "Sau rụng trứng, progesterone tăng — có thể làm năng lượng dịu xuống và cảm xúc nhạy hơn.",
+      "pms": "Vài ngày trước kỳ kinh, thay đổi hormone có thể tăng độ nhạy với căng thẳng, cơn thèm ăn và sự khó chịu."
+    },
+    "try": {
+      "tired": {
+        "high": "Hôm nay, hãy uống nước đều, ăn sáng giàu protein và đi bộ ngắn dưới ánh sáng ban ngày để tỉnh táo hơn.",
+        "low": "Hôm nay, hãy tôn trọng nhịp chùng: việc nhẹ nhàng hơn, ngủ sớm hơn và vận động nhẹ như giãn cơ hoặc đi bộ chậm."
+      },
+      "workout": {
+        "high": "Đèn xanh cho buổi tập mạnh — tập tạ, cardio hay HIIT đều ổn. Khởi động kỹ và lắng nghe cơ thể nhé.",
+        "low": "Hôm nay ưu tiên vận động nhẹ — yoga, đi bộ hoặc tạ nhẹ. Để dành HIIT cường độ cao cho những ngày sung sức hơn."
+      },
+      "cravings": {
+        "high": "Kết hợp đồ ngọt với protein hoặc chất xơ, uống đủ nước và đừng bỏ bữa — đường huyết ổn định giúp dịu cơn thèm.",
+        "low": "Thử ăn đồ ngọt kèm protein, chọn món giàu magie như các loại hạt hay sô-cô-la đen, và ăn đúng bữa."
+      },
+      "mood": {
+        "high": "Tận dụng con sóng tốt: lên kế hoạch gặp gỡ hoặc làm việc bạn đã trì hoãn khi tâm trạng đang thuận.",
+        "low": "Dịu dàng với bản thân hơn: giảm kích thích, viết nhật ký 5 phút và bảo vệ giấc ngủ tối nay."
+      },
+      "food": {
+        "high": "Bữa ăn tươi, nhiều màu sắc với protein nạc và tinh bột phức hợp sẽ hỗ trợ năng lượng tự nhiên lúc này.",
+        "low": "Món ấm, dễ chịu, giàu sắt và magie — rau lá xanh, đậu, sô-cô-la đen — có thể đặc biệt hợp."
+      },
+      "cramps": {
+        "high": "Chườm ấm nhẹ, uống đủ nước và giãn cơ nhẹ có thể làm dịu cơn đau thoáng qua.",
+        "low": "Chườm ấm, giãn cơ chậm, thực phẩm giàu magie và nghỉ ngơi thường giúp ích. Ghi lại vào nhật ký để mình học thêm nhé."
+      },
+      "week": {
+        "high": "Sắp tới là những ngày năng lượng tốt — thời điểm đẹp cho công việc và buổi tập đòi hỏi cao trước khi nhịp đổi.",
+        "low": "Năng lượng có thể dịu dần về gần kỳ kinh — làm việc quan trọng sớm, buổi tối nhẹ nhàng hơn và ưu tiên giấc ngủ."
+      },
+      "sleep": {
+        "high": "Giữ nhịp đều: giờ ngủ cố định, đón nắng buổi sáng và chỉ uống caffeine trước buổi trưa.",
+        "low": "Tối nay hãy thư giãn sớm hơn: đèn dịu, tắm ấm và cất màn hình 30 phút trước khi ngủ để ngủ sâu hơn."
+      },
+      "general": {
+        "high": "Đây là giai đoạn thuận của chu kỳ — cứ tận dụng năng lượng, giữ bữa ăn và giấc ngủ đều đặn.",
+        "low": "Đây là giai đoạn dịu hơn của chu kỳ — đi chậm lại, uống đủ nước và xem nghỉ ngơi cũng là việc quan trọng."
+      }
+    }
+  },
+  "coach": {
+    "menstrual": "Cơ thể bạn đang làm những việc quan trọng trong lặng lẽ. Vận động chậm, giữ ấm và ngủ sớm sẽ đặc biệt dễ chịu hôm nay.",
+    "follicular": "Năng lượng đang đi lên. Đây là cửa sổ tự nhiên cho khởi đầu mới, buổi tập nặng hơn và công việc cần tập trung.",
+    "ovulation": "Hôm nay bạn có thể thấy tự tin và giàu năng lượng xã hội một cách tự nhiên. Tận hưởng nhé — và nhớ uống đủ nước.",
+    "luteal": "Cơ thể bạn có thể thích vận động chậm hơn hôm nay. Thử đi bộ, giãn cơ nhẹ và ngủ sớm hơn.",
+    "pms": "Giai đoạn trước kỳ kinh có thể làm bạn nhạy cảm và thèm ăn hơn. Vận động nhẹ, thực phẩm giàu magie và nghỉ ngơi sẽ giúp ích."
+  },
+  "tips": {
+    "food": {
+      "menstrual": ["Thực phẩm giàu sắt như rau bina, đậu lăng", "Súp và món hầm ấm nóng", "Một chút sô-cô-la đen dễ chịu"],
+      "follicular": ["Salad tươi với protein nạc", "Thực phẩm lên men tốt cho tiêu hóa", "Trái cây nhiều màu giàu chất chống oxy hóa"],
+      "ovulation": ["Bữa nhẹ nhiều rau", "Thực phẩm cấp nước như dưa leo, quả mọng", "Ngũ cốc nguyên hạt cho năng lượng đều"],
+      "luteal": ["Tinh bột phức hợp giúp ổn định tâm trạng", "Hạt giàu magie", "Thực phẩm giàu canxi như sữa chua"],
+      "pms": ["Đồ ăn vặt giàu magie như hạnh nhân", "Ăn đồ ngọt kèm protein", "Giảm muối để bớt đầy hơi"]
+    },
+    "workout": {
+      "menstrual": ["Yoga nhẹ hoặc giãn cơ", "Đi bộ ngắn thong thả", "Nghỉ ngơi cũng hoàn toàn xứng đáng"],
+      "follicular": ["Tập tạ", "Cardio hoặc chạy bộ", "Thử điều mới — năng lượng đang ủng hộ bạn"],
+      "ovulation": ["Lớp học nhóm hoặc thể thao đồng đội", "Tập cường độ trung bình–cao", "Nhảy múa hay hoạt động có tính kết nối"],
+      "luteal": ["Tạ vừa phải hoặc pilates", "Cardio nhịp đều", "Giảm cường độ khi gần kỳ kinh"],
+      "pms": ["Yoga chậm hoặc giãn cơ", "Đi bộ nơi thoáng đãng", "Bài tập mobility nhẹ"]
+    },
+    "selfcare": {
+      "menstrual": ["Chườm ấm khi đau bụng", "Đi ngủ sớm hơn tối nay", "Cho phép bản thân chậm lại"],
+      "follicular": ["Lên kế hoạch cho điều bạn mong chờ", "Đón ánh nắng buổi sáng", "Bắt đầu một thói quen nhỏ"],
+      "ovulation": ["Kết nối với người bạn thương", "Nhận lời những cuộc hẹn", "Ăn mừng một thắng lợi nhỏ"],
+      "luteal": ["Viết nhật ký 5 phút", "Một routine buổi tối êm dịu", "Hạ tiêu chuẩn xuống — xong là đủ tốt"],
+      "pms": ["Dịu dàng với bản thân hơn nữa", "Tắm nước ấm thư giãn", "Tắt màn hình sớm hơn tối nay"]
+    }
+  },
+  "insights": {
+    "title": "Insights",
+    "subtitle": "Quy luật từ nhật ký của bạn",
+    "empty": {
+      "title": "Đang chờ quy luật của bạn…",
+      "body": "Ghi nhật ký ít nhất 3 ngày và Dialuna sẽ bắt đầu tìm ra quy luật riêng của bạn."
+    },
+    "cycleCard": {
+      "title": "Tổng quan chu kỳ",
+      "avgLength": "Độ dài chu kỳ trung bình",
+      "regularity": "Độ đều",
+      "regular": "Có vẻ đều đặn",
+      "variable": "Hơi dao động"
+    },
+    "symptomsCard": {
+      "title": "Triệu chứng ghi nhiều nhất",
+      "timesLogged_other": "{{count}} lần"
+    },
+    "energyCard": {
+      "title": "Năng lượng theo pha",
+      "caption": "Trung bình năng lượng bạn ghi (1–10)"
+    },
+    "sleepCard": {
+      "title": "Quy luật giấc ngủ",
+      "text": "Chất lượng ngủ của bạn trung bình {{pmsSleep}}/10 trong giai đoạn trước kỳ kinh, so với {{otherSleep}}/10 các ngày khác."
+    },
+    "pmsCard": {
+      "title": "Giai đoạn PMS sắp tới",
+      "text": "Ước tính {{start}} – {{end}}. Nếu được, hãy sắp xếp những ngày nhẹ nhàng hơn."
+    },
+    "summaryCard": {
+      "title": "Tổng kết AI hằng tháng",
+      "text": "Tháng này, năng lượng của bạn thường giảm 3–4 ngày trước kỳ kinh. Chất lượng ngủ cũng thường giảm trong cùng giai đoạn. Sắp xếp nhẹ nhàng quanh những ngày đó có thể giúp ích."
+    },
+    "locked": {
+      "title": "Phân tích sâu là tính năng Premium",
+      "body": "Mở khóa phân tích quy luật năng lượng, giấc ngủ và PMS.",
+      "cta": "Mở khóa insights"
+    }
+  },
+  "paywall": {
+    "title": "Hormone Twin trọn vẹn của bạn",
+    "subtitle": "Đi sâu hơn cùng Dialuna Premium",
+    "benefit": {
+      "b1": "Trò chuyện AI Coach không giới hạn",
+      "b2": "Dự báo Hormone Twin nâng cao",
+      "b3": "Dự đoán tâm trạng, năng lượng & độ dễ chịu 7 ngày",
+      "b4": "Kế hoạch ăn uống & tập luyện cá nhân hóa",
+      "b5": "Báo cáo wellness AI hằng tháng",
+      "b6": "Phân tích quy luật chu kỳ"
+    },
+    "plans": {
+      "monthly": "Hằng tháng",
+      "yearly": "Hằng năm",
+      "lifetime": "Trọn đời",
+      "perMonth": "/tháng",
+      "perYear": "/năm",
+      "once": "một lần"
+    },
+    "saveBadge": "Tiết kiệm 52%",
+    "popularBadge": "Phổ biến nhất",
+    "cta": "Bắt đầu Premium",
+    "restore": "Khôi phục giao dịch",
+    "success": "Chào mừng đến Premium ✨",
+    "mockNote": "Bản demo: không có thanh toán thật nào được xử lý.",
+    "finePrint": "Gói đăng ký tự động gia hạn cho đến khi hủy. Chỉ là hướng dẫn wellness — không phải tư vấn y khoa."
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "sections": {
+      "profile": "Hồ sơ",
+      "cycle": "Cài đặt chu kỳ",
+      "notifications": "Thông báo",
+      "preferences": "Tùy chọn",
+      "privacy": "Riêng tư & dữ liệu",
+      "about": "Về ứng dụng"
+    },
+    "nickname": "Biệt danh",
+    "ageRange": "Độ tuổi",
+    "cycleLength": "Độ dài chu kỳ trung bình",
+    "periodLength": "Số ngày hành kinh trung bình",
+    "lastPeriodStart": "Kỳ kinh gần nhất bắt đầu",
+    "language": "Ngôn ngữ",
+    "languageEn": "English",
+    "languageVi": "Tiếng Việt",
+    "notifDaily": "Insight hằng ngày",
+    "notifPeriod": "Nhắc kỳ kinh",
+    "notifPms": "Báo trước PMS",
+    "notifDeferred": "Tính năng nhắc sẽ được kích hoạt trong bản cập nhật tới.",
+    "privacyTitle": "Dữ liệu của bạn ở lại trên thiết bị này",
+    "privacyBody": "Dialuna lưu mọi thứ bạn ghi ngay trên điện thoại. Không có gì được tải lên, bán hay chia sẻ. Không tài khoản, không theo dõi. Nếu bạn xóa ứng dụng hoặc dùng 'Xóa toàn bộ dữ liệu', thông tin sẽ biến mất vĩnh viễn.",
+    "medicalTitle": "Miễn trừ trách nhiệm y khoa",
+    "exportData": "Xuất dữ liệu",
+    "exportSoon": "Sắp ra mắt",
+    "premiumStatus": "Trạng thái Premium",
+    "premiumActive": "Premium đang hoạt động — {{plan}}",
+    "premiumInactive": "Gói miễn phí",
+    "managePremium": "Quản lý gói đăng ký",
+    "devToggle": "Dev: bật/tắt premium",
+    "deleteData": "Xóa toàn bộ dữ liệu",
+    "deleteConfirmTitle": "Xóa tất cả?",
+    "deleteConfirmBody": "Thao tác này xóa vĩnh viễn hồ sơ, nhật ký và cài đặt khỏi thiết bị. Không thể hoàn tác.",
+    "deleteConfirmCta": "Xóa toàn bộ dữ liệu",
+    "version": "Phiên bản"
+  },
+  "tabs": {
+    "home": "Trang chủ",
+    "calendar": "Lịch",
+    "log": "Nhật ký",
+    "ai": "AI",
+    "insights": "Insights"
+  }
+}
