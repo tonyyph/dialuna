@@ -1,9 +1,12 @@
-import { Text, View } from 'react-native';
+import { Redirect } from 'expo-router';
+
+import { useUserStore } from '@/store';
 
 export default function Index() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Dialuna</Text>
-    </View>
+  const hasOnboarded = useUserStore((s) => s.hasOnboarded);
+  return hasOnboarded ? (
+    <Redirect href="/(tabs)/home" />
+  ) : (
+    <Redirect href="/onboarding" />
   );
 }
