@@ -1,10 +1,3 @@
-import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
+import { HomeScreen } from '@/features/home/HomeScreen';
 
-export default function Placeholder() {
-  return (
-    <Screen>
-      <SectionTitle title="home" />
-    </Screen>
-  );
-}
+export default HomeScreen;

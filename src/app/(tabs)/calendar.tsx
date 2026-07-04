@@ -1,10 +1,10 @@
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 
-export default function Placeholder() {
+export default function ComingSoon() {
   return (
     <Screen>
-      <SectionTitle title="calendar" />
+      <EmptyState emoji="🌙" title="Dialuna" body="…" />
     </Screen>
   );
 }
