@@ -123,12 +123,47 @@ export function HomeScreen() {
         </Card>
       </Animated.View>
 
+      {isPremium && (
+        <Animated.View entering={FadeInDown.delay(400).duration(400)}>
+          <SectionTitle title={t('home.plan.title')} />
+          <Card style={styles.planCard}>
+            <PlanGroup title={t('home.plan.food')} emoji="🥗" tipKeys={twin.foodTipKeys} />
+            <PlanGroup title={t('home.plan.workout')} emoji="🤸‍♀️" tipKeys={twin.workoutTipKeys} />
+            <PlanGroup title={t('home.plan.selfcare')} emoji="🫧" tipKeys={twin.selfCareTipKeys} />
+          </Card>
+        </Animated.View>
+      )}
+
       {!isPremium && (
         <Animated.View entering={FadeInDown.delay(400).duration(400)} style={styles.banner}>
           <PremiumBanner onPress={() => router.push('/paywall')} />
         </Animated.View>
       )}
     </Screen>
+  );
+}
+
+function PlanGroup({
+  title,
+  emoji,
+  tipKeys,
+}: {
+  title: string;
+  emoji: string;
+  tipKeys: string[];
+}) {
+  const { t } = useTranslation();
+  return (
+    <View style={styles.planGroup}>
+      <Text style={styles.planGroupTitle}>
+        {emoji} {title}
+      </Text>
+      {tipKeys.map((key) => (
+        <Text key={key} style={styles.planTip}>
+          · {t(key)}
+        </Text>
+      ))}
+    </View>
   );
 }
 
@@ -214,5 +249,17 @@ const styles = StyleSheet.create({
   },
   banner: {
     marginTop: spacing(3),
+  },
+  planCard: {
+    gap: spacing(2),
+  },
+  planGroup: {
+    gap: spacing(0.5),
+  },
+  planGroupTitle: {
+    ...typography.h3,
+  },
+  planTip: {
+    ...typography.bodySmall,
   },
 });

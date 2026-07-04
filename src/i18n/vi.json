@@ -161,6 +161,12 @@
       "title": "Mở khóa Hormone Twin trọn vẹn",
       "body": "AI coach không giới hạn, dự báo 7 ngày và báo cáo hằng tháng.",
       "cta": "Xem Premium"
+    },
+    "plan": {
+      "title": "Kế hoạch hôm nay",
+      "food": "Ăn uống",
+      "workout": "Vận động",
+      "selfcare": "Chăm sóc bản thân"
     }
   },
   "calendar": {
@@ -289,25 +295,85 @@
   },
   "tips": {
     "food": {
-      "menstrual": ["Thực phẩm giàu sắt như rau bina, đậu lăng", "Súp và món hầm ấm nóng", "Một chút sô-cô-la đen dễ chịu"],
-      "follicular": ["Salad tươi với protein nạc", "Thực phẩm lên men tốt cho tiêu hóa", "Trái cây nhiều màu giàu chất chống oxy hóa"],
-      "ovulation": ["Bữa nhẹ nhiều rau", "Thực phẩm cấp nước như dưa leo, quả mọng", "Ngũ cốc nguyên hạt cho năng lượng đều"],
-      "luteal": ["Tinh bột phức hợp giúp ổn định tâm trạng", "Hạt giàu magie", "Thực phẩm giàu canxi như sữa chua"],
-      "pms": ["Đồ ăn vặt giàu magie như hạnh nhân", "Ăn đồ ngọt kèm protein", "Giảm muối để bớt đầy hơi"]
+      "menstrual": [
+        "Thực phẩm giàu sắt như rau bina, đậu lăng",
+        "Súp và món hầm ấm nóng",
+        "Một chút sô-cô-la đen dễ chịu"
+      ],
+      "follicular": [
+        "Salad tươi với protein nạc",
+        "Thực phẩm lên men tốt cho tiêu hóa",
+        "Trái cây nhiều màu giàu chất chống oxy hóa"
+      ],
+      "ovulation": [
+        "Bữa nhẹ nhiều rau",
+        "Thực phẩm cấp nước như dưa leo, quả mọng",
+        "Ngũ cốc nguyên hạt cho năng lượng đều"
+      ],
+      "luteal": [
+        "Tinh bột phức hợp giúp ổn định tâm trạng",
+        "Hạt giàu magie",
+        "Thực phẩm giàu canxi như sữa chua"
+      ],
+      "pms": [
+        "Đồ ăn vặt giàu magie như hạnh nhân",
+        "Ăn đồ ngọt kèm protein",
+        "Giảm muối để bớt đầy hơi"
+      ]
     },
     "workout": {
-      "menstrual": ["Yoga nhẹ hoặc giãn cơ", "Đi bộ ngắn thong thả", "Nghỉ ngơi cũng hoàn toàn xứng đáng"],
-      "follicular": ["Tập tạ", "Cardio hoặc chạy bộ", "Thử điều mới — năng lượng đang ủng hộ bạn"],
-      "ovulation": ["Lớp học nhóm hoặc thể thao đồng đội", "Tập cường độ trung bình–cao", "Nhảy múa hay hoạt động có tính kết nối"],
-      "luteal": ["Tạ vừa phải hoặc pilates", "Cardio nhịp đều", "Giảm cường độ khi gần kỳ kinh"],
-      "pms": ["Yoga chậm hoặc giãn cơ", "Đi bộ nơi thoáng đãng", "Bài tập mobility nhẹ"]
+      "menstrual": [
+        "Yoga nhẹ hoặc giãn cơ",
+        "Đi bộ ngắn thong thả",
+        "Nghỉ ngơi cũng hoàn toàn xứng đáng"
+      ],
+      "follicular": [
+        "Tập tạ",
+        "Cardio hoặc chạy bộ",
+        "Thử điều mới — năng lượng đang ủng hộ bạn"
+      ],
+      "ovulation": [
+        "Lớp học nhóm hoặc thể thao đồng đội",
+        "Tập cường độ trung bình–cao",
+        "Nhảy múa hay hoạt động có tính kết nối"
+      ],
+      "luteal": [
+        "Tạ vừa phải hoặc pilates",
+        "Cardio nhịp đều",
+        "Giảm cường độ khi gần kỳ kinh"
+      ],
+      "pms": [
+        "Yoga chậm hoặc giãn cơ",
+        "Đi bộ nơi thoáng đãng",
+        "Bài tập mobility nhẹ"
+      ]
     },
     "selfcare": {
-      "menstrual": ["Chườm ấm khi đau bụng", "Đi ngủ sớm hơn tối nay", "Cho phép bản thân chậm lại"],
-      "follicular": ["Lên kế hoạch cho điều bạn mong chờ", "Đón ánh nắng buổi sáng", "Bắt đầu một thói quen nhỏ"],
-      "ovulation": ["Kết nối với người bạn thương", "Nhận lời những cuộc hẹn", "Ăn mừng một thắng lợi nhỏ"],
-      "luteal": ["Viết nhật ký 5 phút", "Một routine buổi tối êm dịu", "Hạ tiêu chuẩn xuống — xong là đủ tốt"],
-      "pms": ["Dịu dàng với bản thân hơn nữa", "Tắm nước ấm thư giãn", "Tắt màn hình sớm hơn tối nay"]
+      "menstrual": [
+        "Chườm ấm khi đau bụng",
+        "Đi ngủ sớm hơn tối nay",
+        "Cho phép bản thân chậm lại"
+      ],
+      "follicular": [
+        "Lên kế hoạch cho điều bạn mong chờ",
+        "Đón ánh nắng buổi sáng",
+        "Bắt đầu một thói quen nhỏ"
+      ],
+      "ovulation": [
+        "Kết nối với người bạn thương",
+        "Nhận lời những cuộc hẹn",
+        "Ăn mừng một thắng lợi nhỏ"
+      ],
+      "luteal": [
+        "Viết nhật ký 5 phút",
+        "Một routine buổi tối êm dịu",
+        "Hạ tiêu chuẩn xuống — xong là đủ tốt"
+      ],
+      "pms": [
+        "Dịu dàng với bản thân hơn nữa",
+        "Tắm nước ấm thư giãn",
+        "Tắt màn hình sớm hơn tối nay"
+      ]
     }
   },
   "insights": {

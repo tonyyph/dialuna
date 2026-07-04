@@ -163,6 +163,12 @@
       "title": "Unlock your full Hormone Twin",
       "body": "Unlimited AI coach, 7-day forecasts, and monthly reports.",
       "cta": "See Premium"
+    },
+    "plan": {
+      "title": "Today's plan",
+      "food": "Food",
+      "workout": "Movement",
+      "selfcare": "Self-care"
     }
   },
   "calendar": {
@@ -292,25 +298,85 @@
   },
   "tips": {
     "food": {
-      "menstrual": ["Iron-rich foods like spinach and lentils", "Warm soups and stews", "Dark chocolate in small comforting doses"],
-      "follicular": ["Fresh salads with lean protein", "Fermented foods for gut support", "Colorful fruit for antioxidants"],
-      "ovulation": ["Light meals with plenty of vegetables", "Hydrating foods like cucumber and berries", "Whole grains for steady energy"],
-      "luteal": ["Complex carbs to steady mood", "Magnesium-rich nuts and seeds", "Calcium-rich foods like yogurt"],
-      "pms": ["Magnesium-rich snacks like almonds", "Pair sweets with protein", "Reduce salt to ease bloating"]
+      "menstrual": [
+        "Iron-rich foods like spinach and lentils",
+        "Warm soups and stews",
+        "Dark chocolate in small comforting doses"
+      ],
+      "follicular": [
+        "Fresh salads with lean protein",
+        "Fermented foods for gut support",
+        "Colorful fruit for antioxidants"
+      ],
+      "ovulation": [
+        "Light meals with plenty of vegetables",
+        "Hydrating foods like cucumber and berries",
+        "Whole grains for steady energy"
+      ],
+      "luteal": [
+        "Complex carbs to steady mood",
+        "Magnesium-rich nuts and seeds",
+        "Calcium-rich foods like yogurt"
+      ],
+      "pms": [
+        "Magnesium-rich snacks like almonds",
+        "Pair sweets with protein",
+        "Reduce salt to ease bloating"
+      ]
     },
     "workout": {
-      "menstrual": ["Gentle yoga or stretching", "Short easy walks", "Rest is completely valid"],
-      "follicular": ["Strength training", "Cardio or running", "Try something new — energy supports it"],
-      "ovulation": ["Group classes or team sports", "Moderate-high intensity training", "Dance or anything social"],
-      "luteal": ["Moderate strength or pilates", "Steady-state cardio", "Lower intensity as your period nears"],
-      "pms": ["Slow yoga or stretching", "Walking in fresh air", "Light mobility work"]
+      "menstrual": [
+        "Gentle yoga or stretching",
+        "Short easy walks",
+        "Rest is completely valid"
+      ],
+      "follicular": [
+        "Strength training",
+        "Cardio or running",
+        "Try something new — energy supports it"
+      ],
+      "ovulation": [
+        "Group classes or team sports",
+        "Moderate-high intensity training",
+        "Dance or anything social"
+      ],
+      "luteal": [
+        "Moderate strength or pilates",
+        "Steady-state cardio",
+        "Lower intensity as your period nears"
+      ],
+      "pms": [
+        "Slow yoga or stretching",
+        "Walking in fresh air",
+        "Light mobility work"
+      ]
     },
     "selfcare": {
-      "menstrual": ["A warm compress for cramps", "Earlier bedtime tonight", "Permission to slow down"],
-      "follicular": ["Plan something you look forward to", "Morning light exposure", "Start a small new habit"],
-      "ovulation": ["Connect with someone you love", "Say yes to social plans", "Celebrate a small win"],
-      "luteal": ["Five minutes of journaling", "A calming evening routine", "Lower the bar — done is enough"],
-      "pms": ["Extra gentleness with yourself", "A warm bath or shower", "Screens off earlier tonight"]
+      "menstrual": [
+        "A warm compress for cramps",
+        "Earlier bedtime tonight",
+        "Permission to slow down"
+      ],
+      "follicular": [
+        "Plan something you look forward to",
+        "Morning light exposure",
+        "Start a small new habit"
+      ],
+      "ovulation": [
+        "Connect with someone you love",
+        "Say yes to social plans",
+        "Celebrate a small win"
+      ],
+      "luteal": [
+        "Five minutes of journaling",
+        "A calming evening routine",
+        "Lower the bar — done is enough"
+      ],
+      "pms": [
+        "Extra gentleness with yourself",
+        "A warm bath or shower",
+        "Screens off earlier tonight"
+      ]
     }
   },
   "insights": {
