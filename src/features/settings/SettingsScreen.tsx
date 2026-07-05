@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
   title: {
-    ...typography.h1,
+    ...typography.headline,
   },
   rows: {
     gap: spacing(1.5),
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   chevron: {
-    ...typography.h2,
+    ...typography.title,
     color: colors.textSecondary,
   },
   caption: {

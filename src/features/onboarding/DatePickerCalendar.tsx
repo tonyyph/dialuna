@@ -109,11 +109,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   navText: {
-    ...typography.h1,
+    ...typography.headline,
     color: colors.primary,
   },
   monthLabel: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   grid: {
     flexDirection: 'row',

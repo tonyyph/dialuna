@@ -102,14 +102,14 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   title: {
-    ...typography.h1,
+    ...typography.headline,
   },
   subtitle: {
     ...typography.bodySmall,
     marginBottom: spacing(2),
   },
   label: {
-    ...typography.h3,
+    ...typography.subtitle,
     marginTop: spacing(1.5),
   },
   input: {

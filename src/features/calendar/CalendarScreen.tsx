@@ -134,7 +134,7 @@ export function CalendarScreen() {
 
 const styles = StyleSheet.create({
   title: {
-    ...typography.h1,
+    ...typography.headline,
     paddingTop: spacing(2),
     marginBottom: spacing(2),
   },
@@ -152,11 +152,11 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   navText: {
-    ...typography.h1,
+    ...typography.headline,
     color: colors.primary,
   },
   monthLabel: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   grid: {
     flexDirection: 'row',

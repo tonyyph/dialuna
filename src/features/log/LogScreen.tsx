@@ -223,7 +223,7 @@ export function LogScreen() {
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   title: {
-    ...typography.h1,
+    ...typography.headline,
     paddingTop: spacing(2),
   },
   subtitle: {
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   reflectionTitle: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   reflectionText: {
     ...typography.body,

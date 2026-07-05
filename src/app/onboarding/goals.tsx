@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   title: {
-    ...typography.h1,
+    ...typography.headline,
   },
   subtitle: {
     ...typography.bodySmall,

@@ -147,14 +147,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   closeText: {
-    ...typography.h3,
+    ...typography.subtitle,
     color: colors.deepPlum,
   },
   heroEmoji: {
     fontSize: 36,
   },
   heroTitle: {
-    ...typography.h1,
+    ...typography.headline,
     color: colors.card,
     textAlign: 'center',
   },

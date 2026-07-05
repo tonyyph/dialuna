@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   label: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   controls: {
     flexDirection: 'row',
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnText: {
-    ...typography.h2,
+    ...typography.title,
     color: colors.primary,
   },
   value: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
 });

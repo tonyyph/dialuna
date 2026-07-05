@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    ...typography.h1,
+    ...typography.headline,
     textAlign: 'center',
   },
   body: {

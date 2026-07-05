@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing(1),
   },
   title: {
-    ...typography.h2,
+    ...typography.title,
     textAlign: 'center',
   },
   body: {

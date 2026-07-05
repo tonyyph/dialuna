@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     paddingBottom: spacing(1),
   },
   title: {
-    ...typography.h1,
+    ...typography.headline,
   },
   counter: {
     ...typography.caption,
