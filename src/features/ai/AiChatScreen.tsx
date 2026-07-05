@@ -53,7 +53,7 @@ export function AiChatScreen() {
         {messages.length === 0 ? (
           <View style={styles.flex}>
             <EmptyState
-              emoji="✨"
+              lunaExpression="happy"
               title={t('ai.emptyTitle')}
               body={t('ai.emptyBody')}
             />

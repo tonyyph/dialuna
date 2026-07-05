@@ -36,7 +36,7 @@ export function InsightsScreen() {
       <Screen>
         <Text style={styles.title}>{t('insights.title')}</Text>
         <EmptyState
-          emoji="🌱"
+          lunaExpression="thinking"
           title={t('insights.empty.title')}
           body={t('insights.empty.body')}
         />
