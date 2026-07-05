@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 
-import { colors, radius, shadows, spacing } from '@/theme';
+import { colors, legacyShadowAliases, radius, spacing } from '@/theme';
 
 interface Props {
   variant?: 'solid' | 'glass';
@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderRadius: radius.lg,
     padding: spacing(2.5),
-    ...shadows.card,
+    ...legacyShadowAliases.card,
   },
   glass: {
     backgroundColor: colors.glass,
     borderWidth: 1,
     borderColor: colors.border,
+    shadowOpacity: 0,
+    elevation: 0,
   },
 });
