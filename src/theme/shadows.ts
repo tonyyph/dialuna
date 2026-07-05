@@ -40,9 +40,9 @@ export const shadows = {
   },
 } satisfies Record<string, ViewStyle>;
 
-// Deprecated aliases — existing call sites use these names; migrate to sm/md
-// directly as each screen is touched in a later redesign phase, then delete.
+// Deprecated alias — Card.tsx is the sole remaining consumer of the old
+// `shadows.card` name; migrate it to `sm` directly when Card is next touched,
+// then delete this.
 export const legacyShadowAliases = {
   card: shadows.sm,
-  soft: shadows.md,
 } satisfies Record<string, ViewStyle>;
