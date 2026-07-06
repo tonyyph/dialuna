@@ -46,3 +46,9 @@ export const shadows = {
 export const legacyShadowAliases = {
   card: shadows.sm,
 } satisfies Record<string, ViewStyle>;
+
+// Widened to `ViewStyle` (not `typeof shadows`) because `colors.ts` is
+// declared `as const`, which would otherwise lock `glow.shadowColor` to the
+// literal `'#D9467D'` — incompatible with useTheme.ts overriding it with the
+// resolved (mode/accent-dependent) `colors.primary: string`.
+export type ShadowTokens = Record<keyof typeof shadows, ViewStyle>;
