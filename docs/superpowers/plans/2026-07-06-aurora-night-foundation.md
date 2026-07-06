@@ -117,6 +117,9 @@ export interface ThemeTokens {
   peachDeep: string;
   ovulationBlue: string;
   textDisabled: string;
+  /** Fixed Luna Orb illustration details — same value in both modes, never accent-reactive. */
+  lunaEyeColor: string;
+  lunaShadowColor: string;
 
   phase: PhaseColors;
   phaseSoft: PhaseColors;
@@ -192,6 +195,8 @@ export const darkTokens: ThemeTokens = {
   peachDeep: '#F7A08B',
   ovulationBlue: '#8FD2F2',
   textDisabled: 'rgba(244,241,251,0.35)',
+  lunaEyeColor: '#3A2B6E',
+  lunaShadowColor: '#462D82',
 
   phase: {
     menstrual: '#F5B8C4',
@@ -277,6 +282,8 @@ export const lightTokens: ThemeTokens = {
   peachDeep: '#F7A08B',
   ovulationBlue: '#8FD2F2',
   textDisabled: 'rgba(36,30,56,0.35)',
+  lunaEyeColor: '#3A2B6E',
+  lunaShadowColor: '#462D82',
 
   phase: {
     menstrual: '#F5B8C4',
@@ -1299,7 +1306,7 @@ export function LunaOrb({ state = 'idle', size = 96 }: LunaOrbProps) {
             backgroundColor: colors.primary,
             alignItems: 'center',
             justifyContent: 'center',
-            shadowColor: '#462D82',
+            shadowColor: colors.lunaShadowColor,
             shadowOffset: { width: -size * 0.06, height: -size * 0.08 },
             shadowOpacity: 0.55,
             shadowRadius: size * 0.16,
@@ -1307,8 +1314,8 @@ export function LunaOrb({ state = 'idle', size = 96 }: LunaOrbProps) {
         ]}
       >
         <View style={{ flexDirection: 'row', gap: size * 0.09, marginTop: eyeOffset }}>
-          <View style={[styles.eye, { width: size * 0.06, height: state === 'thinking' ? size * 0.015 : size * 0.06 }]} />
-          <View style={[styles.eye, { width: size * 0.06, height: state === 'thinking' ? size * 0.015 : size * 0.06 }]} />
+          <View style={[styles.eye, { width: size * 0.06, height: state === 'thinking' ? size * 0.015 : size * 0.06, backgroundColor: colors.lunaEyeColor }]} />
+          <View style={[styles.eye, { width: size * 0.06, height: state === 'thinking' ? size * 0.015 : size * 0.06, backgroundColor: colors.lunaEyeColor }]} />
         </View>
       </Animated.View>
     </View>
@@ -1321,7 +1328,6 @@ const styles = StyleSheet.create({
   },
   eye: {
     borderRadius: 999,
-    backgroundColor: '#3A2B6E',
   },
 });
 ```
