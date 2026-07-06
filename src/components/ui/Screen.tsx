@@ -1,4 +1,3 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import { PropsWithChildren, ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
@@ -12,6 +11,7 @@ import {
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { AuroraBackground } from '@/components/ui/AuroraBackground';
 import { BottomAction } from '@/components/ui/BottomAction';
 import { sizes, spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
@@ -56,12 +56,7 @@ export function Screen({
 
   const body = (
     <View style={[styles.safe, { backgroundColor: colors.background }, style]}>
-      <LinearGradient
-        pointerEvents="none"
-        colors={colors.gradients.app}
-        locations={[0, 0.48, 1]}
-        style={StyleSheet.absoluteFill}
-      />
+      <AuroraBackground />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         {scroll ? (
           <ScrollView
