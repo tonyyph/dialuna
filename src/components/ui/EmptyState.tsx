@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Luna, LunaExpression } from '@/components/mascot/Luna';
 import { spacing, typography } from '@/theme';
 
 interface Props {
-  emoji: string;
+  lunaExpression?: LunaExpression;
   title: string;
   body: string;
 }
 
-export function EmptyState({ emoji, title, body }: Props) {
+export function EmptyState({ lunaExpression = 'happy', title, body }: Props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.emoji}>{emoji}</Text>
+      <Luna expression={lunaExpression} size={88} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.body}>{body}</Text>
     </View>
@@ -25,12 +26,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(4),
     gap: spacing(1),
   },
-  emoji: {
-    fontSize: 44,
-    marginBottom: spacing(1),
-  },
   title: {
-    ...typography.h2,
+    ...typography.title,
     textAlign: 'center',
   },
   body: {

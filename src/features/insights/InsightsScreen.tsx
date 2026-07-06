@@ -36,7 +36,7 @@ export function InsightsScreen() {
       <Screen>
         <Text style={styles.title}>{t('insights.title')}</Text>
         <EmptyState
-          emoji="🌱"
+          lunaExpression="thinking"
           title={t('insights.empty.title')}
           body={t('insights.empty.body')}
         />
@@ -167,7 +167,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 
 const styles = StyleSheet.create({
   title: {
-    ...typography.h1,
+    ...typography.headline,
     paddingTop: spacing(2),
   },
   subtitle: {
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     ...typography.body,
   },
   infoValue: {
-    ...typography.h3,
+    ...typography.subtitle,
     color: colors.primary,
   },
   symptomWrap: {
@@ -238,11 +238,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   lockTitle: {
-    ...typography.h3,
+    ...typography.subtitle,
     textAlign: 'center',
   },
   lockCta: {
-    ...typography.h3,
+    ...typography.subtitle,
     color: colors.primary,
   },
 });

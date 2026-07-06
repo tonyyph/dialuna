@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     gap: spacing(0.5),
   },
   title: {
-    ...typography.h3,
+    ...typography.subtitle,
     color: colors.card,
   },
   body: {

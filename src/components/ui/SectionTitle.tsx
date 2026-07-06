@@ -16,7 +16,7 @@ export function SectionTitle({ title }: Props) {
 
 const styles = StyleSheet.create({
   title: {
-    ...typography.h2,
+    ...typography.title,
     marginTop: spacing(3),
     marginBottom: spacing(1.5),
   },

@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
   },
   greeting: {
-    ...typography.h1,
+    ...typography.headline,
     flex: 1,
   },
   cycleCard: {
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   cycleDay: {
-    ...typography.h2,
+    ...typography.title,
   },
   countdown: {
     ...typography.bodySmall,
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     gap: spacing(0.5),
   },
   logTitle: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   logBody: {
     ...typography.bodySmall,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     gap: spacing(0.5),
   },
   planGroupTitle: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   planTip: {
     ...typography.bodySmall,

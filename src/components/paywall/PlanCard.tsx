@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginTop: spacing(0.5),
   },
   price: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   period: {
     ...typography.caption,

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing(1),
   },
   label: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   value: {
     ...typography.bodySmall,

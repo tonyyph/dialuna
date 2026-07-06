@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     ...typography.caption,
   },
   level: {
-    ...typography.h3,
+    ...typography.subtitle,
   },
   barTrack: {
     height: 6,

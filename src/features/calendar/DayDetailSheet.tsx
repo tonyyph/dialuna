@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
   },
   date: {
-    ...typography.h2,
+    ...typography.title,
   },
   badgeRow: {
     flexDirection: 'row',

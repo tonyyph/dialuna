@@ -1,3 +1,11 @@
+import {
+  DMSans_400Regular,
+  DMSans_500Medium,
+  DMSans_600SemiBold,
+  DMSans_700Bold,
+} from '@expo-google-fonts/dm-sans';
+import { Fraunces_600SemiBold, Fraunces_700Bold } from '@expo-google-fonts/fraunces';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -42,13 +50,21 @@ function useStoresHydrated(): boolean {
 
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    Fraunces_600SemiBold,
+    Fraunces_700Bold,
+    DMSans_400Regular,
+    DMSans_500Medium,
+    DMSans_600SemiBold,
+    DMSans_700Bold,
+  });
   const storesReady = useStoresHydrated();
 
   useEffect(() => {
     initI18n().finally(() => setI18nReady(true));
   }, []);
 
-  const ready = i18nReady && storesReady;
+  const ready = i18nReady && storesReady && fontsLoaded;
 
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
