@@ -35,7 +35,14 @@ export default function Notifications() {
   const [pms, setPms] = useState(true);
 
   return (
-    <Screen>
+    <Screen
+      bottomAction={
+        <Button
+          label={t('common.continue')}
+          onPress={() => router.push('/onboarding/paywall-preview')}
+        />
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.emoji}>🔔</Text>
         <Text style={styles.title}>{t('onboarding.notifications.title')}</Text>
@@ -60,12 +67,6 @@ export default function Notifications() {
         </Card>
 
         <Text style={styles.note}>{t('onboarding.notifications.note')}</Text>
-
-        <Button
-          label={t('common.continue')}
-          onPress={() => router.push('/onboarding/paywall-preview')}
-          style={styles.cta}
-        />
       </View>
     </Screen>
   );
@@ -103,8 +104,5 @@ const styles = StyleSheet.create({
   note: {
     ...typography.caption,
     textAlign: 'center',
-  },
-  cta: {
-    marginTop: spacing(2),
   },
 });

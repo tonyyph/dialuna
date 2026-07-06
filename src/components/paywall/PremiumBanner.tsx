@@ -15,6 +15,7 @@ export function PremiumBanner({ onPress }: Props) {
       accessibilityRole="button"
       accessibilityLabel={t('home.premiumBanner.title')}
       onPress={onPress}
+      style={({ pressed }) => [pressed && styles.pressed]}
     >
       <LinearGradient
         colors={[colors.lavender, colors.deepPlum]}
@@ -36,9 +37,13 @@ export function PremiumBanner({ onPress }: Props) {
 
 const styles = StyleSheet.create({
   banner: {
-    borderRadius: radius.lg,
+    borderRadius: radius.card,
     padding: spacing(2.5),
     gap: spacing(1.5),
+  },
+  pressed: {
+    transform: [{ scale: 0.985 }],
+    opacity: 0.94,
   },
   textCol: {
     gap: spacing(0.5),

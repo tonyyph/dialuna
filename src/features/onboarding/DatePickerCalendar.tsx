@@ -92,8 +92,10 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
+    backgroundColor: colors.glassStrong,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    borderColor: colors.border,
     padding: spacing(2),
   },
   header: {

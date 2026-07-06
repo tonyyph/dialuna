@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: radius.sm,
   },
   coach: {
-    backgroundColor: colors.card,
+    backgroundColor: colors.glassStrong,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
     borderBottomLeftRadius: radius.sm,
   },
   text: {

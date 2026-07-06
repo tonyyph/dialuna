@@ -34,7 +34,11 @@ export function InsightsScreen() {
   if (insights.logCount < MIN_LOGS) {
     return (
       <Screen>
-        <Text style={styles.title}>{t('insights.title')}</Text>
+        <View style={styles.hero}>
+          <Text style={styles.kicker}>{t('insights.title')}</Text>
+          <Text style={styles.title}>{t('insights.title')}</Text>
+          <Text style={styles.subtitle}>{t('insights.empty.body')}</Text>
+        </View>
         <EmptyState
           lunaExpression="thinking"
           title={t('insights.empty.title')}
@@ -46,39 +50,29 @@ export function InsightsScreen() {
 
   return (
     <Screen>
-      <Text style={styles.title}>{t('insights.title')}</Text>
-      <Text style={styles.subtitle}>{t('insights.subtitle')}</Text>
+      <View style={styles.hero}>
+        <Text style={styles.kicker}>{t('insights.title')}</Text>
+        <Text style={styles.title}>{t('insights.title')}</Text>
+        <Text style={styles.subtitle}>{t('insights.subtitle')}</Text>
+      </View>
 
-      <SectionTitle title={t('insights.cycleCard.title')} />
-      <Card style={styles.rows}>
-        <InfoRow
-          label={t('insights.cycleCard.avgLength')}
-          value={t('common.days', { count: insights.avgCycleLength })}
-        />
-        <InfoRow
-          label={t('insights.cycleCard.regularity')}
-          value={
-            insights.confidenceScore >= 0.8
-              ? t('insights.cycleCard.regular')
-              : t('insights.cycleCard.variable')
-          }
-        />
-      </Card>
-
-      <SectionTitle title={t('insights.symptomsCard.title')} />
-      <Card style={styles.symptomWrap}>
-        {insights.topSymptoms.length === 0 ? (
-          <Text style={styles.muted}>—</Text>
-        ) : (
-          insights.topSymptoms.map(({ symptom, count }) => (
-            <Chip
-              key={symptom}
-              label={`${t(`symptoms.${symptom}`)} · ${t('insights.symptomsCard.timesLogged', { count })}`}
-              selected={false}
-              onPress={() => {}}
-            />
-          ))
-        )}
+      <Card variant="glass" style={styles.storyCard}>
+        <Text style={styles.storyTitle}>{t('insights.summaryCard.title')}</Text>
+        <Text style={styles.body}>{t('insights.summaryCard.text')}</Text>
+        <View style={styles.statGrid}>
+          <InsightStat
+            label={t('insights.cycleCard.avgLength')}
+            value={t('common.days', { count: insights.avgCycleLength })}
+          />
+          <InsightStat
+            label={t('insights.cycleCard.regularity')}
+            value={
+              insights.confidenceScore >= 0.8
+                ? t('insights.cycleCard.regular')
+                : t('insights.cycleCard.variable')
+            }
+          />
+        </View>
       </Card>
 
       {isPremium ? (
@@ -132,11 +126,23 @@ export function InsightsScreen() {
             </Text>
           </Card>
 
-          <SectionTitle title={t('insights.summaryCard.title')} />
-          <Card variant="glass" style={styles.rows}>
-            <Text style={styles.body}>✨ {t('insights.summaryCard.text')}</Text>
-            <DisclaimerBox text={t('disclaimer.short')} />
+          <SectionTitle title={t('insights.symptomsCard.title')} />
+          <Card variant="glass" style={styles.symptomWrap}>
+            {insights.topSymptoms.length === 0 ? (
+              <Text style={styles.muted}>—</Text>
+            ) : (
+              insights.topSymptoms.map(({ symptom, count }) => (
+                <Chip
+                  key={symptom}
+                  label={`${t(`symptoms.${symptom}`)} · ${t('insights.symptomsCard.timesLogged', { count })}`}
+                  selected={false}
+                  onPress={() => {}}
+                />
+              ))
+            )}
           </Card>
+
+          <DisclaimerBox text={t('disclaimer.short')} />
         </>
       ) : (
         <Pressable
@@ -144,7 +150,7 @@ export function InsightsScreen() {
           accessibilityLabel={t('insights.locked.cta')}
           onPress={() => router.push('/paywall')}
         >
-          <Card style={styles.locked}>
+          <Card variant="glass" style={styles.locked}>
             <Text style={styles.lockIcon}>🔒</Text>
             <Text style={styles.lockTitle}>{t('insights.locked.title')}</Text>
             <Text style={styles.body}>{t('insights.locked.body')}</Text>
@@ -156,38 +162,63 @@ export function InsightsScreen() {
   );
 }
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InsightStat({ label, value }: { label: string; value: string }) {
   return (
-    <View style={styles.infoRow}>
-      <Text style={styles.infoLabel}>{label}</Text>
-      <Text style={styles.infoValue}>{value}</Text>
+    <View style={styles.insightStat}>
+      <Text style={styles.insightStatValue}>{value}</Text>
+      <Text style={styles.insightStatLabel}>{label}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  hero: {
+    marginTop: spacing(1.5),
+    marginBottom: spacing(2),
+    padding: spacing(2.5),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.deepPlum,
+  },
+  kicker: {
+    ...typography.caption,
+    color: colors.gold,
+  },
   title: {
     ...typography.headline,
-    paddingTop: spacing(2),
+    color: colors.card,
+    marginTop: spacing(0.5),
   },
   subtitle: {
     ...typography.bodySmall,
+    color: 'rgba(255,255,255,0.78)',
+    marginTop: spacing(0.5),
+  },
+  storyCard: {
+    gap: spacing(2),
+  },
+  storyTitle: {
+    ...typography.title,
+  },
+  statGrid: {
+    flexDirection: 'row',
+    gap: spacing(1.5),
+  },
+  insightStat: {
+    flex: 1,
+    borderRadius: radius.lg,
+    backgroundColor: colors.softRose,
+    padding: spacing(1.5),
+  },
+  insightStatValue: {
+    ...typography.subtitle,
+    color: colors.primary,
+  },
+  insightStatLabel: {
+    ...typography.caption,
     marginTop: spacing(0.5),
   },
   rows: {
     gap: spacing(1.5),
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  infoLabel: {
-    ...typography.body,
-  },
-  infoValue: {
-    ...typography.subtitle,
-    color: colors.primary,
   },
   symptomWrap: {
     flexDirection: 'row',

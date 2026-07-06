@@ -5,21 +5,31 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
-import { colors, spacing, typography } from '@/theme';
+import { Luna } from '@/components/mascot/Luna';
+import { colors, radius, spacing, typography } from '@/theme';
 
 export default function Welcome() {
   const { t } = useTranslation();
   return (
     <LinearGradient
-      colors={[colors.softRose, colors.cream]}
+      colors={colors.gradients.hero}
       style={styles.gradient}
     >
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
-          <Text style={styles.moon}>🌙</Text>
-          <Text style={styles.appName}>{t('common.appName')}</Text>
-          <Text style={styles.title}>{t('onboarding.welcome.title')}</Text>
-          <Text style={styles.subtitle}>{t('onboarding.welcome.subtitle')}</Text>
+          <View style={styles.lunaHalo}>
+            <Luna expression="celebrating" size={132} />
+          </View>
+          <View style={styles.copy}>
+            <Text style={styles.appName}>{t('common.appName')}</Text>
+            <Text style={styles.title}>{t('onboarding.welcome.title')}</Text>
+            <Text style={styles.subtitle}>{t('onboarding.welcome.subtitle')}</Text>
+          </View>
+          <View style={styles.promiseRow}>
+            <Promise label={t('home.twinScore')} />
+            <Promise label={t('ai.title')} />
+            <Promise label={t('insights.title')} />
+          </View>
         </View>
         <Button
           label={t('onboarding.welcome.cta')}
@@ -45,23 +55,59 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing(1.5),
   },
-  moon: {
-    fontSize: 72,
-    marginBottom: spacing(1),
+  lunaHalo: {
+    width: 164,
+    height: 164,
+    borderRadius: 82,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.32)',
+  },
+  copy: {
+    alignItems: 'center',
+    gap: spacing(1),
   },
   appName: {
     ...typography.caption,
-    letterSpacing: 4,
     textTransform: 'uppercase',
-    color: colors.primary,
+    color: 'rgba(255,255,255,0.76)',
   },
   title: {
     ...typography.display,
     textAlign: 'center',
+    color: colors.card,
   },
   subtitle: {
-    ...typography.bodySmall,
+    ...typography.body,
     textAlign: 'center',
+    color: 'rgba(255,255,255,0.82)',
     paddingHorizontal: spacing(2),
   },
+  promiseRow: {
+    flexDirection: 'row',
+    gap: spacing(1),
+    marginTop: spacing(2),
+  },
+  promise: {
+    borderRadius: radius.lg,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.28)',
+    paddingHorizontal: spacing(1.25),
+    paddingVertical: spacing(1),
+  },
+  promiseText: {
+    ...typography.caption,
+    color: colors.card,
+  },
 });
+
+function Promise({ label }: { label: string }) {
+  return (
+    <View style={styles.promise}>
+      <Text style={styles.promiseText}>{label}</Text>
+    </View>
+  );
+}

@@ -24,7 +24,15 @@ export default function Goals() {
   const draft = useOnboardingDraft();
 
   return (
-    <Screen>
+    <Screen
+      bottomAction={
+        <Button
+          label={t('common.continue')}
+          disabled={draft.goals.length === 0}
+          onPress={() => router.push('/onboarding/notifications')}
+        />
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.title}>{t('onboarding.goals.title')}</Text>
         <Text style={styles.subtitle}>{t('onboarding.goals.subtitle')}</Text>
@@ -40,13 +48,6 @@ export default function Goals() {
             />
           ))}
         </View>
-
-        <Button
-          label={t('common.continue')}
-          disabled={draft.goals.length === 0}
-          onPress={() => router.push('/onboarding/notifications')}
-          style={styles.cta}
-        />
       </View>
     </Screen>
   );
@@ -68,8 +69,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing(1),
-  },
-  cta: {
-    marginTop: spacing(4),
   },
 });

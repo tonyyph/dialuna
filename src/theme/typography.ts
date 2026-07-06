@@ -9,7 +9,7 @@ export const typography = {
     fontFamily: 'Fraunces_600SemiBold',
     fontSize: 36,
     lineHeight: 42,
-    letterSpacing: -0.2,
+    letterSpacing: 0,
   },
   headline: {
     ...base,
@@ -55,7 +55,7 @@ export const typography = {
     fontFamily: 'DMSans_600SemiBold',
     fontSize: 11,
     lineHeight: 14,
-    letterSpacing: 0.6,
+    letterSpacing: 0,
     textTransform: 'uppercase',
     color: colors.textSecondary,
   },

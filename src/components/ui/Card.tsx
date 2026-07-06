@@ -1,33 +1,29 @@
 import { PropsWithChildren } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { colors, legacyShadowAliases, radius, spacing } from '@/theme';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { colors, radius, shadows, sizes } from '@/theme';
 
 interface Props {
   variant?: 'solid' | 'glass';
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export function Card({ children, variant = 'solid', style }: PropsWithChildren<Props>) {
-  return (
-    <View style={[styles.base, variant === 'glass' && styles.glass, style]}>
-      {children}
-    </View>
-  );
+  if (variant === 'glass') {
+    return <GlassCard style={style}>{children}</GlassCard>;
+  }
+
+  return <View style={[styles.base, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
   base: {
-    backgroundColor: colors.card,
-    borderRadius: radius.lg,
-    padding: spacing(2.5),
-    ...legacyShadowAliases.card,
-  },
-  glass: {
-    backgroundColor: colors.glass,
+    backgroundColor: colors.surface.elevated,
+    borderRadius: radius.card,
+    padding: sizes.cardPadding,
     borderWidth: 1,
     borderColor: colors.border,
-    shadowOpacity: 0,
-    elevation: 0,
+    ...shadows.sm,
   },
 });

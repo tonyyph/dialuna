@@ -77,7 +77,7 @@ export function SettingsScreen() {
       </View>
 
       <SectionTitle title={t('settings.sections.profile')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <Text style={styles.label}>{t('settings.nickname')}</Text>
         <TextInput
           style={styles.input}
@@ -105,7 +105,7 @@ export function SettingsScreen() {
       </Card>
 
       <SectionTitle title={t('settings.sections.cycle')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <Stepper
           label={t('settings.cycleLength')}
           unit={t('onboarding.profile.daysUnit')}
@@ -129,7 +129,7 @@ export function SettingsScreen() {
       </Card>
 
       <SectionTitle title={t('settings.sections.notifications')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <ToggleRow label={t('settings.notifDaily')} value={notifDaily} onChange={setNotifDaily} />
         <ToggleRow label={t('settings.notifPeriod')} value={notifPeriod} onChange={setNotifPeriod} />
         <ToggleRow label={t('settings.notifPms')} value={notifPms} onChange={setNotifPms} />
@@ -137,7 +137,7 @@ export function SettingsScreen() {
       </Card>
 
       <SectionTitle title={t('settings.sections.preferences')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <Text style={styles.label}>{t('settings.language')}</Text>
         <View style={styles.chipRow}>
           <Chip
@@ -154,7 +154,7 @@ export function SettingsScreen() {
       </Card>
 
       <SectionTitle title={t('common.premium')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <View style={styles.infoRow}>
           <Text style={styles.label}>{t('settings.premiumStatus')}</Text>
           <Text style={styles.value}>
@@ -177,7 +177,7 @@ export function SettingsScreen() {
       </Card>
 
       <SectionTitle title={t('settings.sections.privacy')} />
-      <Card style={styles.rows}>
+      <Card variant="glass" style={styles.rows}>
         <LinkRow
           label={t('settings.privacyTitle')}
           onPress={() => setPrivacyOpen((v) => !v)}
@@ -252,23 +252,30 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: spacing(2),
+    marginTop: spacing(1.5),
+    padding: spacing(2),
     gap: spacing(1),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.deepPlum,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.18)',
   },
   backBtn: {
     width: 44,
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radius.pill,
+    borderRadius: radius.lg,
+    backgroundColor: 'rgba(255,255,255,0.16)',
   },
   backText: {
     ...typography.display,
-    color: colors.primary,
+    color: colors.card,
     lineHeight: 40,
   },
   title: {
     ...typography.headline,
+    color: colors.card,
   },
   rows: {
     gap: spacing(1.5),
@@ -283,10 +290,12 @@ const styles = StyleSheet.create({
   },
   input: {
     ...typography.body,
-    backgroundColor: colors.background,
-    borderRadius: radius.md,
+    backgroundColor: colors.glassStrong,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
     paddingHorizontal: spacing(2),
-    minHeight: 48,
+    minHeight: 52,
   },
   chipRow: {
     flexDirection: 'row',

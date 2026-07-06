@@ -1,13 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
@@ -16,7 +9,6 @@ import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { LevelSlider } from '@/components/ui/LevelSlider';
 import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
 import { useLogStore } from '@/store';
@@ -115,15 +107,21 @@ export function LogScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    <Screen
+      keyboardAvoiding
+      bottomAction={<Button label={t('log.save')} onPress={onSave} />}
     >
-      <Screen>
+      <View style={styles.hero}>
+        <Text style={styles.kicker}>{t('common.today')}</Text>
         <Text style={styles.title}>{t('log.title')}</Text>
         <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
+      </View>
 
-        <SectionTitle title={t('log.flow')} />
+      <Card variant="glass" style={styles.checkCard}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{t('log.flow')}</Text>
+          <Text style={styles.cardMeta}>{t(`flow.${flow}`)}</Text>
+        </View>
         <View style={styles.chips}>
           {ALL_FLOW_LEVELS.map((level) => (
             <Chip
@@ -134,21 +132,13 @@ export function LogScreen() {
             />
           ))}
         </View>
+      </Card>
 
-        <SectionTitle title={t('log.symptoms')} />
-        <View style={styles.chips}>
-          {ALL_SYMPTOMS.map((symptom) => (
-            <Chip
-              key={symptom}
-              label={t(`symptoms.${symptom}`)}
-              emoji={SYMPTOM_EMOJI[symptom]}
-              selected={symptoms.includes(symptom)}
-              onPress={() => setSymptoms((s) => toggle(s, symptom))}
-            />
-          ))}
+      <Card style={styles.checkCard}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{t('log.mood')}</Text>
+          <Text style={styles.cardMeta}>{moods.length}</Text>
         </View>
-
-        <SectionTitle title={t('log.mood')} />
         <View style={styles.chips}>
           {ALL_MOODS.map((mood) => (
             <Chip
@@ -161,25 +151,52 @@ export function LogScreen() {
           ))}
         </View>
 
-        <Card style={styles.sliders}>
-          <LevelSlider
-            label={t('log.energy')}
-            value={energyLevel}
-            onChange={setEnergyLevel}
-          />
-          <LevelSlider
-            label={t('log.sleep')}
-            value={sleepQuality}
-            onChange={setSleepQuality}
-          />
-          <LevelSlider
-            label={t('log.stress')}
-            value={stressLevel}
-            onChange={setStressLevel}
-          />
-        </Card>
+        <View style={styles.divider} />
 
-        <SectionTitle title={t('log.workout')} />
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{t('log.symptoms')}</Text>
+          <Text style={styles.cardMeta}>{symptoms.length}</Text>
+        </View>
+        <View style={styles.chips}>
+          {ALL_SYMPTOMS.map((symptom) => (
+            <Chip
+              key={symptom}
+              label={t(`symptoms.${symptom}`)}
+              emoji={SYMPTOM_EMOJI[symptom]}
+              selected={symptoms.includes(symptom)}
+              onPress={() => setSymptoms((s) => toggle(s, symptom))}
+            />
+          ))}
+        </View>
+      </Card>
+
+      <Card variant="glass" style={styles.sliders}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{t('home.twinScore')}</Text>
+          <Text style={styles.cardMeta}>{t('common.today')}</Text>
+        </View>
+        <LevelSlider
+          label={t('log.energy')}
+          value={energyLevel}
+          onChange={setEnergyLevel}
+        />
+        <LevelSlider
+          label={t('log.sleep')}
+          value={sleepQuality}
+          onChange={setSleepQuality}
+        />
+        <LevelSlider
+          label={t('log.stress')}
+          value={stressLevel}
+          onChange={setStressLevel}
+        />
+      </Card>
+
+      <Card style={styles.checkCard}>
+        <View style={styles.cardHeader}>
+          <Text style={styles.cardTitle}>{t('log.workout')}</Text>
+          <Text style={styles.cardMeta}>{t(`workouts.${workoutType}`)}</Text>
+        </View>
         <View style={styles.chips}>
           {ALL_WORKOUTS.map((workout) => (
             <Chip
@@ -192,7 +209,7 @@ export function LogScreen() {
           ))}
         </View>
 
-        <SectionTitle title={t('log.note')} />
+        <Text style={styles.noteLabel}>{t('log.note')}</Text>
         <TextInput
           style={styles.noteInput}
           value={note}
@@ -202,53 +219,86 @@ export function LogScreen() {
           accessibilityLabel={t('log.note')}
           multiline
         />
+      </Card>
 
-        <Button label={t('log.save')} onPress={onSave} style={styles.saveBtn} />
-
-        {reflection && (
-          <Animated.View entering={FadeInDown.duration(400)}>
-            <Card variant="glass" style={styles.reflection}>
-              <Text style={styles.reflectionTitle}>
-                🌙 {t('log.reflectionTitle')}
-              </Text>
-              <Text style={styles.reflectionText}>{reflection}</Text>
-            </Card>
-          </Animated.View>
-        )}
-      </Screen>
-    </KeyboardAvoidingView>
+      {reflection && (
+        <Animated.View entering={FadeInDown.duration(400)}>
+          <Card variant="glass" style={styles.reflection}>
+            <Text style={styles.reflectionTitle}>
+              🌙 {t('log.reflectionTitle')}
+            </Text>
+            <Text style={styles.reflectionText}>{reflection}</Text>
+          </Card>
+        </Animated.View>
+      )}
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
+  hero: {
+    marginTop: spacing(1.5),
+    marginBottom: spacing(2),
+    padding: spacing(2.5),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.deepPlum,
+  },
+  kicker: {
+    ...typography.caption,
+    color: colors.peach,
+  },
   title: {
     ...typography.headline,
-    paddingTop: spacing(2),
+    color: colors.card,
+    marginTop: spacing(0.5),
   },
   subtitle: {
     ...typography.bodySmall,
+    color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.5),
+  },
+  checkCard: {
+    gap: spacing(1.5),
+    marginBottom: spacing(2),
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing(2),
+  },
+  cardTitle: {
+    ...typography.title,
+  },
+  cardMeta: {
+    ...typography.caption,
+    color: colors.primary,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing(1),
   },
+  divider: {
+    height: 1,
+    backgroundColor: colors.divider,
+  },
   sliders: {
     gap: spacing(2.5),
-    marginTop: spacing(3),
+    marginBottom: spacing(2),
+  },
+  noteLabel: {
+    ...typography.subtitle,
   },
   noteInput: {
     ...typography.body,
-    backgroundColor: colors.card,
-    borderRadius: radius.md,
+    backgroundColor: colors.glassStrong,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
     padding: spacing(2),
     minHeight: 96,
     textAlignVertical: 'top',
-  },
-  saveBtn: {
-    marginTop: spacing(3),
   },
   reflection: {
     marginTop: spacing(2),

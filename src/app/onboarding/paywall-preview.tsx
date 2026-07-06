@@ -39,7 +39,24 @@ export default function PaywallPreview() {
   };
 
   return (
-    <Screen>
+    <Screen
+      bottomAction={
+        <View style={styles.actionStack}>
+          <Button
+            label={t('paywall.cta')}
+            onPress={() => {
+              finish();
+              router.push('/paywall');
+            }}
+          />
+          <Button
+            label={t('onboarding.paywallPreview.continueFree')}
+            variant="ghost"
+            onPress={finish}
+          />
+        </View>
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.emoji}>✨</Text>
         <Text style={styles.title}>{t('onboarding.paywallPreview.title')}</Text>
@@ -53,19 +70,6 @@ export default function PaywallPreview() {
             </View>
           ))}
         </Card>
-
-        <Button
-          label={t('paywall.cta')}
-          onPress={() => {
-            finish();
-            router.push('/paywall');
-          }}
-        />
-        <Button
-          label={t('onboarding.paywallPreview.continueFree')}
-          variant="ghost"
-          onPress={finish}
-        />
         <Text style={styles.note}>{t('paywall.mockNote')}</Text>
       </View>
     </Screen>
@@ -110,5 +114,8 @@ const styles = StyleSheet.create({
   note: {
     ...typography.caption,
     textAlign: 'center',
+  },
+  actionStack: {
+    gap: spacing(1),
   },
 });

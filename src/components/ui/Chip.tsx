@@ -22,7 +22,11 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
       accessibilityLabel={label}
       accessibilityState={{ selected }}
       onPress={handlePress}
-      style={[styles.base, selected && styles.selected]}
+      style={({ pressed }) => [
+        styles.base,
+        selected && styles.selected,
+        pressed && styles.pressed,
+      ]}
     >
       <Text style={[styles.label, selected && styles.labelSelected]}>
         {emoji ? `${emoji} ${label}` : label}
@@ -46,6 +50,10 @@ const styles = StyleSheet.create({
   selected: {
     backgroundColor: colors.softRose,
     borderColor: colors.primary,
+  },
+  pressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.9,
   },
   label: {
     ...typography.bodySmall,

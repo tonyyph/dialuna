@@ -1,12 +1,15 @@
 import * as Haptics from 'expo-haptics';
+import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { PlanCard } from '@/components/paywall/PlanCard';
 import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { Screen } from '@/components/ui/Screen';
 import { usePremiumStore } from '@/store';
 import { colors, radius, spacing, typography } from '@/theme';
 import { PremiumPlan } from '@/types';
@@ -40,9 +43,18 @@ export function PaywallScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen
+      edgeToEdge
+      bottomAction={
+        <Button
+          label={isPremium ? t('paywall.success') : t('paywall.cta')}
+          onPress={buy}
+          disabled={isPremium}
+        />
+      }
+    >
       <LinearGradient
-        colors={[colors.lavender, colors.deepPlum]}
+        colors={[colors.lavender, colors.primary, colors.deepPlum]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.hero}
@@ -57,21 +69,25 @@ export function PaywallScreen() {
           <Text style={styles.closeText}>✕</Text>
         </Pressable>
         <Text style={styles.heroEmoji}>🌙✨</Text>
+        <Text style={styles.heroKicker}>{t('common.premium')}</Text>
         <Text style={styles.heroTitle}>{t('paywall.title')}</Text>
         <Text style={styles.heroSubtitle}>{t('paywall.subtitle')}</Text>
+        <View style={styles.heroStats}>
+          <MiniStat value="7" label={t('common.days', { count: 7 })} />
+          <MiniStat value="∞" label={t('ai.unlimited')} />
+          <MiniStat value="AI" label={t('insights.title')} />
+        </View>
       </LinearGradient>
 
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.benefits}>
+      <View style={styles.content}>
+        <View style={styles.benefitGrid}>
           {BENEFIT_KEYS.map((key) => (
-            <View key={key} style={styles.benefitRow}>
-              <Text style={styles.check}>✓</Text>
+            <Card key={key} variant="glass" style={styles.benefitTile}>
+              <View style={styles.benefitIcon}>
+                <Ionicons name="sparkles" size={16} color={colors.primary} />
+              </View>
               <Text style={styles.benefit}>{t(`paywall.benefit.${key}`)}</Text>
-            </View>
+            </Card>
           ))}
         </View>
 
@@ -99,12 +115,6 @@ export function PaywallScreen() {
             onPress={() => setSelected('lifetime')}
           />
         </View>
-
-        <Button
-          label={isPremium ? t('paywall.success') : t('paywall.cta')}
-          onPress={buy}
-          disabled={isPremium}
-        />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('paywall.restore')}
@@ -116,24 +126,29 @@ export function PaywallScreen() {
 
         <Text style={styles.mockNote}>{t('paywall.mockNote')}</Text>
         <Text style={styles.finePrint}>{t('paywall.finePrint')}</Text>
-      </ScrollView>
+      </View>
+    </Screen>
+  );
+}
+
+function MiniStat({ value, label }: { value: string; label: string }) {
+  return (
+    <View style={styles.miniStat}>
+      <Text style={styles.miniStatValue}>{value}</Text>
+      <Text style={styles.miniStatLabel}>{label}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   hero: {
     paddingTop: spacing(6),
     paddingBottom: spacing(4),
     paddingHorizontal: spacing(3),
     alignItems: 'center',
     gap: spacing(1),
-    borderBottomLeftRadius: radius.lg,
-    borderBottomRightRadius: radius.lg,
+    borderBottomLeftRadius: radius.sheet,
+    borderBottomRightRadius: radius.sheet,
   },
   closeBtn: {
     position: 'absolute',
@@ -153,8 +168,12 @@ const styles = StyleSheet.create({
   heroEmoji: {
     fontSize: 36,
   },
+  heroKicker: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.78)',
+  },
   heroTitle: {
-    ...typography.headline,
+    ...typography.display,
     color: colors.card,
     textAlign: 'center',
   },
@@ -163,28 +182,55 @@ const styles = StyleSheet.create({
     color: colors.softRose,
     textAlign: 'center',
   },
-  content: {
-    flex: 1,
+  heroStats: {
+    flexDirection: 'row',
+    gap: spacing(1),
+    marginTop: spacing(1.5),
   },
-  scrollContent: {
+  miniStat: {
+    minWidth: 82,
+    borderRadius: radius.card,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.28)',
+    padding: spacing(1.25),
+    alignItems: 'center',
+  },
+  miniStatValue: {
+    ...typography.title,
+    color: colors.card,
+  },
+  miniStatLabel: {
+    ...typography.caption,
+    color: 'rgba(255,255,255,0.78)',
+    textAlign: 'center',
+  },
+  content: {
     padding: spacing(3),
     gap: spacing(2),
   },
-  benefits: {
+  benefitGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: spacing(1.5),
   },
-  benefitRow: {
-    flexDirection: 'row',
+  benefitTile: {
+    width: '47.8%',
+    minHeight: 118,
     gap: spacing(1),
+    padding: spacing(1.5),
   },
-  check: {
-    ...typography.body,
-    color: colors.mint,
-    fontWeight: '700',
+  benefitIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: radius.md,
+    backgroundColor: colors.softRose,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   benefit: {
-    ...typography.body,
-    flex: 1,
+    ...typography.bodySmall,
+    color: colors.textPrimary,
   },
   plans: {
     flexDirection: 'row',

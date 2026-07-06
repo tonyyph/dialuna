@@ -5,6 +5,7 @@ import {
   endOfWeek,
   format,
   isSameMonth,
+  parseISO,
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
@@ -16,7 +17,7 @@ import { CalendarDayCell } from '@/components/cycle/CalendarDayCell';
 import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
-import { getDayInfo } from '@/services/cycleEngine';
+import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
 import { useLogStore, useUserStore } from '@/store';
 import { colors, radius, spacing, typography } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
@@ -56,12 +57,49 @@ export function CalendarScreen() {
     start: startOfWeek(startOfMonth(month), { weekStartsOn: 1 }),
     end: endOfWeek(endOfMonth(month), { weekStartsOn: 1 }),
   });
+  const prediction = getCyclePrediction({
+    lastPeriodStartDate: profile.lastPeriodStartDate,
+    averageCycleLength: profile.averageCycleLength,
+    averagePeriodLength: profile.averagePeriodLength,
+    today,
+  });
 
   return (
     <Screen>
-      <Text style={styles.title}>{t('calendar.title')}</Text>
+      <View style={styles.hero}>
+        <View>
+          <Text style={styles.kicker}>{t('calendar.title')}</Text>
+          <Text style={styles.title}>{format(parseISO(today), 'EEEE, MMM d')}</Text>
+          <Text style={styles.subtitle}>
+            {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
+            {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
+          </Text>
+        </View>
+        <View style={styles.todayOrb}>
+          <Text style={styles.todayDay}>{format(parseISO(today), 'd')}</Text>
+          <Text style={styles.todayMonth}>{format(parseISO(today), 'MMM')}</Text>
+        </View>
+      </View>
 
-      <Card>
+      <Card variant="glass" style={styles.timelineCard}>
+        <TimelineItem
+          color={colors.primary}
+          label={t('calendar.legend.period')}
+          value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
+        />
+        <TimelineItem
+          color={colors.peach}
+          label={t('phases.pms')}
+          value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
+        />
+        <TimelineItem
+          color={colors.gold}
+          label={t('calendar.legend.ovulation')}
+          value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
+        />
+      </Card>
+
+      <Card style={styles.calendarCard}>
         <View style={styles.monthHeader}>
           <Pressable
             accessibilityRole="button"
@@ -115,7 +153,7 @@ export function CalendarScreen() {
         </View>
       </Card>
 
-      <Card style={styles.legend}>
+      <Card variant="glass" style={styles.legend}>
         <LegendItem color={colors.primary} label={t('calendar.legend.period')} />
         <LegendItem color={colors.primary} label={t('calendar.legend.predicted')} dashed />
         <LegendItem color={colors.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
@@ -132,11 +170,91 @@ export function CalendarScreen() {
   );
 }
 
+function TimelineItem({ color, label, value }: { color: string; label: string; value: string }) {
+  return (
+    <View style={styles.timelineItem}>
+      <View style={[styles.timelineMark, { backgroundColor: color }]} />
+      <View style={styles.timelineText}>
+        <Text style={styles.timelineLabel}>{label}</Text>
+        <Text style={styles.timelineValue}>{value}</Text>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  hero: {
+    marginTop: spacing(1.5),
+    marginBottom: spacing(2),
+    padding: spacing(2.5),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.deepPlum,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing(2),
+    overflow: 'hidden',
+  },
+  kicker: {
+    ...typography.caption,
+    color: colors.peach,
+  },
   title: {
     ...typography.headline,
-    paddingTop: spacing(2),
+    color: colors.card,
+    marginTop: spacing(0.5),
+  },
+  subtitle: {
+    ...typography.bodySmall,
+    color: 'rgba(255,255,255,0.78)',
+    marginTop: spacing(0.5),
+  },
+  todayOrb: {
+    width: 86,
+    height: 86,
+    borderRadius: radius.sheet,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.28)',
+  },
+  todayDay: {
+    ...typography.display,
+    color: colors.card,
+    lineHeight: 38,
+  },
+  todayMonth: {
+    ...typography.caption,
+    color: colors.card,
+  },
+  timelineCard: {
+    flexDirection: 'row',
+    gap: spacing(1),
     marginBottom: spacing(2),
+  },
+  timelineItem: {
+    flex: 1,
+    gap: spacing(0.75),
+  },
+  timelineMark: {
+    width: 28,
+    height: 5,
+    borderRadius: radius.pill,
+  },
+  timelineText: {
+    gap: spacing(0.25),
+  },
+  timelineLabel: {
+    ...typography.caption,
+  },
+  timelineValue: {
+    ...typography.subtitle,
+    fontSize: 14,
+    lineHeight: 18,
+  },
+  calendarCard: {
+    backgroundColor: colors.surface.elevated,
   },
   monthHeader: {
     flexDirection: 'row',

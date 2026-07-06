@@ -1,6 +1,8 @@
 import { format, parseISO } from 'date-fns';
 import { router } from 'expo-router';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { SlideInDown } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { PhaseBadge } from '@/components/cycle/PhaseBadge';
@@ -18,6 +20,7 @@ interface Props {
 
 export function DayDetailSheet({ date, onClose }: Props) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
 
@@ -27,9 +30,12 @@ export function DayDetailSheet({ date, onClose }: Props) {
   const isToday = date === todayISO();
 
   return (
-    <Modal visible transparent animationType="slide" onRequestClose={onClose}>
+    <Modal visible transparent animationType="fade" onRequestClose={onClose}>
       <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t('common.close')} />
-      <View style={styles.sheet}>
+      <Animated.View
+        entering={SlideInDown.springify().damping(17).stiffness(150)}
+        style={[styles.sheet, { paddingBottom: Math.max(insets.bottom + spacing(3), spacing(5)) }]}
+      >
         <View style={styles.handle} />
         <Text style={styles.date}>{format(parseISO(date), 'EEEE, MMM d')}</Text>
         <View style={styles.badgeRow}>
@@ -59,7 +65,7 @@ export function DayDetailSheet({ date, onClose }: Props) {
             style={styles.cta}
           />
         )}
-      </View>
+      </Animated.View>
     </Modal>
   );
 }
@@ -81,11 +87,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.overlay,
   },
   sheet: {
-    backgroundColor: colors.background,
-    borderTopLeftRadius: radius.lg,
-    borderTopRightRadius: radius.lg,
+    backgroundColor: colors.glassStrong,
+    borderTopLeftRadius: radius.sheet,
+    borderTopRightRadius: radius.sheet,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
     padding: spacing(3),
-    paddingBottom: spacing(5),
     gap: spacing(1.5),
   },
   handle: {

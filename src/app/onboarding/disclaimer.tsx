@@ -10,7 +10,15 @@ import { spacing, typography } from '@/theme';
 export default function Disclaimer() {
   const { t } = useTranslation();
   return (
-    <Screen scroll={false}>
+    <Screen
+      scroll={false}
+      bottomAction={
+        <Button
+          label={t('onboarding.disclaimerScreen.cta')}
+          onPress={() => router.push('/onboarding/profile')}
+        />
+      }
+    >
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.emoji}>🤍</Text>
@@ -19,10 +27,6 @@ export default function Disclaimer() {
             <Text style={styles.body}>{t('onboarding.disclaimerScreen.body')}</Text>
           </Card>
         </View>
-        <Button
-          label={t('onboarding.disclaimerScreen.cta')}
-          onPress={() => router.push('/onboarding/profile')}
-        />
       </View>
     </Screen>
   );
@@ -31,7 +35,6 @@ export default function Disclaimer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: spacing(3),
   },
   content: {
     flex: 1,

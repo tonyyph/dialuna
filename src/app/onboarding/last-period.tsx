@@ -14,7 +14,15 @@ export default function LastPeriod() {
   const draft = useOnboardingDraft();
 
   return (
-    <Screen>
+    <Screen
+      bottomAction={
+        <Button
+          label={t('common.continue')}
+          disabled={!draft.lastPeriodStartDate}
+          onPress={() => router.push('/onboarding/goals')}
+        />
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.title}>{t('onboarding.lastPeriod.title')}</Text>
         <Text style={styles.subtitle}>{t('onboarding.lastPeriod.subtitle')}</Text>
@@ -34,13 +42,6 @@ export default function LastPeriod() {
         />
 
         <Text style={styles.hint}>{t('onboarding.lastPeriod.notSure')}</Text>
-
-        <Button
-          label={t('common.continue')}
-          disabled={!draft.lastPeriodStartDate}
-          onPress={() => router.push('/onboarding/goals')}
-          style={styles.cta}
-        />
       </View>
     </Screen>
   );
@@ -60,8 +61,5 @@ const styles = StyleSheet.create({
   hint: {
     ...typography.caption,
     textAlign: 'center',
-  },
-  cta: {
-    marginTop: spacing(1),
   },
 });

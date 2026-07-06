@@ -22,7 +22,11 @@ export function PlanCard({ title, price, period, badge, selected, onPress }: Pro
         Haptics.selectionAsync();
         onPress();
       }}
-      style={[styles.card, selected && styles.selected]}
+      style={({ pressed }) => [
+        styles.card,
+        selected && styles.selected,
+        pressed && styles.pressed,
+      ]}
     >
       {badge ? (
         <View style={styles.badge}>
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     backgroundColor: colors.card,
-    borderRadius: radius.md,
+    borderRadius: radius.card,
     borderWidth: 2,
     borderColor: colors.border,
     padding: spacing(2),
@@ -50,6 +54,10 @@ const styles = StyleSheet.create({
   selected: {
     borderColor: colors.primary,
     backgroundColor: colors.softRose,
+  },
+  pressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.92,
   },
   badge: {
     position: 'absolute',

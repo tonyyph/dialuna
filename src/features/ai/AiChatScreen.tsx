@@ -2,21 +2,20 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
 import {
   FlatList,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { MessageBubble } from '@/components/ai/MessageBubble';
 import { SuggestedPrompts } from '@/components/ai/SuggestedPrompts';
+import { Luna } from '@/components/mascot/Luna';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { EmptyState } from '@/components/ui/EmptyState';
+import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
 import { colors, radius, spacing, typography } from '@/theme';
@@ -35,13 +34,13 @@ export function AiChatScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-      >
-        <View style={styles.header}>
+    <Screen scroll={false} edgeToEdge keyboardAvoiding>
+      <View style={styles.header}>
+        <View style={styles.coachAvatar}>
+          <Luna expression="thinking" size={70} />
+        </View>
+        <View style={styles.headerText}>
+          <Text style={styles.kicker}>{t('ai.subtitle')}</Text>
           <Text style={styles.title}>{t('ai.title')}</Text>
           <Text style={styles.counter}>
             {isPremium
@@ -49,84 +48,121 @@ export function AiChatScreen() {
               : t('ai.remaining', { count: remaining() })}
           </Text>
         </View>
+      </View>
 
-        {messages.length === 0 ? (
-          <View style={styles.flex}>
-            <EmptyState
-              lunaExpression="happy"
-              title={t('ai.emptyTitle')}
-              body={t('ai.emptyBody')}
-            />
-          </View>
-        ) : (
-          <FlatList
-            ref={listRef}
-            data={messages}
-            keyExtractor={(m) => m.id}
-            renderItem={({ item }) => (
-              <MessageBubble role={item.role} text={item.text} />
-            )}
-            contentContainerStyle={styles.list}
-            onContentSizeChange={() =>
-              listRef.current?.scrollToEnd({ animated: true })
-            }
-            ListFooterComponent={
-              typing ? <Text style={styles.typing}>{t('ai.typing')}</Text> : null
-            }
-          />
-        )}
-
-        <SuggestedPrompts onSelect={submit} />
-
-        <View style={styles.inputRow}>
-          <TextInput
-            style={styles.input}
-            value={input}
-            onChangeText={setInput}
-            placeholder={t('ai.placeholder')}
-            placeholderTextColor={colors.textSecondary}
-            accessibilityLabel={t('ai.placeholder')}
-            onSubmitEditing={() => submit(input)}
-            returnKeyType="send"
-          />
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('common.next')}
-            onPress={() => submit(input)}
-            style={styles.sendBtn}
-          >
-            <Ionicons name="arrow-up" size={20} color={colors.card} />
-          </Pressable>
+      {messages.length === 0 ? (
+        <View style={styles.emptyPanel}>
+          <Text style={styles.emptyTitle}>{t('ai.emptyTitle')}</Text>
+          <Text style={styles.emptyBody}>{t('ai.emptyBody')}</Text>
         </View>
+      ) : (
+        <FlatList
+          ref={listRef}
+          data={messages}
+          keyExtractor={(m) => m.id}
+          renderItem={({ item }) => (
+            <MessageBubble role={item.role} text={item.text} />
+          )}
+          contentContainerStyle={styles.list}
+          onContentSizeChange={() =>
+            listRef.current?.scrollToEnd({ animated: true })
+          }
+          ListFooterComponent={
+            typing ? (
+              <Animated.Text entering={FadeInDown.duration(220)} style={styles.typing}>
+                {t('ai.typing')}
+              </Animated.Text>
+            ) : null
+          }
+        />
+      )}
 
-        <View style={styles.disclaimer}>
-          <DisclaimerBox text={t('disclaimer.ai')} />
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      <SuggestedPrompts onSelect={submit} />
+
+      <View style={styles.inputRow}>
+        <TextInput
+          style={styles.input}
+          value={input}
+          onChangeText={setInput}
+          placeholder={t('ai.placeholder')}
+          placeholderTextColor={colors.textSecondary}
+          accessibilityLabel={t('ai.placeholder')}
+          onSubmitEditing={() => submit(input)}
+          returnKeyType="send"
+        />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('common.next')}
+          onPress={() => submit(input)}
+          style={({ pressed }) => [styles.sendBtn, pressed && styles.sendBtnPressed]}
+        >
+          <Ionicons name="arrow-up" size={20} color={colors.card} />
+        </Pressable>
+      </View>
+
+      <View style={styles.disclaimer}>
+        <DisclaimerBox text={t('disclaimer.ai')} />
+      </View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  flex: {
-    flex: 1,
-  },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1.5),
     paddingHorizontal: spacing(2.5),
-    paddingTop: spacing(2),
-    paddingBottom: spacing(1),
+    paddingTop: spacing(1.5),
+    paddingBottom: spacing(1.5),
+    marginHorizontal: spacing(2.5),
+    marginTop: spacing(1.5),
+    marginBottom: spacing(1),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.deepPlum,
+  },
+  coachAvatar: {
+    width: 82,
+    height: 82,
+    borderRadius: radius.sheet,
+    backgroundColor: 'rgba(255,255,255,0.16)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerText: {
+    flex: 1,
+  },
+  kicker: {
+    ...typography.caption,
+    color: colors.peach,
   },
   title: {
     ...typography.headline,
+    color: colors.card,
   },
   counter: {
     ...typography.caption,
-    color: colors.primary,
+    color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.5),
+  },
+  emptyPanel: {
+    flex: 1,
+    marginHorizontal: spacing(2.5),
+    borderRadius: radius.sheet,
+    backgroundColor: colors.glassStrong,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    padding: spacing(3),
+    justifyContent: 'center',
+  },
+  emptyTitle: {
+    ...typography.title,
+    textAlign: 'center',
+  },
+  emptyBody: {
+    ...typography.bodySmall,
+    textAlign: 'center',
+    marginTop: spacing(1),
   },
   list: {
     paddingHorizontal: spacing(2.5),
@@ -147,18 +183,24 @@ const styles = StyleSheet.create({
   input: {
     ...typography.body,
     flex: 1,
-    backgroundColor: colors.card,
-    borderRadius: radius.pill,
+    backgroundColor: colors.glassStrong,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
     paddingHorizontal: spacing(2),
-    minHeight: 48,
+    minHeight: 52,
   },
   sendBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: radius.pill,
+    width: 52,
+    height: 52,
+    borderRadius: radius.lg,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  sendBtnPressed: {
+    transform: [{ scale: 0.96 }],
+    opacity: 0.9,
   },
   disclaimer: {
     paddingHorizontal: spacing(2.5),

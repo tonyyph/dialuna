@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ColorValue } from 'react-native';
+import { ColorValue, StyleSheet } from 'react-native';
 
-import { colors } from '@/theme';
+import { colors, radius, shadows, spacing, typography } from '@/theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -22,7 +22,9 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textSecondary,
-        tabBarStyle: { backgroundColor: colors.card },
+        tabBarLabelStyle: styles.label,
+        tabBarItemStyle: styles.item,
+        tabBarStyle: styles.tabBar,
       }}
     >
       <Tabs.Screen
@@ -48,3 +50,29 @@ export default function TabsLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    position: 'absolute',
+    left: spacing(2),
+    right: spacing(2),
+    bottom: spacing(1.25),
+    minHeight: 66,
+    paddingTop: spacing(0.75),
+    paddingBottom: spacing(1),
+    paddingHorizontal: spacing(0.5),
+    backgroundColor: colors.glassStrong,
+    borderTopWidth: 0,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    borderRadius: radius.card,
+    ...shadows.md,
+  },
+  item: {
+    borderRadius: radius.lg,
+  },
+  label: {
+    ...typography.caption,
+    fontSize: 11,
+  },
+});
