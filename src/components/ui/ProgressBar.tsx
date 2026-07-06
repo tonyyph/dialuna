@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import { colors, radius as radiusTokens } from '@/theme';
+import { radius as radiusTokens } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface ProgressBarProps {
   value: number;
@@ -15,12 +16,15 @@ interface ProgressBarProps {
 export function ProgressBar({
   value,
   orientation = 'horizontal',
-  color = colors.primary,
-  trackColor = colors.border,
+  color,
+  trackColor,
   thickness = 8,
   length = 64,
   radius = radiusTokens.pill,
 }: ProgressBarProps) {
+  const { colors } = useTheme();
+  const resolvedColor = color ?? colors.primary;
+  const resolvedTrackColor = trackColor ?? colors.border;
   const clamped = Math.max(0, Math.min(100, value));
   const isVertical = orientation === 'vertical';
 
@@ -28,7 +32,7 @@ export function ProgressBar({
     <View
       style={[
         styles.track,
-        { borderRadius: radius, backgroundColor: trackColor },
+        { borderRadius: radius, backgroundColor: resolvedTrackColor },
         isVertical
           ? { width: thickness, height: length, justifyContent: 'flex-end' }
           : { height: thickness, width: '100%' },
@@ -36,7 +40,7 @@ export function ProgressBar({
     >
       <View
         style={[
-          { borderRadius: radius, backgroundColor: color },
+          { borderRadius: radius, backgroundColor: resolvedColor },
           isVertical ? { height: `${clamped}%`, width: '100%' } : { width: `${clamped}%`, height: '100%' },
         ]}
       />

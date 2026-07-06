@@ -13,7 +13,8 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomAction } from '@/components/ui/BottomAction';
-import { colors, sizes, spacing } from '@/theme';
+import { sizes, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   /** Wrap content in a ScrollView (default true). */
@@ -37,6 +38,7 @@ export function Screen({
   contentContainerStyle,
   style,
 }: PropsWithChildren<Props>) {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const bottomInset = bottomAction
     ? sizes.bottomActionMinHeight + Math.max(insets.bottom, spacing(1.5))
@@ -53,7 +55,7 @@ export function Screen({
   );
 
   const body = (
-    <View style={[styles.safe, style]}>
+    <View style={[styles.safe, { backgroundColor: colors.background }, style]}>
       <LinearGradient
         pointerEvents="none"
         colors={colors.gradients.app}
@@ -105,7 +107,6 @@ export function Screen({
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
-    backgroundColor: colors.background,
   },
   flex: {
     flex: 1,

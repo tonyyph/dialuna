@@ -2,7 +2,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   onPress: () => void;
@@ -10,6 +11,7 @@ interface Props {
 
 export function PremiumBanner({ onPress }: Props) {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -24,11 +26,17 @@ export function PremiumBanner({ onPress }: Props) {
         style={styles.banner}
       >
         <View style={styles.textCol}>
-          <Text style={styles.title}>{t('home.premiumBanner.title')}</Text>
-          <Text style={styles.body}>{t('home.premiumBanner.body')}</Text>
+          <Text style={[typography.subtitle, { color: colors.card }]}>
+            {t('home.premiumBanner.title')}
+          </Text>
+          <Text style={[typography.caption, { color: colors.softRose }]}>
+            {t('home.premiumBanner.body')}
+          </Text>
         </View>
-        <View style={styles.cta}>
-          <Text style={styles.ctaText}>{t('home.premiumBanner.cta')}</Text>
+        <View style={[styles.cta, { backgroundColor: colors.card }]}>
+          <Text style={[typography.caption, styles.ctaText, { color: colors.deepPlum }]}>
+            {t('home.premiumBanner.cta')}
+          </Text>
         </View>
       </LinearGradient>
     </Pressable>
@@ -48,24 +56,13 @@ const styles = StyleSheet.create({
   textCol: {
     gap: spacing(0.5),
   },
-  title: {
-    ...typography.subtitle,
-    color: colors.card,
-  },
-  body: {
-    ...typography.caption,
-    color: colors.softRose,
-  },
   cta: {
     alignSelf: 'flex-start',
-    backgroundColor: colors.card,
     borderRadius: radius.pill,
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1),
   },
   ctaText: {
-    ...typography.caption,
-    color: colors.deepPlum,
     fontWeight: '700',
   },
 });

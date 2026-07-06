@@ -9,7 +9,8 @@ import {
   ViewStyle,
 } from 'react-native';
 
-import { colors, radius, shadows, sizes, spacing, typography } from '@/theme';
+import { radius, sizes, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export type AppButtonVariant = 'primary' | 'secondary' | 'ghost';
 
@@ -30,11 +31,18 @@ export function AppButton({
   loading = false,
   style,
 }: PropsWithChildren<AppButtonProps>) {
+  const { colors, typography, shadows } = useTheme();
   const inactive = disabled || loading;
 
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress();
+  };
+
+  const variantStyle: Record<AppButtonVariant, ViewStyle> = {
+    primary: { backgroundColor: colors.primary, ...shadows.glow },
+    secondary: { backgroundColor: colors.softRose, borderWidth: 1, borderColor: colors.glassBorder },
+    ghost: { backgroundColor: 'transparent' },
   };
 
   return (
@@ -46,7 +54,7 @@ export function AppButton({
       onPress={handlePress}
       style={({ pressed }) => [
         styles.base,
-        styles[variant],
+        variantStyle[variant],
         inactive && styles.disabled,
         pressed && !inactive && styles.pressed,
         style,
@@ -55,7 +63,13 @@ export function AppButton({
       {loading ? (
         <ActivityIndicator color={variant === 'primary' ? colors.card : colors.primary} />
       ) : (
-        <Text style={[styles.label, variant !== 'primary' && styles.labelAlt]}>
+        <Text
+          style={[
+            styles.label,
+            typography.button,
+            { color: variant === 'primary' ? colors.card : colors.primary },
+          ]}
+        >
           {label}
         </Text>
       )}
@@ -72,18 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  primary: {
-    backgroundColor: colors.primary,
-    ...shadows.glow,
-  },
-  secondary: {
-    backgroundColor: colors.softRose,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-  },
   disabled: {
     opacity: 0.48,
     shadowOpacity: 0,
@@ -94,11 +96,6 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.975 }],
   },
   label: {
-    ...typography.button,
-    color: colors.card,
     textAlign: 'center',
-  },
-  labelAlt: {
-    color: colors.primary,
   },
 });

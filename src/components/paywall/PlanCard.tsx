@@ -1,7 +1,8 @@
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   title: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function PlanCard({ title, price, period, badge, selected, onPress }: Props) {
+  const { colors, typography } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -24,18 +26,21 @@ export function PlanCard({ title, price, period, badge, selected, onPress }: Pro
       }}
       style={({ pressed }) => [
         styles.card,
-        selected && styles.selected,
+        { backgroundColor: colors.card, borderColor: colors.border },
+        selected && { borderColor: colors.primary, backgroundColor: colors.softRose },
         pressed && styles.pressed,
       ]}
     >
       {badge ? (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{badge}</Text>
+        <View style={[styles.badge, { backgroundColor: colors.mint }]}>
+          <Text style={[typography.caption, styles.badgeText, { color: colors.deepPlum }]}>
+            {badge}
+          </Text>
         </View>
       ) : null}
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.price}>{price}</Text>
-      <Text style={styles.period}>{period}</Text>
+      <Text style={[typography.caption, styles.title]}>{title}</Text>
+      <Text style={typography.subtitle}>{price}</Text>
+      <Text style={typography.caption}>{period}</Text>
     </Pressable>
   );
 }
@@ -43,17 +48,11 @@ export function PlanCard({ title, price, period, badge, selected, onPress }: Pro
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: colors.card,
     borderRadius: radius.card,
     borderWidth: 2,
-    borderColor: colors.border,
     padding: spacing(2),
     alignItems: 'center',
     gap: spacing(0.5),
-  },
-  selected: {
-    borderColor: colors.primary,
-    backgroundColor: colors.softRose,
   },
   pressed: {
     transform: [{ scale: 0.98 }],
@@ -62,25 +61,15 @@ const styles = StyleSheet.create({
   badge: {
     position: 'absolute',
     top: -12,
-    backgroundColor: colors.mint,
     borderRadius: radius.pill,
     paddingHorizontal: spacing(1),
     paddingVertical: 2,
   },
   badgeText: {
-    ...typography.caption,
-    color: colors.deepPlum,
     fontWeight: '700',
     fontSize: 10,
   },
   title: {
-    ...typography.caption,
     marginTop: spacing(0.5),
-  },
-  price: {
-    ...typography.subtitle,
-  },
-  period: {
-    ...typography.caption,
   },
 });

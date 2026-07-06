@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colors, typography } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -19,6 +19,7 @@ interface Props {
 }
 
 export function ScoreRing({ score, size = 140, label }: Props) {
+  const { colors, typography } = useTheme();
   const strokeWidth = 12;
   const r = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * r;
@@ -61,8 +62,8 @@ export function ScoreRing({ score, size = 140, label }: Props) {
         />
       </Svg>
       <View style={styles.center}>
-        <Text style={styles.score}>{score}</Text>
-        <Text style={styles.outOf}>/ 100</Text>
+        <Text style={[typography.displayL, styles.score]}>{score}</Text>
+        <Text style={typography.caption}>/ 100</Text>
       </View>
     </View>
   );
@@ -79,11 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   score: {
-    ...typography.display,
     fontSize: 36,
     lineHeight: 40,
-  },
-  outOf: {
-    ...typography.caption,
   },
 });

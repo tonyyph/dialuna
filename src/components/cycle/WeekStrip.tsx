@@ -1,7 +1,8 @@
 import { format, parseISO } from 'date-fns';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { HormoneTwinDailyProfile } from '@/types';
 
 interface Props {
@@ -9,14 +10,15 @@ interface Props {
 }
 
 export function WeekStrip({ days }: Props) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.row}>
       {days.map((day) => (
         <View key={day.date} style={styles.col}>
-          <Text style={styles.weekday}>
+          <Text style={typography.caption}>
             {format(parseISO(day.date), 'EEEEE')}
           </Text>
-          <View style={styles.barTrack}>
+          <View style={[styles.barTrack, { backgroundColor: colors.softRose }]}>
             <View
               style={[
                 styles.barFill,
@@ -56,14 +58,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing(0.75),
   },
-  weekday: {
-    ...typography.caption,
-  },
   barTrack: {
     width: 10,
     height: 56,
     borderRadius: radius.pill,
-    backgroundColor: colors.softRose,
     justifyContent: 'flex-end',
     overflow: 'hidden',
   },

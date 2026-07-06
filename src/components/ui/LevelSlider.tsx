@@ -1,7 +1,8 @@
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   label: string;
@@ -13,11 +14,12 @@ interface Props {
 const LEVELS = Array.from({ length: 10 }, (_, i) => i + 1);
 
 export function LevelSlider({ label, value, onChange }: Props) {
+  const { colors, typography } = useTheme();
   return (
     <View>
       <View style={styles.header}>
-        <Text style={styles.label}>{label}</Text>
-        <Text style={styles.value}>{value}/10</Text>
+        <Text style={typography.subtitle}>{label}</Text>
+        <Text style={[typography.body, styles.value, { color: colors.primary }]}>{value}/10</Text>
       </View>
       <View style={styles.track} accessibilityRole="adjustable" accessibilityLabel={label} accessibilityValue={{ min: 1, max: 10, now: value }}>
         {LEVELS.map((level) => (
@@ -31,7 +33,7 @@ export function LevelSlider({ label, value, onChange }: Props) {
             }}
             style={[
               styles.dot,
-              level <= value && styles.dotActive,
+              { backgroundColor: level <= value ? colors.primary : colors.softRose },
             ]}
           />
         ))}
@@ -46,12 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: spacing(1),
   },
-  label: {
-    ...typography.subtitle,
-  },
   value: {
-    ...typography.bodySmall,
-    color: colors.primary,
     fontWeight: '600',
   },
   track: {
@@ -64,9 +61,5 @@ const styles = StyleSheet.create({
     height: 12,
     marginHorizontal: 2,
     borderRadius: radius.pill,
-    backgroundColor: colors.softRose,
-  },
-  dotActive: {
-    backgroundColor: colors.primary,
   },
 });

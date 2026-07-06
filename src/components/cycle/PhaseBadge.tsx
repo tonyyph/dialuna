@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { CyclePhase } from '@/types';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 export function PhaseBadge({ phase, pms = false }: Props) {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const label = pms ? t('phases.pms') : t(`phases.${phase}`);
   const color = pms ? colors.peach : colors.phase[phase];
   const softColor = pms ? colors.phaseSoft.ovulation : colors.phaseSoft[phase];
@@ -18,7 +20,9 @@ export function PhaseBadge({ phase, pms = false }: Props) {
   return (
     <View style={[styles.badge, { backgroundColor: softColor }]}>
       <View style={[styles.dot, { backgroundColor: color }]} />
-      <Text style={[styles.label, { color: colors.textPrimary }]}>{label}</Text>
+      <Text style={[typography.caption, styles.label, { color: colors.textPrimary }]}>
+        {label}
+      </Text>
     </View>
   );
 }
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   label: {
-    ...typography.caption,
     fontWeight: '600',
   },
 });

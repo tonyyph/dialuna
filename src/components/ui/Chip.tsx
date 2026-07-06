@@ -1,7 +1,8 @@
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   label: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function Chip({ label, emoji, selected, onPress }: Props) {
+  const { colors, typography } = useTheme();
   const handlePress = () => {
     Haptics.selectionAsync();
     onPress();
@@ -24,11 +26,18 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
       onPress={handlePress}
       style={({ pressed }) => [
         styles.base,
-        selected && styles.selected,
+        { backgroundColor: colors.card, borderColor: colors.border },
+        selected && { backgroundColor: colors.softRose, borderColor: colors.primary },
         pressed && styles.pressed,
       ]}
     >
-      <Text style={[styles.label, selected && styles.labelSelected]}>
+      <Text
+        style={[
+          typography.body,
+          { color: selected ? colors.primary : colors.textPrimary },
+          selected && styles.labelSelected,
+        ]}
+      >
         {emoji ? `${emoji} ${label}` : label}
       </Text>
     </Pressable>
@@ -41,26 +50,15 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1),
-    backgroundColor: colors.card,
     borderWidth: 1.5,
-    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  selected: {
-    backgroundColor: colors.softRose,
-    borderColor: colors.primary,
   },
   pressed: {
     transform: [{ scale: 0.98 }],
     opacity: 0.9,
   },
-  label: {
-    ...typography.bodySmall,
-    color: colors.textPrimary,
-  },
   labelSelected: {
-    color: colors.primary,
     fontWeight: '600',
   },
 });

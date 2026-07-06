@@ -1,7 +1,8 @@
 import { format, parseISO } from 'date-fns';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, typography } from '@/theme';
+import { radius } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export interface CalendarDayState {
   isPeriodLogged: boolean;
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export function CalendarDayCell({ date, state, onPress }: Props) {
+  const { colors, typography } = useTheme();
   const bg = state.isPeriodLogged
     ? colors.primary
     : state.isFertile || state.isOvulation
@@ -41,25 +43,30 @@ export function CalendarDayCell({ date, state, onPress }: Props) {
         style={[
           styles.circle,
           { backgroundColor: bg },
-          state.isPredictedPeriod && styles.predicted,
-          state.isToday && styles.today,
+          state.isPredictedPeriod && [styles.predicted, { borderColor: colors.primary }],
+          state.isToday && [styles.today, { borderColor: colors.deepPlum }],
         ]}
       >
         <Text
           style={[
-            styles.dayText,
-            !state.inMonth && styles.muted,
-            state.isPeriodLogged && styles.onPrimary,
+            typography.body,
+            { color: colors.textPrimary },
+            !state.inMonth && { color: colors.border },
+            state.isPeriodLogged && [styles.onPrimary, { color: colors.card }],
           ]}
         >
           {format(parseISO(date), 'd')}
         </Text>
-        {state.isOvulation && <View style={styles.ovulationDot} />}
+        {state.isOvulation && (
+          <View style={[styles.ovulationDot, { backgroundColor: colors.mint }]} />
+        )}
         {state.isHighEnergy && !state.isPeriodLogged && (
           <Text style={styles.energy}>⚡</Text>
         )}
       </View>
-      <View style={[styles.logDot, state.hasLog && styles.logDotVisible]} />
+      <View
+        style={[styles.logDot, state.hasLog && { backgroundColor: colors.lavender }]}
+      />
     </Pressable>
   );
 }
@@ -80,21 +87,11 @@ const styles = StyleSheet.create({
   predicted: {
     borderWidth: 1.5,
     borderStyle: 'dashed',
-    borderColor: colors.primary,
   },
   today: {
     borderWidth: 2,
-    borderColor: colors.deepPlum,
-  },
-  dayText: {
-    ...typography.bodySmall,
-    color: colors.textPrimary,
-  },
-  muted: {
-    color: colors.border,
   },
   onPrimary: {
-    color: colors.card,
     fontWeight: '700',
   },
   ovulationDot: {
@@ -103,7 +100,6 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: radius.pill,
-    backgroundColor: colors.mint,
   },
   energy: {
     position: 'absolute',
@@ -117,8 +113,5 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     marginTop: 2,
     backgroundColor: 'transparent',
-  },
-  logDotVisible: {
-    backgroundColor: colors.lavender,
   },
 });

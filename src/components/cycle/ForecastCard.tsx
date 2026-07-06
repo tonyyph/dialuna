@@ -2,7 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Card } from '@/components/ui/Card';
-import { colors, spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   emoji: string;
@@ -19,13 +20,14 @@ function levelKey(score: number): string {
 
 export function ForecastCard({ emoji, label, score }: Props) {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   return (
     <Card style={styles.card}>
       <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.level}>{t(levelKey(score))}</Text>
-      <View style={styles.barTrack}>
-        <View style={[styles.barFill, { width: `${score}%` }]} />
+      <Text style={typography.caption}>{label}</Text>
+      <Text style={typography.subtitle}>{t(levelKey(score))}</Text>
+      <View style={[styles.barTrack, { backgroundColor: colors.softRose }]}>
+        <View style={[styles.barFill, { width: `${score}%`, backgroundColor: colors.primary }]} />
       </View>
     </Card>
   );
@@ -40,22 +42,14 @@ const styles = StyleSheet.create({
   emoji: {
     fontSize: 22,
   },
-  label: {
-    ...typography.caption,
-  },
-  level: {
-    ...typography.subtitle,
-  },
   barTrack: {
     height: 6,
     borderRadius: 3,
-    backgroundColor: colors.softRose,
     marginTop: spacing(0.5),
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
     borderRadius: 3,
-    backgroundColor: colors.primary,
   },
 });

@@ -2,7 +2,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { PropsWithChildren } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { colors, radius, shadows, sizes } from '@/theme';
+import { radius, sizes } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface GlassCardProps {
   style?: StyleProp<ViewStyle>;
@@ -16,12 +17,19 @@ export function GlassCard({
   contentStyle,
   gradient = true,
 }: PropsWithChildren<GlassCardProps>) {
+  const { colors, shadows } = useTheme();
   return (
-    <View style={[styles.card, style]}>
+    <View
+      style={[
+        styles.card,
+        { backgroundColor: colors.glass, borderColor: colors.glassBorder, ...shadows.sm },
+        style,
+      ]}
+    >
       {gradient ? (
         <LinearGradient
           pointerEvents="none"
-          colors={['rgba(255,255,255,0.62)', 'rgba(255,255,255,0.22)']}
+          colors={colors.gradients.glass}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={StyleSheet.absoluteFill}
@@ -34,12 +42,9 @@ export function GlassCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.glass,
     borderRadius: radius.card,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     padding: sizes.cardPadding,
     overflow: 'hidden',
-    ...shadows.sm,
   },
 });

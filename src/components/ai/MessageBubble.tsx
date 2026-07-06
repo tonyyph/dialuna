@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   role: 'user' | 'coach';
@@ -8,12 +9,27 @@ interface Props {
 }
 
 export function MessageBubble({ role, text }: Props) {
+  const { colors, typography } = useTheme();
   const isUser = role === 'user';
   return (
     <View style={[styles.row, isUser && styles.rowUser]}>
       {!isUser && <Text style={styles.avatar}>🌙</Text>}
-      <View style={[styles.bubble, isUser ? styles.user : styles.coach]}>
-        <Text style={[styles.text, isUser && styles.textUser]}>{text}</Text>
+      <View
+        style={[
+          styles.bubble,
+          isUser
+            ? { backgroundColor: colors.primary, borderBottomRightRadius: radius.sm }
+            : {
+                backgroundColor: colors.glassStrong,
+                borderWidth: 1,
+                borderColor: colors.glassBorder,
+                borderBottomLeftRadius: radius.sm,
+              },
+        ]}
+      >
+        <Text style={[typography.bodyLarge, styles.text, isUser && { color: colors.card }]}>
+          {text}
+        </Text>
       </View>
     </View>
   );
@@ -38,22 +54,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1.5),
   },
-  user: {
-    backgroundColor: colors.primary,
-    borderBottomRightRadius: radius.sm,
-  },
-  coach: {
-    backgroundColor: colors.glassStrong,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
-    borderBottomLeftRadius: radius.sm,
-  },
   text: {
-    ...typography.body,
     fontSize: 15,
     lineHeight: 21,
-  },
-  textUser: {
-    color: colors.card,
   },
 });
