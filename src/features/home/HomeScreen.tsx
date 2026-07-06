@@ -15,7 +15,8 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { usePremiumStore } from '@/store';
-import { colors, radius, shadows, spacing, typography } from '@/theme';
+import { radius, shadows, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 function greetingKey(): string {
   const hour = new Date().getHours();
@@ -32,6 +33,7 @@ function wellnessTone(score: number): string {
 
 export function HomeScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const ctx = useCycleToday();
   const isPremium = usePremiumStore((s) => s.isPremium);
 
@@ -52,8 +54,8 @@ export function HomeScreen() {
       >
         <View style={styles.heroTop}>
           <View>
-            <Text style={styles.appName}>{t('common.appName')}</Text>
-            <Text style={styles.greeting}>
+            <Text style={[typography.micro, styles.appName]}>{t('common.appName')}</Text>
+            <Text style={[typography.subtitle, styles.greeting, { color: colors.card }]}>
               {t(greetingKey(), { name: profile.nickname })}
             </Text>
           </View>
@@ -70,10 +72,12 @@ export function HomeScreen() {
 
         <View style={styles.heroMain}>
           <View style={styles.heroCopy}>
-            <Text style={styles.heroKicker}>{t('common.today')}</Text>
-            <Text style={styles.heroTitle}>{periodText}</Text>
+            <Text style={[typography.caption, styles.heroKicker]}>{t('common.today')}</Text>
+            <Text style={[typography.displayXl, styles.heroTitle, { color: colors.card }]}>
+              {periodText}
+            </Text>
             <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
-            <Text style={styles.heroBody}>{t(twin.coachMessageKey)}</Text>
+            <Text style={[typography.body, styles.heroBody]}>{t(twin.coachMessageKey)}</Text>
           </View>
           <View style={styles.lunaFrame}>
             <Luna expression={prediction.isPmsWindow ? 'comforting' : 'happy'} size={112} />
@@ -91,14 +95,18 @@ export function HomeScreen() {
           <Card variant="glass" style={styles.insightCard}>
             <View style={styles.insightHeader}>
               <View>
-                <Text style={styles.sectionKicker}>{t('home.insightTitle')}</Text>
-                <Text style={styles.insightTitle}>{t('home.twinScoreCaption')}</Text>
+                <Text style={[typography.caption, { color: colors.primary }]}>
+                  {t('home.insightTitle')}
+                </Text>
+                <Text style={[typography.title, styles.insightTitle]}>
+                  {t('home.twinScoreCaption')}
+                </Text>
               </View>
-              <View style={styles.sparkBadge}>
+              <View style={[styles.sparkBadge, { backgroundColor: colors.softRose }]}>
                 <Ionicons name="sparkles" size={18} color={colors.primary} />
               </View>
             </View>
-            <Text style={styles.insightText}>{t(twin.coachMessageKey)}</Text>
+            <Text style={typography.bodyLarge}>{t(twin.coachMessageKey)}</Text>
             <Button
               label={t('home.askAi')}
               variant="secondary"
@@ -109,8 +117,10 @@ export function HomeScreen() {
 
         <Animated.View entering={FadeInDown.delay(80).duration(360)}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('home.twinScore')}</Text>
-            <Text style={styles.sectionMeta}>{t('common.today')}</Text>
+            <Text style={typography.title}>{t('home.twinScore')}</Text>
+            <Text style={[typography.caption, styles.sectionMeta, { color: colors.primary }]}>
+              {t('common.today')}
+            </Text>
           </View>
           <View style={styles.snapshotGrid}>
             <MetricTile
@@ -172,8 +182,10 @@ export function HomeScreen() {
         <Animated.View entering={FadeInDown.delay(200).duration(360)}>
           <Card style={styles.timelineCard}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>{t('home.weekForecast')}</Text>
-              <Text style={styles.sectionMeta}>{periodText}</Text>
+              <Text style={typography.title}>{t('home.weekForecast')}</Text>
+              <Text style={[typography.caption, styles.sectionMeta, { color: colors.primary }]}>
+                {periodText}
+              </Text>
             </View>
             <WeekStrip days={week} />
             <View style={styles.timelineRows}>
@@ -199,7 +211,7 @@ export function HomeScreen() {
         {isPremium ? (
           <Animated.View entering={FadeInDown.delay(260).duration(360)}>
             <Card variant="glass" style={styles.planCard}>
-              <Text style={styles.sectionTitle}>{t('home.plan.title')}</Text>
+              <Text style={typography.title}>{t('home.plan.title')}</Text>
               <PlanGroup title={t('home.plan.food')} emoji="🥗" tipKeys={twin.foodTipKeys} />
               <PlanGroup title={t('home.plan.workout')} emoji="🤸‍♀️" tipKeys={twin.workoutTipKeys} />
               <PlanGroup title={t('home.plan.selfcare')} emoji="🫧" tipKeys={twin.selfCareTipKeys} />
@@ -216,10 +228,16 @@ export function HomeScreen() {
 }
 
 function HeroStat({ label, value }: { label: string; value: string }) {
+  const { colors, typography } = useTheme();
   return (
-    <View style={styles.heroStat}>
-      <Text style={styles.heroStatValue}>{value}</Text>
-      <Text style={styles.heroStatLabel}>{label}</Text>
+    <View
+      style={[
+        styles.heroStat,
+        { backgroundColor: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.28)' },
+      ]}
+    >
+      <Text style={[typography.title, { color: colors.card }]}>{value}</Text>
+      <Text style={[typography.caption, styles.heroStatLabel]}>{label}</Text>
     </View>
   );
 }
@@ -235,13 +253,19 @@ function MetricTile({
   value: number;
   color: string;
 }) {
+  const { colors, typography } = useTheme();
   return (
-    <View style={styles.metricTile}>
+    <View
+      style={[
+        styles.metricTile,
+        { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder },
+      ]}
+    >
       <View style={[styles.metricIcon, { backgroundColor: `${color}22` }]}>
         <Ionicons name={icon} size={18} color={color} />
       </View>
-      <Text style={styles.metricValue}>{value}</Text>
-      <Text style={styles.metricLabel}>{label}</Text>
+      <Text style={[typography.displayL, styles.metricValue]}>{value}</Text>
+      <Text style={typography.caption}>{label}</Text>
       <ProgressBar value={value} color={color} trackColor={colors.divider} thickness={7} />
     </View>
   );
@@ -258,6 +282,7 @@ function QuickAction({
   tone: string;
   onPress: () => void;
 }) {
+  const { colors, typography } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -265,23 +290,27 @@ function QuickAction({
       onPress={onPress}
       style={({ pressed }) => [
         styles.quickAction,
+        { backgroundColor: colors.surface.elevated, borderColor: colors.border },
         pressed && styles.quickActionPressed,
       ]}
     >
       <View style={[styles.quickIcon, { backgroundColor: `${tone}24` }]}>
         <Ionicons name={icon} size={20} color={tone} />
       </View>
-      <Text style={styles.quickLabel}>{label}</Text>
+      <Text style={typography.subtitle}>{label}</Text>
     </Pressable>
   );
 }
 
 function TimelineRow({ color, label, value }: { color: string; label: string; value: string }) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.timelineRow}>
       <View style={[styles.timelineDot, { backgroundColor: color }]} />
-      <Text style={styles.timelineLabel}>{label}</Text>
-      <Text style={styles.timelineValue}>{value}</Text>
+      <Text style={[typography.body, styles.timelineLabel, { color: colors.textPrimary }]}>
+        {label}
+      </Text>
+      <Text style={[typography.caption, { color: colors.textSecondary }]}>{value}</Text>
     </View>
   );
 }
@@ -296,13 +325,14 @@ function PlanGroup({
   tipKeys: string[];
 }) {
   const { t } = useTranslation();
+  const { typography } = useTheme();
   return (
     <View style={styles.planGroup}>
-      <Text style={styles.planGroupTitle}>
+      <Text style={typography.subtitle}>
         {emoji} {title}
       </Text>
       {tipKeys.slice(0, 2).map((key) => (
-        <Text key={key} style={styles.planTip}>
+        <Text key={key} style={typography.body}>
           {t(key)}
         </Text>
       ))}
@@ -326,12 +356,9 @@ const styles = StyleSheet.create({
     gap: spacing(2),
   },
   appName: {
-    ...typography.micro,
     color: 'rgba(255,255,255,0.78)',
   },
   greeting: {
-    ...typography.subtitle,
-    color: colors.card,
     marginTop: spacing(0.25),
   },
   settingsBtn: {
@@ -355,17 +382,13 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   heroKicker: {
-    ...typography.caption,
     color: 'rgba(255,255,255,0.76)',
   },
   heroTitle: {
-    ...typography.display,
-    color: colors.card,
     fontSize: 34,
     lineHeight: 39,
   },
   heroBody: {
-    ...typography.bodySmall,
     color: 'rgba(255,255,255,0.86)',
   },
   lunaFrame: {
@@ -385,18 +408,11 @@ const styles = StyleSheet.create({
   },
   heroStat: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.18)',
     borderRadius: radius.card,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
     padding: spacing(1.5),
   },
-  heroStatValue: {
-    ...typography.title,
-    color: colors.card,
-  },
   heroStatLabel: {
-    ...typography.caption,
     color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.25),
   },
@@ -418,24 +434,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: spacing(2),
   },
-  sectionKicker: {
-    ...typography.caption,
-    color: colors.primary,
-  },
   insightTitle: {
-    ...typography.title,
     marginTop: spacing(0.25),
   },
   sparkBadge: {
     width: 40,
     height: 40,
     borderRadius: radius.lg,
-    backgroundColor: colors.softRose,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  insightText: {
-    ...typography.body,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -444,12 +451,7 @@ const styles = StyleSheet.create({
     gap: spacing(2),
     marginBottom: spacing(1.5),
   },
-  sectionTitle: {
-    ...typography.title,
-  },
   sectionMeta: {
-    ...typography.caption,
-    color: colors.primary,
     textAlign: 'right',
     flexShrink: 1,
   },
@@ -460,11 +462,9 @@ const styles = StyleSheet.create({
   },
   metricTile: {
     width: '47.8%',
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.card,
     padding: spacing(2),
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     gap: spacing(0.75),
     ...shadows.xs,
   },
@@ -476,12 +476,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   metricValue: {
-    ...typography.display,
     fontSize: 30,
     lineHeight: 34,
-  },
-  metricLabel: {
-    ...typography.caption,
   },
   quickGrid: {
     flexDirection: 'row',
@@ -492,9 +488,7 @@ const styles = StyleSheet.create({
     width: '47.8%',
     minHeight: 82,
     borderRadius: radius.card,
-    backgroundColor: colors.surface.elevated,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(1.5),
     justifyContent: 'space-between',
     ...shadows.sm,
@@ -509,9 +503,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  quickLabel: {
-    ...typography.subtitle,
   },
   timelineCard: {
     gap: spacing(1.5),
@@ -531,24 +522,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   timelineLabel: {
-    ...typography.bodySmall,
     flex: 1,
-    color: colors.textPrimary,
-  },
-  timelineValue: {
-    ...typography.caption,
-    color: colors.textSecondary,
   },
   planCard: {
     gap: spacing(1.5),
   },
   planGroup: {
     gap: spacing(0.5),
-  },
-  planGroupTitle: {
-    ...typography.subtitle,
-  },
-  planTip: {
-    ...typography.bodySmall,
   },
 });

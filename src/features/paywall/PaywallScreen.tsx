@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { usePremiumStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { PremiumPlan } from '@/types';
 
 const BENEFIT_KEYS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'] as const;
@@ -26,6 +27,7 @@ const PLAN_PRICES: Record<Plan, string> = {
 
 export function PaywallScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const purchase = usePremiumStore((s) => s.purchase);
   const isPremium = usePremiumStore((s) => s.isPremium);
   const [selected, setSelected] = useState<Plan>('yearly');
@@ -63,15 +65,19 @@ export function PaywallScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('common.close')}
           onPress={() => router.back()}
-          style={styles.closeBtn}
+          style={[styles.closeBtn, { backgroundColor: colors.glass }]}
           hitSlop={8}
         >
-          <Text style={styles.closeText}>✕</Text>
+          <Text style={[typography.subtitle, { color: colors.deepPlum }]}>✕</Text>
         </Pressable>
         <Text style={styles.heroEmoji}>🌙✨</Text>
-        <Text style={styles.heroKicker}>{t('common.premium')}</Text>
-        <Text style={styles.heroTitle}>{t('paywall.title')}</Text>
-        <Text style={styles.heroSubtitle}>{t('paywall.subtitle')}</Text>
+        <Text style={[typography.caption, styles.heroKicker]}>{t('common.premium')}</Text>
+        <Text style={[typography.displayXl, styles.heroTitle, { color: colors.card }]}>
+          {t('paywall.title')}
+        </Text>
+        <Text style={[typography.body, styles.heroSubtitle, { color: colors.softRose }]}>
+          {t('paywall.subtitle')}
+        </Text>
         <View style={styles.heroStats}>
           <MiniStat value="7" label={t('common.days', { count: 7 })} />
           <MiniStat value="∞" label={t('ai.unlimited')} />
@@ -83,10 +89,12 @@ export function PaywallScreen() {
         <View style={styles.benefitGrid}>
           {BENEFIT_KEYS.map((key) => (
             <Card key={key} variant="glass" style={styles.benefitTile}>
-              <View style={styles.benefitIcon}>
+              <View style={[styles.benefitIcon, { backgroundColor: colors.softRose }]}>
                 <Ionicons name="sparkles" size={16} color={colors.primary} />
               </View>
-              <Text style={styles.benefit}>{t(`paywall.benefit.${key}`)}</Text>
+              <Text style={[typography.body, { color: colors.textPrimary }]}>
+                {t(`paywall.benefit.${key}`)}
+              </Text>
             </Card>
           ))}
         </View>
@@ -121,21 +129,27 @@ export function PaywallScreen() {
           onPress={() => usePremiumStore.getState().restore()}
           style={styles.restore}
         >
-          <Text style={styles.restoreText}>{t('paywall.restore')}</Text>
+          <Text style={[typography.body, { color: colors.primary }]}>{t('paywall.restore')}</Text>
         </Pressable>
 
-        <Text style={styles.mockNote}>{t('paywall.mockNote')}</Text>
-        <Text style={styles.finePrint}>{t('paywall.finePrint')}</Text>
+        <Text style={[typography.caption, styles.mockNote]}>{t('paywall.mockNote')}</Text>
+        <Text style={[typography.caption, styles.finePrint]}>{t('paywall.finePrint')}</Text>
       </View>
     </Screen>
   );
 }
 
 function MiniStat({ value, label }: { value: string; label: string }) {
+  const { colors, typography } = useTheme();
   return (
-    <View style={styles.miniStat}>
-      <Text style={styles.miniStatValue}>{value}</Text>
-      <Text style={styles.miniStatLabel}>{label}</Text>
+    <View
+      style={[
+        styles.miniStat,
+        { backgroundColor: 'rgba(255,255,255,0.18)', borderColor: 'rgba(255,255,255,0.28)' },
+      ]}
+    >
+      <Text style={[typography.title, { color: colors.card }]}>{value}</Text>
+      <Text style={[typography.caption, styles.miniStatLabel]}>{label}</Text>
     </View>
   );
 }
@@ -157,29 +171,19 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: radius.pill,
-    backgroundColor: colors.glass,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  closeText: {
-    ...typography.subtitle,
-    color: colors.deepPlum,
   },
   heroEmoji: {
     fontSize: 36,
   },
   heroKicker: {
-    ...typography.caption,
     color: 'rgba(255,255,255,0.78)',
   },
   heroTitle: {
-    ...typography.display,
-    color: colors.card,
     textAlign: 'center',
   },
   heroSubtitle: {
-    ...typography.bodySmall,
-    color: colors.softRose,
     textAlign: 'center',
   },
   heroStats: {
@@ -190,18 +194,11 @@ const styles = StyleSheet.create({
   miniStat: {
     minWidth: 82,
     borderRadius: radius.card,
-    backgroundColor: 'rgba(255,255,255,0.18)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
     padding: spacing(1.25),
     alignItems: 'center',
   },
-  miniStatValue: {
-    ...typography.title,
-    color: colors.card,
-  },
   miniStatLabel: {
-    ...typography.caption,
     color: 'rgba(255,255,255,0.78)',
     textAlign: 'center',
   },
@@ -224,13 +221,8 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: radius.md,
-    backgroundColor: colors.softRose,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  benefit: {
-    ...typography.bodySmall,
-    color: colors.textPrimary,
   },
   plans: {
     flexDirection: 'row',
@@ -242,16 +234,10 @@ const styles = StyleSheet.create({
     minHeight: 44,
     justifyContent: 'center',
   },
-  restoreText: {
-    ...typography.bodySmall,
-    color: colors.primary,
-  },
   mockNote: {
-    ...typography.caption,
     textAlign: 'center',
   },
   finePrint: {
-    ...typography.caption,
     textAlign: 'center',
   },
 });

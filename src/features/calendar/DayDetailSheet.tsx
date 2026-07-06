@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/Button';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { getHormoneTwinProfile } from '@/services/hormoneTwinEngine';
 import { useLogStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { todayISO } from '@/utils/date';
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 
 export function DayDetailSheet({ date, onClose }: Props) {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const insets = useSafeAreaInsets();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
@@ -31,16 +33,24 @@ export function DayDetailSheet({ date, onClose }: Props) {
 
   return (
     <Modal visible transparent animationType="fade" onRequestClose={onClose}>
-      <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t('common.close')} />
+      <Pressable
+        style={[styles.backdrop, { backgroundColor: colors.overlay }]}
+        onPress={onClose}
+        accessibilityLabel={t('common.close')}
+      />
       <Animated.View
         entering={SlideInDown.springify().damping(17).stiffness(150)}
-        style={[styles.sheet, { paddingBottom: Math.max(insets.bottom + spacing(3), spacing(5)) }]}
+        style={[
+          styles.sheet,
+          { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder },
+          { paddingBottom: Math.max(insets.bottom + spacing(3), spacing(5)) },
+        ]}
       >
-        <View style={styles.handle} />
-        <Text style={styles.date}>{format(parseISO(date), 'EEEE, MMM d')}</Text>
+        <View style={[styles.handle, { backgroundColor: colors.border }]} />
+        <Text style={typography.title}>{format(parseISO(date), 'EEEE, MMM d')}</Text>
         <View style={styles.badgeRow}>
           <PhaseBadge phase={twin.phase} pms={twin.isPmsWindow} />
-          <Text style={styles.cycleDay}>
+          <Text style={typography.body}>
             {t('common.cycleDay', { day: twin.cycleDay })}
           </Text>
         </View>
@@ -52,7 +62,7 @@ export function DayDetailSheet({ date, onClose }: Props) {
           <ScoreRow label={t('home.forecast.pain')} value={100 - twin.painRisk} />
         </View>
 
-        <Text style={styles.coach}>{t(twin.coachMessageKey)}</Text>
+        <Text style={typography.body}>{t(twin.coachMessageKey)}</Text>
         <DisclaimerBox text={t('disclaimer.predictions')} />
 
         {isToday && (
@@ -71,11 +81,12 @@ export function DayDetailSheet({ date, onClose }: Props) {
 }
 
 function ScoreRow({ label, value }: { label: string; value: number }) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.scoreRow}>
-      <Text style={styles.scoreLabel}>{label}</Text>
-      <View style={styles.scoreTrack}>
-        <View style={[styles.scoreFill, { width: `${value}%` }]} />
+      <Text style={[typography.caption, styles.scoreLabel]}>{label}</Text>
+      <View style={[styles.scoreTrack, { backgroundColor: colors.softRose }]}>
+        <View style={[styles.scoreFill, { width: `${value}%`, backgroundColor: colors.primary }]} />
       </View>
     </View>
   );
@@ -84,14 +95,11 @@ function ScoreRow({ label, value }: { label: string; value: number }) {
 const styles = StyleSheet.create({
   backdrop: {
     flex: 1,
-    backgroundColor: colors.overlay,
   },
   sheet: {
-    backgroundColor: colors.glassStrong,
     borderTopLeftRadius: radius.sheet,
     borderTopRightRadius: radius.sheet,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     padding: spacing(3),
     gap: spacing(1.5),
   },
@@ -100,18 +108,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: radius.pill,
-    backgroundColor: colors.border,
-  },
-  date: {
-    ...typography.title,
   },
   badgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing(1.5),
-  },
-  cycleDay: {
-    ...typography.bodySmall,
   },
   scores: {
     gap: spacing(1),
@@ -123,23 +124,17 @@ const styles = StyleSheet.create({
     gap: spacing(1.5),
   },
   scoreLabel: {
-    ...typography.caption,
     width: 84,
   },
   scoreTrack: {
     flex: 1,
     height: 8,
     borderRadius: radius.pill,
-    backgroundColor: colors.softRose,
     overflow: 'hidden',
   },
   scoreFill: {
     height: '100%',
     borderRadius: radius.pill,
-    backgroundColor: colors.primary,
-  },
-  coach: {
-    ...typography.bodySmall,
   },
   cta: {
     marginTop: spacing(1),

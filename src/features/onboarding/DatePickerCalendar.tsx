@@ -13,7 +13,8 @@ import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { toISODate, todayISO } from '@/utils/date';
 
 interface Props {
@@ -24,6 +25,7 @@ interface Props {
 }
 
 export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }: Props) {
+  const { colors, typography } = useTheme();
   const [month, setMonth] = useState(() =>
     startOfMonth(selected ? parseISO(selected) : new Date())
   );
@@ -34,7 +36,9 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
   });
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: colors.glassStrong, borderColor: colors.border }]}
+    >
       <View style={styles.header}>
         <Pressable
           accessibilityRole="button"
@@ -42,16 +46,16 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
           onPress={() => setMonth((m) => addMonths(m, -1))}
           style={styles.navBtn}
         >
-          <Text style={styles.navText}>‹</Text>
+          <Text style={[typography.headline, { color: colors.primary }]}>‹</Text>
         </Pressable>
-        <Text style={styles.monthLabel}>{format(month, 'MMMM yyyy')}</Text>
+        <Text style={typography.subtitle}>{format(month, 'MMMM yyyy')}</Text>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Next month"
           onPress={() => setMonth((m) => addMonths(m, 1))}
           style={styles.navBtn}
         >
-          <Text style={styles.navText}>›</Text>
+          <Text style={[typography.headline, { color: colors.primary }]}>›</Text>
         </Pressable>
       </View>
       <View style={styles.grid}>
@@ -71,13 +75,13 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
                 Haptics.selectionAsync();
                 onSelect(iso);
               }}
-              style={[styles.cell, isSelected && styles.cellSelected]}
+              style={[styles.cell, isSelected && { backgroundColor: colors.primary }]}
             >
               <Text
                 style={[
-                  styles.cellText,
-                  (!inMonth || disabled) && styles.cellMuted,
-                  isSelected && styles.cellTextSelected,
+                  typography.body,
+                  (!inMonth || disabled) && { color: colors.border },
+                  isSelected && { color: colors.card, fontWeight: '700' },
                 ]}
               >
                 {format(day, 'd')}
@@ -92,10 +96,8 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.card,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(2),
   },
   header: {
@@ -110,13 +112,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  navText: {
-    ...typography.headline,
-    color: colors.primary,
-  },
-  monthLabel: {
-    ...typography.subtitle,
-  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -127,18 +122,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.pill,
-  },
-  cellSelected: {
-    backgroundColor: colors.primary,
-  },
-  cellText: {
-    ...typography.body,
-  },
-  cellMuted: {
-    color: colors.border,
-  },
-  cellTextSelected: {
-    color: colors.card,
-    fontWeight: '700',
   },
 });

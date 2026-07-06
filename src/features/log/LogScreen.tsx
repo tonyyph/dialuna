@@ -12,7 +12,8 @@ import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
 import { useLogStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import {
   ALL_FLOW_LEVELS,
   ALL_MOODS,
@@ -57,6 +58,7 @@ const WORKOUT_EMOJI: Record<WorkoutType, string> = {
 
 export function LogScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const today = todayISO();
   const existing = useLogStore((s) => s.logs[today]);
   const saveLog = useLogStore((s) => s.saveLog);
@@ -111,16 +113,20 @@ export function LogScreen() {
       keyboardAvoiding
       bottomAction={<Button label={t('log.save')} onPress={onSave} />}
     >
-      <View style={styles.hero}>
-        <Text style={styles.kicker}>{t('common.today')}</Text>
-        <Text style={styles.title}>{t('log.title')}</Text>
-        <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
+      <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
+        <Text style={[typography.caption, { color: colors.peach }]}>
+          {t('common.today')}
+        </Text>
+        <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+          {t('log.title')}
+        </Text>
+        <Text style={[typography.body, styles.subtitle]}>{t('log.subtitle')}</Text>
       </View>
 
       <Card variant="glass" style={styles.checkCard}>
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.flow')}</Text>
-          <Text style={styles.cardMeta}>{t(`flow.${flow}`)}</Text>
+          <Text style={typography.title}>{t('log.flow')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>{t(`flow.${flow}`)}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_FLOW_LEVELS.map((level) => (
@@ -136,8 +142,8 @@ export function LogScreen() {
 
       <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.mood')}</Text>
-          <Text style={styles.cardMeta}>{moods.length}</Text>
+          <Text style={typography.title}>{t('log.mood')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>{moods.length}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_MOODS.map((mood) => (
@@ -151,11 +157,11 @@ export function LogScreen() {
           ))}
         </View>
 
-        <View style={styles.divider} />
+        <View style={[styles.divider, { backgroundColor: colors.divider }]} />
 
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.symptoms')}</Text>
-          <Text style={styles.cardMeta}>{symptoms.length}</Text>
+          <Text style={typography.title}>{t('log.symptoms')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>{symptoms.length}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_SYMPTOMS.map((symptom) => (
@@ -172,8 +178,8 @@ export function LogScreen() {
 
       <Card variant="glass" style={styles.sliders}>
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('home.twinScore')}</Text>
-          <Text style={styles.cardMeta}>{t('common.today')}</Text>
+          <Text style={typography.title}>{t('home.twinScore')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>{t('common.today')}</Text>
         </View>
         <LevelSlider
           label={t('log.energy')}
@@ -194,8 +200,10 @@ export function LogScreen() {
 
       <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.workout')}</Text>
-          <Text style={styles.cardMeta}>{t(`workouts.${workoutType}`)}</Text>
+          <Text style={typography.title}>{t('log.workout')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>
+            {t(`workouts.${workoutType}`)}
+          </Text>
         </View>
         <View style={styles.chips}>
           {ALL_WORKOUTS.map((workout) => (
@@ -209,9 +217,13 @@ export function LogScreen() {
           ))}
         </View>
 
-        <Text style={styles.noteLabel}>{t('log.note')}</Text>
+        <Text style={typography.subtitle}>{t('log.note')}</Text>
         <TextInput
-          style={styles.noteInput}
+          style={[
+            typography.bodyLarge,
+            styles.noteInput,
+            { backgroundColor: colors.glassStrong, borderColor: colors.border },
+          ]}
           value={note}
           onChangeText={setNote}
           placeholder={t('log.notePlaceholder')}
@@ -224,10 +236,10 @@ export function LogScreen() {
       {reflection && (
         <Animated.View entering={FadeInDown.duration(400)}>
           <Card variant="glass" style={styles.reflection}>
-            <Text style={styles.reflectionTitle}>
+            <Text style={typography.subtitle}>
               🌙 {t('log.reflectionTitle')}
             </Text>
-            <Text style={styles.reflectionText}>{reflection}</Text>
+            <Text style={typography.bodyLarge}>{reflection}</Text>
           </Card>
         </Animated.View>
       )}
@@ -241,19 +253,11 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
     padding: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
-  },
-  kicker: {
-    ...typography.caption,
-    color: colors.peach,
   },
   title: {
-    ...typography.headline,
-    color: colors.card,
     marginTop: spacing(0.5),
   },
   subtitle: {
-    ...typography.bodySmall,
     color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.5),
   },
@@ -267,13 +271,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: spacing(2),
   },
-  cardTitle: {
-    ...typography.title,
-  },
-  cardMeta: {
-    ...typography.caption,
-    color: colors.primary,
-  },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -281,21 +278,14 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: colors.divider,
   },
   sliders: {
     gap: spacing(2.5),
     marginBottom: spacing(2),
   },
-  noteLabel: {
-    ...typography.subtitle,
-  },
   noteInput: {
-    ...typography.body,
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(2),
     minHeight: 96,
     textAlignVertical: 'top',
@@ -303,11 +293,5 @@ const styles = StyleSheet.create({
   reflection: {
     marginTop: spacing(2),
     gap: spacing(1),
-  },
-  reflectionTitle: {
-    ...typography.subtitle,
-  },
-  reflectionText: {
-    ...typography.body,
   },
 });

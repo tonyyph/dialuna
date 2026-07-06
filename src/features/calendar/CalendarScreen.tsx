@@ -19,7 +19,8 @@ import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
 import { useLogStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { toISODate, todayISO } from '@/utils/date';
 
 interface LegendItemProps {
@@ -29,6 +30,7 @@ interface LegendItemProps {
 }
 
 function LegendItem({ color, label, dashed }: LegendItemProps) {
+  const { typography } = useTheme();
   return (
     <View style={styles.legendItem}>
       <View
@@ -38,13 +40,14 @@ function LegendItem({ color, label, dashed }: LegendItemProps) {
           dashed && { borderWidth: 1.5, borderStyle: 'dashed', borderColor: color },
         ]}
       />
-      <Text style={styles.legendLabel}>{label}</Text>
+      <Text style={typography.caption}>{label}</Text>
     </View>
   );
 }
 
 export function CalendarScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
@@ -66,18 +69,26 @@ export function CalendarScreen() {
 
   return (
     <Screen>
-      <View style={styles.hero}>
+      <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
         <View>
-          <Text style={styles.kicker}>{t('calendar.title')}</Text>
-          <Text style={styles.title}>{format(parseISO(today), 'EEEE, MMM d')}</Text>
-          <Text style={styles.subtitle}>
+          <Text style={[typography.caption, { color: colors.peach }]}>
+            {t('calendar.title')}
+          </Text>
+          <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+            {format(parseISO(today), 'EEEE, MMM d')}
+          </Text>
+          <Text style={[typography.body, styles.subtitle]}>
             {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
             {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
           </Text>
         </View>
-        <View style={styles.todayOrb}>
-          <Text style={styles.todayDay}>{format(parseISO(today), 'd')}</Text>
-          <Text style={styles.todayMonth}>{format(parseISO(today), 'MMM')}</Text>
+        <View style={[styles.todayOrb, { backgroundColor: colors.primary }]}>
+          <Text style={[typography.displayL, styles.todayDay, { color: colors.card }]}>
+            {format(parseISO(today), 'd')}
+          </Text>
+          <Text style={[typography.caption, { color: colors.card }]}>
+            {format(parseISO(today), 'MMM')}
+          </Text>
         </View>
       </View>
 
@@ -99,7 +110,7 @@ export function CalendarScreen() {
         />
       </Card>
 
-      <Card style={styles.calendarCard}>
+      <Card style={{ backgroundColor: colors.surface.elevated }}>
         <View style={styles.monthHeader}>
           <Pressable
             accessibilityRole="button"
@@ -107,16 +118,16 @@ export function CalendarScreen() {
             onPress={() => setMonth((m) => addMonths(m, -1))}
             style={styles.navBtn}
           >
-            <Text style={styles.navText}>‹</Text>
+            <Text style={[typography.headline, { color: colors.primary }]}>‹</Text>
           </Pressable>
-          <Text style={styles.monthLabel}>{format(month, 'MMMM yyyy')}</Text>
+          <Text style={typography.subtitle}>{format(month, 'MMMM yyyy')}</Text>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('common.next')}
             onPress={() => setMonth((m) => addMonths(m, 1))}
             style={styles.navBtn}
           >
-            <Text style={styles.navText}>›</Text>
+            <Text style={[typography.headline, { color: colors.primary }]}>›</Text>
           </Pressable>
         </View>
 
@@ -171,12 +182,13 @@ export function CalendarScreen() {
 }
 
 function TimelineItem({ color, label, value }: { color: string; label: string; value: string }) {
+  const { typography } = useTheme();
   return (
     <View style={styles.timelineItem}>
       <View style={[styles.timelineMark, { backgroundColor: color }]} />
       <View style={styles.timelineText}>
-        <Text style={styles.timelineLabel}>{label}</Text>
-        <Text style={styles.timelineValue}>{value}</Text>
+        <Text style={typography.caption}>{label}</Text>
+        <Text style={[typography.subtitle, styles.timelineValue]}>{value}</Text>
       </View>
     </View>
   );
@@ -188,24 +200,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
     padding: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing(2),
     overflow: 'hidden',
   },
-  kicker: {
-    ...typography.caption,
-    color: colors.peach,
-  },
   title: {
-    ...typography.headline,
-    color: colors.card,
     marginTop: spacing(0.5),
   },
   subtitle: {
-    ...typography.bodySmall,
     color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.5),
   },
@@ -213,20 +217,13 @@ const styles = StyleSheet.create({
     width: 86,
     height: 86,
     borderRadius: radius.sheet,
-    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.28)',
   },
   todayDay: {
-    ...typography.display,
-    color: colors.card,
     lineHeight: 38,
-  },
-  todayMonth: {
-    ...typography.caption,
-    color: colors.card,
   },
   timelineCard: {
     flexDirection: 'row',
@@ -245,16 +242,9 @@ const styles = StyleSheet.create({
   timelineText: {
     gap: spacing(0.25),
   },
-  timelineLabel: {
-    ...typography.caption,
-  },
   timelineValue: {
-    ...typography.subtitle,
     fontSize: 14,
     lineHeight: 18,
-  },
-  calendarCard: {
-    backgroundColor: colors.surface.elevated,
   },
   monthHeader: {
     flexDirection: 'row',
@@ -268,13 +258,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: radius.pill,
-  },
-  navText: {
-    ...typography.headline,
-    color: colors.primary,
-  },
-  monthLabel: {
-    ...typography.subtitle,
   },
   grid: {
     flexDirection: 'row',
@@ -295,8 +278,5 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: radius.pill,
-  },
-  legendLabel: {
-    ...typography.caption,
   },
 });

@@ -1,7 +1,8 @@
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface Props {
   label: string;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function Stepper({ label, unit, value, min, max, onChange }: Props) {
+  const { colors, typography } = useTheme();
   const step = (delta: number) => {
     const next = Math.min(max, Math.max(min, value + delta));
     if (next !== value) {
@@ -23,26 +25,31 @@ export function Stepper({ label, unit, value, min, max, onChange }: Props) {
 
   return (
     <View style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.controls}>
+      <Text style={typography.subtitle}>{label}</Text>
+      <View
+        style={[
+          styles.controls,
+          { backgroundColor: colors.glassStrong, borderColor: colors.border },
+        ]}
+      >
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${label} -`}
           onPress={() => step(-1)}
-          style={styles.btn}
+          style={[styles.btn, { backgroundColor: colors.softRose }]}
         >
-          <Text style={styles.btnText}>−</Text>
+          <Text style={[typography.title, { color: colors.primary }]}>−</Text>
         </Pressable>
-        <Text style={styles.value}>
+        <Text style={typography.subtitle}>
           {value} {unit}
         </Text>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${label} +`}
           onPress={() => step(1)}
-          style={styles.btn}
+          style={[styles.btn, { backgroundColor: colors.softRose }]}
         >
-          <Text style={styles.btnText}>+</Text>
+          <Text style={[typography.title, { color: colors.primary }]}>+</Text>
         </Pressable>
       </View>
     </View>
@@ -53,32 +60,19 @@ const styles = StyleSheet.create({
   row: {
     gap: spacing(1),
   },
-  label: {
-    ...typography.subtitle,
-  },
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(1),
   },
   btn: {
     width: 44,
     height: 44,
     borderRadius: radius.sm,
-    backgroundColor: colors.softRose,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  btnText: {
-    ...typography.title,
-    color: colors.primary,
-  },
-  value: {
-    ...typography.subtitle,
   },
 });

@@ -20,12 +20,14 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Stepper } from '@/features/onboarding/Stepper';
 import i18n, { setAppLanguage } from '@/i18n';
 import { resetAllData, usePremiumStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { ALL_AGE_RANGES } from '@/types';
 import { nicknameSchema } from '@/utils/validation';
 
 export function SettingsScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const profile = useUserStore((s) => s.profile);
   const updateProfile = useUserStore((s) => s.updateProfile);
   const isPremium = usePremiumStore((s) => s.isPremium);
@@ -63,7 +65,12 @@ export function SettingsScreen() {
 
   return (
     <Screen>
-      <View style={styles.header}>
+      <View
+        style={[
+          styles.header,
+          { backgroundColor: colors.deepPlum, borderColor: 'rgba(255,255,255,0.18)' },
+        ]}
+      >
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('common.back')}
@@ -71,16 +78,20 @@ export function SettingsScreen() {
           hitSlop={8}
           style={styles.backBtn}
         >
-          <Text style={styles.backText}>‹</Text>
+          <Text style={[typography.displayL, styles.backText, { color: colors.card }]}>‹</Text>
         </Pressable>
-        <Text style={styles.title}>{t('settings.title')}</Text>
+        <Text style={[typography.headline, { color: colors.card }]}>{t('settings.title')}</Text>
       </View>
 
       <SectionTitle title={t('settings.sections.profile')} />
       <Card variant="glass" style={styles.rows}>
-        <Text style={styles.label}>{t('settings.nickname')}</Text>
+        <Text style={typography.bodyLarge}>{t('settings.nickname')}</Text>
         <TextInput
-          style={styles.input}
+          style={[
+            typography.bodyLarge,
+            styles.input,
+            { backgroundColor: colors.glassStrong, borderColor: colors.border },
+          ]}
           defaultValue={profile.nickname}
           accessibilityLabel={t('settings.nickname')}
           maxLength={30}
@@ -91,7 +102,7 @@ export function SettingsScreen() {
             }
           }}
         />
-        <Text style={styles.label}>{t('settings.ageRange')}</Text>
+        <Text style={typography.bodyLarge}>{t('settings.ageRange')}</Text>
         <View style={styles.chipRow}>
           {ALL_AGE_RANGES.map((range) => (
             <Chip
@@ -123,8 +134,10 @@ export function SettingsScreen() {
           onChange={(averagePeriodLength) => updateProfile({ averagePeriodLength })}
         />
         <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.lastPeriodStart')}</Text>
-          <Text style={styles.value}>{profile.lastPeriodStartDate}</Text>
+          <Text style={typography.bodyLarge}>{t('settings.lastPeriodStart')}</Text>
+          <Text style={[typography.body, styles.value, { color: colors.primary }]}>
+            {profile.lastPeriodStartDate}
+          </Text>
         </View>
       </Card>
 
@@ -133,12 +146,12 @@ export function SettingsScreen() {
         <ToggleRow label={t('settings.notifDaily')} value={notifDaily} onChange={setNotifDaily} />
         <ToggleRow label={t('settings.notifPeriod')} value={notifPeriod} onChange={setNotifPeriod} />
         <ToggleRow label={t('settings.notifPms')} value={notifPms} onChange={setNotifPms} />
-        <Text style={styles.caption}>{t('settings.notifDeferred')}</Text>
+        <Text style={typography.caption}>{t('settings.notifDeferred')}</Text>
       </Card>
 
       <SectionTitle title={t('settings.sections.preferences')} />
       <Card variant="glass" style={styles.rows}>
-        <Text style={styles.label}>{t('settings.language')}</Text>
+        <Text style={typography.bodyLarge}>{t('settings.language')}</Text>
         <View style={styles.chipRow}>
           <Chip
             label={t('settings.languageEn')}
@@ -156,8 +169,8 @@ export function SettingsScreen() {
       <SectionTitle title={t('common.premium')} />
       <Card variant="glass" style={styles.rows}>
         <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.premiumStatus')}</Text>
-          <Text style={styles.value}>
+          <Text style={typography.bodyLarge}>{t('settings.premiumStatus')}</Text>
+          <Text style={[typography.body, styles.value, { color: colors.primary }]}>
             {isPremium
               ? t('settings.premiumActive', {
                   plan: plan ? t(`paywall.plans.${plan}`) : '',
@@ -182,15 +195,17 @@ export function SettingsScreen() {
           label={t('settings.privacyTitle')}
           onPress={() => setPrivacyOpen((v) => !v)}
         />
-        {privacyOpen && <Text style={styles.bodyText}>{t('settings.privacyBody')}</Text>}
+        {privacyOpen && (
+          <Text style={[typography.body, styles.bodyText]}>{t('settings.privacyBody')}</Text>
+        )}
         <LinkRow
           label={t('settings.medicalTitle')}
           onPress={() => setMedicalOpen((v) => !v)}
         />
         {medicalOpen && <DisclaimerBox text={t('disclaimer.full')} />}
         <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.exportData')}</Text>
-          <Text style={styles.caption}>{t('settings.exportSoon')}</Text>
+          <Text style={typography.bodyLarge}>{t('settings.exportData')}</Text>
+          <Text style={typography.caption}>{t('settings.exportSoon')}</Text>
         </View>
         <Pressable
           accessibilityRole="button"
@@ -198,12 +213,14 @@ export function SettingsScreen() {
           onPress={confirmDelete}
           style={styles.deleteBtn}
         >
-          <Text style={styles.deleteText}>{t('settings.deleteData')}</Text>
+          <Text style={[typography.bodyLarge, styles.deleteText, { color: colors.error }]}>
+            {t('settings.deleteData')}
+          </Text>
         </Pressable>
       </Card>
 
       <View style={styles.footer}>
-        <Text style={styles.caption}>
+        <Text style={typography.caption}>
           🌙 {t('common.appName')} · {t('settings.version')}{' '}
           {Constants.expoConfig?.version ?? '0.1.0'}
         </Text>
@@ -221,9 +238,10 @@ function ToggleRow({
   value: boolean;
   onChange: (value: boolean) => void;
 }) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.infoRow}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={typography.bodyLarge}>{label}</Text>
       <Switch
         value={value}
         onValueChange={onChange}
@@ -235,6 +253,7 @@ function ToggleRow({
 }
 
 function LinkRow({ label, onPress }: { label: string; onPress: () => void }) {
+  const { colors, typography } = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -242,8 +261,8 @@ function LinkRow({ label, onPress }: { label: string; onPress: () => void }) {
       onPress={onPress}
       style={styles.linkRow}
     >
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.chevron}>›</Text>
+      <Text style={typography.bodyLarge}>{label}</Text>
+      <Text style={[typography.title, { color: colors.textSecondary }]}>›</Text>
     </Pressable>
   );
 }
@@ -256,9 +275,7 @@ const styles = StyleSheet.create({
     padding: spacing(2),
     gap: spacing(1),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.18)',
   },
   backBtn: {
     width: 44,
@@ -269,31 +286,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.16)',
   },
   backText: {
-    ...typography.display,
-    color: colors.card,
     lineHeight: 40,
-  },
-  title: {
-    ...typography.headline,
-    color: colors.card,
   },
   rows: {
     gap: spacing(1.5),
   },
-  label: {
-    ...typography.body,
-  },
   value: {
-    ...typography.bodySmall,
-    color: colors.primary,
     fontWeight: '600',
   },
   input: {
-    ...typography.body,
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.border,
     paddingHorizontal: spacing(2),
     minHeight: 52,
   },
@@ -314,15 +317,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     minHeight: 44,
   },
-  chevron: {
-    ...typography.title,
-    color: colors.textSecondary,
-  },
-  caption: {
-    ...typography.caption,
-  },
   bodyText: {
-    ...typography.bodySmall,
     lineHeight: 21,
   },
   deleteBtn: {
@@ -330,8 +325,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   deleteText: {
-    ...typography.body,
-    color: colors.error,
     fontWeight: '600',
   },
   footer: {

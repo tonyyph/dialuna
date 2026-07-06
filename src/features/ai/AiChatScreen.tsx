@@ -18,10 +18,12 @@ import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export function AiChatScreen() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const { messages, typing, send } = useChat();
   const isPremium = usePremiumStore((s) => s.isPremium);
   const remaining = usePremiumStore((s) => s.remainingFreeQuestions);
@@ -35,14 +37,14 @@ export function AiChatScreen() {
 
   return (
     <Screen scroll={false} edgeToEdge keyboardAvoiding>
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.deepPlum }]}>
         <View style={styles.coachAvatar}>
           <Luna expression="thinking" size={70} />
         </View>
         <View style={styles.headerText}>
-          <Text style={styles.kicker}>{t('ai.subtitle')}</Text>
-          <Text style={styles.title}>{t('ai.title')}</Text>
-          <Text style={styles.counter}>
+          <Text style={[typography.caption, { color: colors.peach }]}>{t('ai.subtitle')}</Text>
+          <Text style={[typography.headline, { color: colors.card }]}>{t('ai.title')}</Text>
+          <Text style={[typography.caption, styles.counter]}>
             {isPremium
               ? t('ai.unlimited')
               : t('ai.remaining', { count: remaining() })}
@@ -51,9 +53,14 @@ export function AiChatScreen() {
       </View>
 
       {messages.length === 0 ? (
-        <View style={styles.emptyPanel}>
-          <Text style={styles.emptyTitle}>{t('ai.emptyTitle')}</Text>
-          <Text style={styles.emptyBody}>{t('ai.emptyBody')}</Text>
+        <View
+          style={[
+            styles.emptyPanel,
+            { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder },
+          ]}
+        >
+          <Text style={[typography.title, styles.emptyTitle]}>{t('ai.emptyTitle')}</Text>
+          <Text style={[typography.body, styles.emptyBody]}>{t('ai.emptyBody')}</Text>
         </View>
       ) : (
         <FlatList
@@ -69,7 +76,7 @@ export function AiChatScreen() {
           }
           ListFooterComponent={
             typing ? (
-              <Animated.Text entering={FadeInDown.duration(220)} style={styles.typing}>
+              <Animated.Text entering={FadeInDown.duration(220)} style={[typography.caption, styles.typing]}>
                 {t('ai.typing')}
               </Animated.Text>
             ) : null
@@ -81,7 +88,11 @@ export function AiChatScreen() {
 
       <View style={styles.inputRow}>
         <TextInput
-          style={styles.input}
+          style={[
+            typography.bodyLarge,
+            styles.input,
+            { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder },
+          ]}
           value={input}
           onChangeText={setInput}
           placeholder={t('ai.placeholder')}
@@ -94,7 +105,11 @@ export function AiChatScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('common.next')}
           onPress={() => submit(input)}
-          style={({ pressed }) => [styles.sendBtn, pressed && styles.sendBtnPressed]}
+          style={({ pressed }) => [
+            styles.sendBtn,
+            { backgroundColor: colors.primary },
+            pressed && styles.sendBtnPressed,
+          ]}
         >
           <Ionicons name="arrow-up" size={20} color={colors.card} />
         </Pressable>
@@ -119,7 +134,6 @@ const styles = StyleSheet.create({
     marginTop: spacing(1.5),
     marginBottom: spacing(1),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
   },
   coachAvatar: {
     width: 82,
@@ -132,16 +146,7 @@ const styles = StyleSheet.create({
   headerText: {
     flex: 1,
   },
-  kicker: {
-    ...typography.caption,
-    color: colors.peach,
-  },
-  title: {
-    ...typography.headline,
-    color: colors.card,
-  },
   counter: {
-    ...typography.caption,
     color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.5),
   },
@@ -149,18 +154,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.glassStrong,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     padding: spacing(3),
     justifyContent: 'center',
   },
   emptyTitle: {
-    ...typography.title,
     textAlign: 'center',
   },
   emptyBody: {
-    ...typography.bodySmall,
     textAlign: 'center',
     marginTop: spacing(1),
   },
@@ -169,7 +170,6 @@ const styles = StyleSheet.create({
     paddingVertical: spacing(1),
   },
   typing: {
-    ...typography.caption,
     marginLeft: spacing(4),
     marginBottom: spacing(1),
   },
@@ -181,12 +181,9 @@ const styles = StyleSheet.create({
     paddingTop: spacing(0.5),
   },
   input: {
-    ...typography.body,
     flex: 1,
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     paddingHorizontal: spacing(2),
     minHeight: 52,
   },
@@ -194,7 +191,6 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: radius.lg,
-    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
