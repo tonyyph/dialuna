@@ -276,8 +276,11 @@ function useTheme(): { colors: ThemeTokens; typography: TypographyTokens; mode: 
 }
 ```
 
-`typography` values don't change with mode/accent, but are returned from
-the same hook so call sites only need one import for both.
+`typography` tokens bake in `color: colors.textPrimary` (or
+`colors.textSecondary` for the muted tokens) internally, exactly as they
+do today — so `typography` is theme-reactive too, resolved from the same
+already-resolved `colors` for the current mode/accent, and returned
+alongside it from the one hook call.
 
 ### Theme Access Migration
 
@@ -320,10 +323,12 @@ while call sites only using `xs`/`sm`/`md`/`lg` keep
 `import { shadows } from '@/theme'` unchanged.
 
 Files inside `StyleSheet.create()` at module scope that currently bake in
-`colors.x` cannot do this (module-scope styles can't call hooks) — those
-move the color-dependent properties out of `StyleSheet.create` and into an
-inline `style={[styles.base, { backgroundColor: colors.card }]}` array,
-keeping non-color properties (`padding`, `borderRadius`, etc.) in the
+`colors.x` or spread a `typography.x` token cannot do this (module-scope
+styles can't call hooks) — those move the color/typography-dependent
+properties out of `StyleSheet.create` and into an inline
+`style={[styles.base, { backgroundColor: colors.card }]}` (or
+`style={[styles.base, typography.title]}`) array, keeping non-color
+properties (`padding`, `borderRadius`, etc.) in the
 static stylesheet. This is the same pattern `Card.tsx` already uses for
 `variant`-conditional styles.
 
