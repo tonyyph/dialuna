@@ -20,6 +20,7 @@ import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Stepper } from '@/features/onboarding/Stepper';
 import i18n, { setAppLanguage } from '@/i18n';
 import { resetAllData, usePremiumStore, useUserStore } from '@/store';
+import { useThemeStore } from '@/store/themeStore';
 import { radius, spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 import { ALL_AGE_RANGES } from '@/types';
@@ -39,6 +40,13 @@ export function SettingsScreen() {
   const [notifPms, setNotifPms] = useState(true);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [medicalOpen, setMedicalOpen] = useState(false);
+
+  const mode = useThemeStore((s) => s.mode);
+  const setMode = useThemeStore((s) => s.setMode);
+  const accent = useThemeStore((s) => s.accent);
+  const setAccent = useThemeStore((s) => s.setAccent);
+  const reduceMotion = useThemeStore((s) => s.reduceMotion);
+  const setReduceMotion = useThemeStore((s) => s.setReduceMotion);
 
   if (!profile) return null;
 
@@ -147,6 +155,21 @@ export function SettingsScreen() {
         <ToggleRow label={t('settings.notifPeriod')} value={notifPeriod} onChange={setNotifPeriod} />
         <ToggleRow label={t('settings.notifPms')} value={notifPms} onChange={setNotifPms} />
         <Text style={typography.caption}>{t('settings.notifDeferred')}</Text>
+      </Card>
+
+      <SectionTitle title="Appearance" />
+      <Card variant="glass" style={styles.rows}>
+        <ToggleRow
+          label="Dark mode"
+          value={mode === 'dark'}
+          onChange={(v) => setMode(v ? 'dark' : 'light')}
+        />
+        <View style={styles.chipRow}>
+          <Chip label="Lavender" selected={accent === 'lavender'} onPress={() => setAccent('lavender')} />
+          <Chip label="Rose" selected={accent === 'rose'} onPress={() => setAccent('rose')} />
+          <Chip label="Aurora Blue" selected={accent === 'auroraBlue'} onPress={() => setAccent('auroraBlue')} />
+        </View>
+        <ToggleRow label="Reduce motion" value={reduceMotion} onChange={setReduceMotion} />
       </Card>
 
       <SectionTitle title={t('settings.sections.preferences')} />
