@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { PhaseBadge } from '@/components/cycle/PhaseBadge';
 import { WeekStrip } from '@/components/cycle/WeekStrip';
-import { Luna } from '@/components/mascot/Luna';
+import { LunaOrb } from '@/components/mascot/LunaOrb';
 import { PremiumBanner } from '@/components/paywall/PremiumBanner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -80,7 +80,7 @@ export function HomeScreen() {
             <Text style={[typography.body, styles.heroBody]}>{t(twin.coachMessageKey)}</Text>
           </View>
           <View style={styles.lunaFrame}>
-            <Luna expression={prediction.isPmsWindow ? 'comforting' : 'happy'} size={112} />
+            <LunaOrb state="idle" size={112} />
           </View>
         </View>
 
