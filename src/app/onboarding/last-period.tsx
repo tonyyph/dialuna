@@ -7,10 +7,12 @@ import { Screen } from '@/components/ui/Screen';
 import { DatePickerCalendar } from '@/features/onboarding/DatePickerCalendar';
 import { Stepper } from '@/features/onboarding/Stepper';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
-import { spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export default function LastPeriod() {
   const { t } = useTranslation();
+  const { typography } = useTheme();
   const draft = useOnboardingDraft();
 
   return (
@@ -24,8 +26,8 @@ export default function LastPeriod() {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.title}>{t('onboarding.lastPeriod.title')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.lastPeriod.subtitle')}</Text>
+        <Text style={typography.headline}>{t('onboarding.lastPeriod.title')}</Text>
+        <Text style={typography.body}>{t('onboarding.lastPeriod.subtitle')}</Text>
 
         <DatePickerCalendar
           selected={draft.lastPeriodStartDate}
@@ -41,7 +43,7 @@ export default function LastPeriod() {
           onChange={(lastPeriodDuration) => draft.set({ lastPeriodDuration })}
         />
 
-        <Text style={styles.hint}>{t('onboarding.lastPeriod.notSure')}</Text>
+        <Text style={[typography.caption, styles.hint]}>{t('onboarding.lastPeriod.notSure')}</Text>
       </View>
     </Screen>
   );
@@ -52,14 +54,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing(3),
     gap: spacing(2),
   },
-  title: {
-    ...typography.headline,
-  },
-  subtitle: {
-    ...typography.bodySmall,
-  },
   hint: {
-    ...typography.caption,
     textAlign: 'center',
   },
 });

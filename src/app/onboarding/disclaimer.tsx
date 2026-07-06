@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
-import { spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export default function Disclaimer() {
   const { t } = useTranslation();
+  const { typography } = useTheme();
   return (
     <Screen
       scroll={false}
@@ -22,9 +24,13 @@ export default function Disclaimer() {
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.emoji}>🤍</Text>
-          <Text style={styles.title}>{t('onboarding.disclaimerScreen.title')}</Text>
+          <Text style={[typography.headline, styles.title]}>
+            {t('onboarding.disclaimerScreen.title')}
+          </Text>
           <Card>
-            <Text style={styles.body}>{t('onboarding.disclaimerScreen.body')}</Text>
+            <Text style={[typography.bodyLarge, styles.body]}>
+              {t('onboarding.disclaimerScreen.body')}
+            </Text>
           </Card>
         </View>
       </View>
@@ -46,11 +52,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    ...typography.headline,
     textAlign: 'center',
   },
   body: {
-    ...typography.body,
     lineHeight: 24,
   },
 });

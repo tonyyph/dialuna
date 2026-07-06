@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/Button';
 import { Chip } from '@/components/ui/Chip';
 import { Screen } from '@/components/ui/Screen';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
-import { spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { ALL_GOALS, Goal } from '@/types';
 
 const GOAL_EMOJI: Record<Goal, string> = {
@@ -21,6 +22,7 @@ const GOAL_EMOJI: Record<Goal, string> = {
 
 export default function Goals() {
   const { t } = useTranslation();
+  const { typography } = useTheme();
   const draft = useOnboardingDraft();
 
   return (
@@ -34,8 +36,8 @@ export default function Goals() {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.title}>{t('onboarding.goals.title')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.goals.subtitle')}</Text>
+        <Text style={typography.headline}>{t('onboarding.goals.title')}</Text>
+        <Text style={[typography.body, styles.subtitle]}>{t('onboarding.goals.subtitle')}</Text>
 
         <View style={styles.chips}>
           {ALL_GOALS.map((goal) => (
@@ -58,11 +60,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing(3),
     gap: spacing(1),
   },
-  title: {
-    ...typography.headline,
-  },
   subtitle: {
-    ...typography.bodySmall,
     marginBottom: spacing(2),
   },
   chips: {

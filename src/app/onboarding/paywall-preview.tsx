@@ -7,7 +7,8 @@ import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
 import { useUserStore } from '@/store';
-import { colors, spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { UserProfile } from '@/types';
 import { addDaysISO, todayISO } from '@/utils/date';
 
@@ -15,6 +16,7 @@ const BENEFIT_KEYS = ['b1', 'b2', 'b3', 'b4', 'b5', 'b6'] as const;
 
 export default function PaywallPreview() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const draft = useOnboardingDraft();
   const setProfile = useUserStore((s) => s.setProfile);
   const completeOnboarding = useUserStore((s) => s.completeOnboarding);
@@ -59,18 +61,18 @@ export default function PaywallPreview() {
     >
       <View style={styles.container}>
         <Text style={styles.emoji}>✨</Text>
-        <Text style={styles.title}>{t('onboarding.paywallPreview.title')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.paywallPreview.subtitle')}</Text>
+        <Text style={[typography.headline, styles.title]}>{t('onboarding.paywallPreview.title')}</Text>
+        <Text style={[typography.body, styles.subtitle]}>{t('onboarding.paywallPreview.subtitle')}</Text>
 
         <Card style={styles.card}>
           {BENEFIT_KEYS.map((key) => (
             <View key={key} style={styles.benefitRow}>
-              <Text style={styles.check}>✓</Text>
-              <Text style={styles.benefit}>{t(`paywall.benefit.${key}`)}</Text>
+              <Text style={[typography.bodyLarge, styles.check, { color: colors.mint }]}>✓</Text>
+              <Text style={[typography.bodyLarge, styles.benefit]}>{t(`paywall.benefit.${key}`)}</Text>
             </View>
           ))}
         </Card>
-        <Text style={styles.note}>{t('paywall.mockNote')}</Text>
+        <Text style={[typography.caption, styles.note]}>{t('paywall.mockNote')}</Text>
       </View>
     </Screen>
   );
@@ -86,11 +88,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    ...typography.headline,
     textAlign: 'center',
   },
   subtitle: {
-    ...typography.bodySmall,
     textAlign: 'center',
   },
   card: {
@@ -103,16 +103,12 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   check: {
-    ...typography.body,
-    color: colors.mint,
     fontWeight: '700',
   },
   benefit: {
-    ...typography.body,
     flex: 1,
   },
   note: {
-    ...typography.caption,
     textAlign: 'center',
   },
   actionStack: {

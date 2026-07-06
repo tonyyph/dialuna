@@ -8,12 +8,14 @@ import { Chip } from '@/components/ui/Chip';
 import { Screen } from '@/components/ui/Screen';
 import { Stepper } from '@/features/onboarding/Stepper';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 import { ALL_AGE_RANGES } from '@/types';
 import { nicknameSchema } from '@/utils/validation';
 
 export default function Profile() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   const draft = useOnboardingDraft();
   const [touched, setTouched] = useState(false);
   const nicknameValid = nicknameSchema.safeParse(draft.nickname).success;
@@ -35,12 +37,12 @@ export default function Profile() {
       }
     >
       <View style={styles.container}>
-        <Text style={styles.title}>{t('onboarding.profile.title')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.profile.subtitle')}</Text>
+        <Text style={typography.headline}>{t('onboarding.profile.title')}</Text>
+        <Text style={[typography.body, styles.subtitle]}>{t('onboarding.profile.subtitle')}</Text>
 
-        <Text style={styles.label}>{t('onboarding.profile.nickname')}</Text>
+        <Text style={[typography.subtitle, styles.label]}>{t('onboarding.profile.nickname')}</Text>
         <TextInput
-          style={styles.input}
+          style={[typography.bodyLarge, styles.input, { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder }]}
           value={draft.nickname}
           onChangeText={(nickname) => {
             setTouched(true);
@@ -52,7 +54,7 @@ export default function Profile() {
           maxLength={30}
         />
 
-        <Text style={styles.label}>{t('onboarding.profile.ageRange')}</Text>
+        <Text style={[typography.subtitle, styles.label]}>{t('onboarding.profile.ageRange')}</Text>
         <View style={styles.chipRow}>
           {ALL_AGE_RANGES.map((range) => (
             <Chip
@@ -92,23 +94,15 @@ const styles = StyleSheet.create({
     paddingTop: spacing(3),
     gap: spacing(1),
   },
-  title: {
-    ...typography.headline,
-  },
   subtitle: {
-    ...typography.bodySmall,
     marginBottom: spacing(2),
   },
   label: {
-    ...typography.subtitle,
     marginTop: spacing(1.5),
   },
   input: {
-    ...typography.body,
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
     paddingHorizontal: spacing(2),
     minHeight: 52,
   },

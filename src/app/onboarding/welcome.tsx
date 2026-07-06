@@ -6,10 +6,12 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
 import { Luna } from '@/components/mascot/Luna';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 export default function Welcome() {
   const { t } = useTranslation();
+  const { colors, typography } = useTheme();
   return (
     <LinearGradient
       colors={colors.gradients.hero}
@@ -21,9 +23,11 @@ export default function Welcome() {
             <Luna expression="celebrating" size={132} />
           </View>
           <View style={styles.copy}>
-            <Text style={styles.appName}>{t('common.appName')}</Text>
-            <Text style={styles.title}>{t('onboarding.welcome.title')}</Text>
-            <Text style={styles.subtitle}>{t('onboarding.welcome.subtitle')}</Text>
+            <Text style={[typography.caption, styles.appName]}>{t('common.appName')}</Text>
+            <Text style={[typography.displayXl, styles.title, { color: colors.card }]}>
+              {t('onboarding.welcome.title')}
+            </Text>
+            <Text style={[typography.bodyLarge, styles.subtitle]}>{t('onboarding.welcome.subtitle')}</Text>
           </View>
           <View style={styles.promiseRow}>
             <Promise label={t('home.twinScore')} />
@@ -70,17 +74,13 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   appName: {
-    ...typography.caption,
     textTransform: 'uppercase',
     color: 'rgba(255,255,255,0.76)',
   },
   title: {
-    ...typography.display,
     textAlign: 'center',
-    color: colors.card,
   },
   subtitle: {
-    ...typography.body,
     textAlign: 'center',
     color: 'rgba(255,255,255,0.82)',
     paddingHorizontal: spacing(2),
@@ -98,16 +98,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(1.25),
     paddingVertical: spacing(1),
   },
-  promiseText: {
-    ...typography.caption,
-    color: colors.card,
-  },
 });
 
 function Promise({ label }: { label: string }) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.promise}>
-      <Text style={styles.promiseText}>{label}</Text>
+      <Text style={[typography.caption, { color: colors.card }]}>{label}</Text>
     </View>
   );
 }

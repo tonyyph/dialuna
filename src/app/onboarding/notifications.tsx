@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
-import { colors, spacing, typography } from '@/theme';
+import { spacing } from '@/theme';
+import { useTheme } from '@/theme/useTheme';
 
 interface ToggleRowProps {
   label: string;
@@ -15,9 +16,10 @@ interface ToggleRowProps {
 }
 
 function ToggleRow({ label, value, onChange }: ToggleRowProps) {
+  const { colors, typography } = useTheme();
   return (
     <View style={styles.toggleRow}>
-      <Text style={styles.toggleLabel}>{label}</Text>
+      <Text style={typography.bodyLarge}>{label}</Text>
       <Switch
         value={value}
         onValueChange={onChange}
@@ -30,6 +32,7 @@ function ToggleRow({ label, value, onChange }: ToggleRowProps) {
 
 export default function Notifications() {
   const { t } = useTranslation();
+  const { typography } = useTheme();
   const [daily, setDaily] = useState(true);
   const [period, setPeriod] = useState(true);
   const [pms, setPms] = useState(true);
@@ -45,8 +48,8 @@ export default function Notifications() {
     >
       <View style={styles.container}>
         <Text style={styles.emoji}>🔔</Text>
-        <Text style={styles.title}>{t('onboarding.notifications.title')}</Text>
-        <Text style={styles.subtitle}>{t('onboarding.notifications.subtitle')}</Text>
+        <Text style={[typography.headline, styles.title]}>{t('onboarding.notifications.title')}</Text>
+        <Text style={[typography.body, styles.subtitle]}>{t('onboarding.notifications.subtitle')}</Text>
 
         <Card style={styles.card}>
           <ToggleRow
@@ -66,7 +69,7 @@ export default function Notifications() {
           />
         </Card>
 
-        <Text style={styles.note}>{t('onboarding.notifications.note')}</Text>
+        <Text style={[typography.caption, styles.note]}>{t('onboarding.notifications.note')}</Text>
       </View>
     </Screen>
   );
@@ -82,11 +85,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    ...typography.headline,
     textAlign: 'center',
   },
   subtitle: {
-    ...typography.bodySmall,
     textAlign: 'center',
     marginBottom: spacing(1),
   },
@@ -98,11 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  toggleLabel: {
-    ...typography.body,
-  },
   note: {
-    ...typography.caption,
     textAlign: 'center',
   },
 });
