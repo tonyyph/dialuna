@@ -223,6 +223,10 @@ export function HomeScreen() {
           </Animated.View>
         )}
       </View>
+
+      <Pressable onPress={() => router.push('/(tabs)/log')} accessibilityRole="button">
+        <Text>Log how you're feeling</Text>
+      </Pressable>
     </Screen>
   );
 }
