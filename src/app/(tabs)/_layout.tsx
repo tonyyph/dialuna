@@ -1,78 +1,114 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-import { ColorValue, StyleSheet } from 'react-native';
+import { Tabs, router } from 'expo-router';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, radius, shadows, spacing, typography } from '@/theme';
+import { LunaOrb } from '@/components/mascot/LunaOrb';
+import { useTheme } from '@/theme/useTheme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
-function tabIcon(name: IconName) {
-  function TabIcon({ color, size }: { color: ColorValue; size: number }) {
-    return <Ionicons name={name} color={color} size={size} />;
-  }
-  return TabIcon;
+const TAB_ICON: Record<string, IconName> = {
+  home: 'moon',
+  calendar: 'calendar',
+  insights: 'stats-chart',
+  premium: 'sparkles',
+};
+
+function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable<Parameters<typeof Tabs>[0]['tabBar']>>[0]) {
+  const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View
+      style={[
+        styles.bar,
+        {
+          bottom: 26 + Math.max(0, insets.bottom - 26),
+          backgroundColor: colors.glass,
+          borderColor: colors.glassBorder,
+        },
+      ]}
+    >
+      {state.routes.filter((route) => route.name in TAB_ICON).map((route) => {
+        const index = state.routes.indexOf(route);
+        const isFocused = state.index === index;
+        const iconName = TAB_ICON[route.name];
+
+        const onPress = () => {
+          const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name);
+          }
+        };
+
+        return (
+          <Pressable
+            key={route.key}
+            onPress={onPress}
+            accessibilityRole="button"
+            accessibilityLabel={descriptors[route.key].options.title ?? route.name}
+            style={[styles.tabButton, isFocused && { transform: [{ scale: 1.05 }] }]}
+          >
+            <Ionicons name={iconName} size={24} color={isFocused ? colors.primary : colors.textSecondary} />
+            <View style={[styles.dot, { backgroundColor: isFocused ? colors.primary : 'transparent' }]} />
+          </Pressable>
+        );
+      })}
+      <Pressable
+        onPress={() => router.push('/(tabs)/ai')}
+        accessibilityRole="button"
+        accessibilityLabel="Chat with Luna"
+        style={styles.orbButton}
+      >
+        <LunaOrb state="idle" size={58} />
+      </Pressable>
+    </View>
+  );
 }
 
 export default function TabsLayout() {
-  const { t } = useTranslation();
   return (
     <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
-        tabBarLabelStyle: styles.label,
-        tabBarItemStyle: styles.item,
-        tabBarStyle: styles.tabBar,
-      }}
+      tabBar={(props) => <CustomTabBar {...props} />}
+      screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen
-        name="home"
-        options={{ title: t('tabs.home'), tabBarIcon: tabIcon('moon') }}
-      />
-      <Tabs.Screen
-        name="calendar"
-        options={{ title: t('tabs.calendar'), tabBarIcon: tabIcon('calendar') }}
-      />
-      <Tabs.Screen
-        name="log"
-        options={{ title: t('tabs.log'), tabBarIcon: tabIcon('add-circle') }}
-      />
-      <Tabs.Screen
-        name="ai"
-        options={{ title: t('tabs.ai'), tabBarIcon: tabIcon('sparkles') }}
-      />
-      <Tabs.Screen
-        name="insights"
-        options={{ title: t('tabs.insights'), tabBarIcon: tabIcon('stats-chart') }}
-      />
+      <Tabs.Screen name="home" options={{ title: 'Home' }} />
+      <Tabs.Screen name="calendar" options={{ title: 'Calendar' }} />
+      <Tabs.Screen name="ai" options={{ title: 'Chat', href: null }} />
+      <Tabs.Screen name="insights" options={{ title: 'Insights' }} />
+      <Tabs.Screen name="premium" options={{ title: 'Premium' }} />
+      <Tabs.Screen name="log" options={{ href: null }} />
     </Tabs>
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
+  bar: {
     position: 'absolute',
-    left: spacing(2),
-    right: spacing(2),
-    bottom: spacing(1.25),
-    minHeight: 66,
-    paddingTop: spacing(0.75),
-    paddingBottom: spacing(1),
-    paddingHorizontal: spacing(0.5),
-    backgroundColor: colors.glassStrong,
-    borderTopWidth: 0,
+    left: 20,
+    right: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 22,
+    paddingVertical: 12,
+    borderRadius: 30,
     borderWidth: 1,
-    borderColor: colors.glassBorder,
-    borderRadius: radius.card,
-    ...shadows.md,
   },
-  item: {
-    borderRadius: radius.lg,
+  tabButton: {
+    alignItems: 'center',
+    gap: 4,
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
   },
-  label: {
-    ...typography.caption,
-    fontSize: 11,
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+  },
+  orbButton: {
+    marginTop: -28,
   },
 });
