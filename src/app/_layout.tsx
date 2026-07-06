@@ -1,10 +1,13 @@
 import {
-  DMSans_400Regular,
-  DMSans_500Medium,
-  DMSans_600SemiBold,
-  DMSans_700Bold,
-} from '@expo-google-fonts/dm-sans';
-import { Fraunces_600SemiBold, Fraunces_700Bold } from '@expo-google-fonts/fraunces';
+  CormorantGaramond_400Regular_Italic,
+  CormorantGaramond_600SemiBold,
+} from '@expo-google-fonts/cormorant-garamond';
+import {
+  PlusJakartaSans_400Regular,
+  PlusJakartaSans_500Medium,
+  PlusJakartaSans_600SemiBold,
+  PlusJakartaSans_700Bold,
+} from '@expo-google-fonts/plus-jakarta-sans';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -12,8 +15,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 
 import { initI18n } from '@/i18n';
-import { useLogStore, usePremiumStore, useUserStore } from '@/store';
-import { colors } from '@/theme';
+import { useLogStore, usePremiumStore, useThemeStore, useUserStore } from '@/store';
+import { useTheme } from '@/theme/useTheme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,7 +25,8 @@ function useStoresHydrated(): boolean {
     () =>
       useUserStore.persist.hasHydrated() &&
       useLogStore.persist.hasHydrated() &&
-      usePremiumStore.persist.hasHydrated()
+      usePremiumStore.persist.hasHydrated() &&
+      useThemeStore.persist.hasHydrated()
   );
 
   useEffect(() => {
@@ -31,7 +35,8 @@ function useStoresHydrated(): boolean {
       if (
         useUserStore.persist.hasHydrated() &&
         useLogStore.persist.hasHydrated() &&
-        usePremiumStore.persist.hasHydrated()
+        usePremiumStore.persist.hasHydrated() &&
+        useThemeStore.persist.hasHydrated()
       ) {
         setHydrated(true);
       }
@@ -40,6 +45,7 @@ function useStoresHydrated(): boolean {
       useUserStore.persist.onFinishHydration(check),
       useLogStore.persist.onFinishHydration(check),
       usePremiumStore.persist.onFinishHydration(check),
+      useThemeStore.persist.onFinishHydration(check),
     ];
     check();
     return () => subs.forEach((unsub) => unsub());
@@ -51,14 +57,15 @@ function useStoresHydrated(): boolean {
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    Fraunces_600SemiBold,
-    Fraunces_700Bold,
-    DMSans_400Regular,
-    DMSans_500Medium,
-    DMSans_600SemiBold,
-    DMSans_700Bold,
+    CormorantGaramond_600SemiBold,
+    CormorantGaramond_400Regular_Italic,
+    PlusJakartaSans_400Regular,
+    PlusJakartaSans_500Medium,
+    PlusJakartaSans_600SemiBold,
+    PlusJakartaSans_700Bold,
   });
   const storesReady = useStoresHydrated();
+  const { colors, mode } = useTheme();
 
   useEffect(() => {
     initI18n().finally(() => setI18nReady(true));
@@ -74,7 +81,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,
