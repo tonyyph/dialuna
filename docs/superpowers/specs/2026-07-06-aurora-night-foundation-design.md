@@ -21,6 +21,43 @@ reinterpreted.
 `~/Downloads/Dialuna.html` (extracted interactive prototype at
 `/tmp/dialuna_extracted.html` during design — values inlined below).
 
+## Relationship to `feat/mascot-handoff`
+
+Between the Foundation v1 merge and this spec, a separate commit
+(`4e0c412`, "feat: overhaul premium app UI architecture", already on
+`main`/`origin/main`, with a local branch `feat/mascot-handoff` pointing at
+it) shipped a **different, unrelated** polish pass on the *old* light
+aesthetic: a refreshed pink/coral/gold/iris/aqua palette, still
+Fraunces/DM Sans, plus new reusable structural components — `Screen`
+(safe-area + scroll + gradient background wrapper), `BottomAction`
+(sticky bottom bar), `AppButton`, and `GlassCard` — and expanded
+`radius`/`sizes`/`spacing`/`shadows` tokens.
+
+This spec branches from `feat/mascot-handoff`, not `main`, and reconciles
+with it as follows:
+
+- **Colors and fonts: Aurora Night wins outright**, in both light and dark
+  mode. The overhaul's pink/coral/gold palette and Fraunces/DM Sans are
+  fully replaced — not blended — per the handoff doc's "don't invent, ask
+  the designer" instruction and the explicit request to match it closely.
+- **Structure: kept and restyled, not rebuilt.** `Screen`, `BottomAction`,
+  `AppButton`, and `GlassCard` are reused. There is no new `GlassSurface`
+  component — `GlassCard` is restyled onto Aurora Night's glass tokens
+  instead (see Component Specs, §3).
+- **Layout tokens are untouched.** `radius.card`/`radius.sheet`/`radius.xxl`,
+  `sizes.buttonHeight`/`cardPadding`/etc., and the `space` object from the
+  overhaul are orthogonal to color/type and are reused as-is.
+- **Legacy flat color keys stay in the token shape** (`coral`, `iris`,
+  `aqua`, `gold`, `berry`, `blush`, `pearl`, `glassStrong`, `glassBorder`,
+  `gradients.*`) because ~15 files across Home, Calendar, AI chat,
+  Settings, Onboarding, and shared components reference them directly
+  (e.g. `colors.gold` for a phase indicator, `colors.glassStrong` for
+  header backgrounds, `colors.gradients.hero` for onboarding). Each legacy
+  key resolves to the nearest Aurora Night equivalent (mapping decided
+  during implementation, self-consistent, verified visually — not
+  exhaustively enumerated in this spec since it's mechanical token
+  substitution, not a design decision).
+
 ## Scope of this phase (Foundation v2)
 
 This is Phase A of a 5-phase redesign (B–E cover Home, Calendar+Insights,
@@ -251,13 +288,36 @@ component body and read `colors`/`typography` from its return value. This
 is required for the mode/accent toggle to actually affect rendering — a
 static import can never react to a runtime store change.
 
-Tokens that are NOT theme-reactive (`spacing`, `radius`, `shadows` shapes,
-`duration`, `easing`, `sizes`) keep their existing static-import pattern —
-only `colors` and `typography` move to the hook. `shadows.shadowColor`
-values that reference `colors.deepPlum` become a function of the resolved
-color instead (dark and light modes want different shadow tints — dark
-shadows stay near-black, light-mode shadows can stay as-is per the
-handoff's unchanged light-elevation spec).
+Tokens that are NOT theme-reactive (`spacing`, `radius`, `duration`,
+`easing`, `sizes`) keep their existing static-import pattern — only
+`colors`, `typography`, and one field of `shadows` move to the hook.
+
+**Shadow tiers, resolved (mode-independent shape, one accent-reactive
+tier):** per the handoff's Shadow System, mapped to RN's
+offset/opacity/radius/elevation model. RN's `shadowOpacity` has no CSS
+blur/spread softening, so the handoff's raw opacities read much darker in
+RN than in the browser prototype — `lg`'s opacity is dialed down from the
+literal 0.7 for this reason, everything else is used as-is:
+
+| Tier | Offset | Opacity | Radius | Elevation | shadowColor |
+|------|--------|---------|--------|-----------|-------------|
+| `xs` (interpolated, not in handoff) | {0,2} | 0.05 | 6 | 1 | `#000000` (static) |
+| `sm` = Light Elevation | {0,4} | 0.10 | 12 | 2 | `#000000` (static) |
+| `md` = Medium Elevation | {0,12} | 0.30 | 30 | 4 | `#000000` (static) |
+| `lg` = High Elevation | {0,20} | 0.50 | 50 | 8 | `#000000` (static) |
+| `glow` = Glow Effect | {0,0} | 0.60 | 20 | 6 | **accent primary** (theme-reactive) |
+
+`xs`/`sm`/`md`/`lg` shadowColor is a fixed, mode-independent `#000000` —
+on Aurora Night's near-black dark background a black shadow has no
+visible effect either way, so there is nothing to make theme-reactive
+there; these four tiers stay a plain static import from
+`src/theme/shadows.ts`, unchanged by mode. Only `glow` depends on the
+active accent color, so `shadows.glow` is the one shadow value returned
+from `useTheme()` instead of the static import — call sites needing a
+themed glow read `const { shadows } = useTheme()` for that field
+specifically (e.g. `AppButton`'s primary variant, `LunaOrb`'s outer glow),
+while call sites only using `xs`/`sm`/`md`/`lg` keep
+`import { shadows } from '@/theme'` unchanged.
 
 Files inside `StyleSheet.create()` at module scope that currently bake in
 `colors.x` cannot do this (module-scope styles can't call hooks) — those
@@ -333,37 +393,46 @@ Opacity table (from the prototype's `renderVals`, reused verbatim):
 
 Implementation: since RN has no CSS `filter: blur()`, each layer is a
 `View` with a radial-gradient-like fill (`expo-linear-gradient` doesn't do
-true radial gradients on all platforms reliably at this size — use a
-plain solid-color circle with heavy `opacity` falloff via nested
-decreasing-opacity circles, OR accept `expo-blur`'s `BlurView` wrapping a
-solid circle as the blur approximation). Reanimated worklets drive
+true radial gradients reliably at this size on all platforms — use nested
+decreasing-opacity circles as the falloff approximation, matching the
+technique `GlassCard` already uses for its shine overlay rather than
+introducing a new blur dependency). Reanimated worklets drive
 `translateX/Y`, `rotate`, `scale` per the prototype's keyframe percentages
 (33%/66%/100% for layer 1/3 pattern, 50%/100% for layer 2's simpler
-pattern). Rendered once behind screen content, not re-created per screen —
-each screen wraps its content in `<AuroraBackground>{children}</AuroraBackground>`.
+pattern).
 
-### 3. Glass Surface (`src/components/ui/GlassSurface.tsx`)
+**Integration point:** `AuroraBackground` is not a per-screen wrapper the
+implementer adds to each screen — it plugs into `Screen.tsx`'s existing
+absolute-fill background slot (currently a static
+`<LinearGradient colors={colors.gradients.app} />`, `Screen.tsx:57-62`),
+replacing that one element. Every screen gets the animated aurora field
+automatically through `Screen`, with no per-screen changes needed. In
+light mode the same component renders with the light opacity row from the
+table below — it is not dark-mode-only.
 
-New primitive, used where the handoff specifies backdrop blur (tab bar,
-headers, cards sitting directly over the aurora field):
+### 3. Glass Card (`src/components/ui/GlassCard.tsx`, restyled)
 
-```ts
-interface GlassSurfaceProps {
-  children: ReactNode;
-  radius?: number; // default radius.lg (24, per handoff's card range)
-  style?: ViewStyle;
-}
-```
+No new component. The overhaul's `GlassCard` — background tint +
+`LinearGradient` shine overlay + border, already used by `Card`'s `glass`
+variant — is restyled onto Aurora Night tokens:
 
-Renders `expo-blur`'s `<BlurView intensity={...} tint={mode === 'dark' ? 'dark' : 'light'}>` 
-with a semi-transparent color overlay on top (`colors.surface.glass`) and
-a 1px border (`colors.border`), approximating `blur(12-20px) saturate(1.3)`.
-`Card.tsx` is unchanged in this phase (still the plain, non-blurred
-surface for ordinary cards) — `GlassSurface` is additive, used only where
-a screen explicitly needs the blur-over-aurora look (tab bar in this
-phase; screen content in Phases B–E).
+- Background: `colors.surface.glass` (dark `rgba(20,15,38,0.62)` / light
+  `rgba(255,255,255,0.68)`, i.e. the handoff's `glass` token, not the
+  softer `surface` token — `GlassCard` is specifically for surfaces that
+  sit directly over the aurora field and need more opacity)
+- Shine overlay gradient: dark
+  `['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.02)']` / light
+  `['rgba(255,255,255,0.62)', 'rgba(255,255,255,0.22)']` (light value
+  unchanged from the overhaul)
+- Border: `colors.glassBorder` (dark `rgba(255,255,255,0.14)`, per the
+  handoff's tab bar border; light unchanged)
 
-New dependency: `expo-blur`.
+This is a values-only change — `GlassCard`'s props and structure are
+untouched, so `Card`'s `glass` variant and every existing consumer keep
+working without their own migration step beyond the token-access change
+covered by Theme Access Migration.
+
+No new dependency — `expo-blur` is not added.
 
 ### 4. Floating Tab Bar v2 (`src/app/(tabs)/_layout.tsx`, rebuilt)
 
@@ -382,7 +451,7 @@ requires a custom tab bar via `tabBar={(props) => <CustomTabBar {...props} />}`
 rather than `screenOptions` styling — this is the "rebuilt" part.
 
 **Structure:**
-- `GlassSurface`-based container, `padding: 12 22`, `radius: 30`,
+- `GlassCard`-based container, `padding: 12 22`, `radius: 30`,
   positioned `absolute`, `left/right: 20`, `bottom: 26`
 - 4 regular buttons (Home, Calendar, Insights, Premium): 24px icon + 4px
   active-color dot indicator (transparent when inactive), `scale: 1.05`
@@ -426,8 +495,11 @@ the file; no new Settings-specific components.
 
 ## Global Constraints
 
-- No hardcoded hex/rgba outside `src/theme/tokens/{dark,light}.ts` and
-  `src/theme/accents.ts`.
+- **Base branch is `feat/mascot-handoff`**, not `main`. The implementation
+  worktree/branch is created from `feat/mascot-handoff`'s current tip.
+- No hardcoded hex/rgba outside `src/theme/tokens/{dark,light}.ts`,
+  `src/theme/accents.ts`, and the static `#000000` shadow color in
+  `src/theme/shadows.ts` (see Shadow tiers).
 - `tsc --noEmit` clean after every task.
 - `expo lint` clean after every task (or noted if the environment blocks
   it, per existing project practice).
@@ -440,28 +512,39 @@ the file; no new Settings-specific components.
   listed in the new scale are fully removed — no dual-support period.
 - `Luna.tsx`/`LunaExpression` (v1 crescent mascot) are deleted and fully
   replaced by `LunaOrb` — no dual-support period.
+- `Screen.tsx`, `BottomAction.tsx`, `AppButton.tsx`, `GlassCard.tsx` from
+  `feat/mascot-handoff` are reused and restyled, not replaced — no new
+  components duplicating their responsibility (see "Relationship to
+  feat/mascot-handoff").
+- `radius`, `sizes`, `spacing`/`space` values from `feat/mascot-handoff`
+  are untouched by this phase (layout tokens, orthogonal to the
+  color/type reconciliation).
+- No new dependency on `expo-blur` or `@shopify/react-native-skia` unless
+  the Open Follow-up on `AuroraBackground` explicitly escalates to it.
 
 ## Out of Scope (this phase)
 
 - Home/Calendar/Log/Chat/Insights/Premium visual redesigns (Phases B–E)
-- Log screen's CTA-based entry point from Home (Phase B, once Home is
-  redesigned) — until then Log is reachable only via a direct, unstyled
-  route link
+- Log screen's real CTA-based entry point from Home (Phase B, once Home is
+  redesigned) — until then Log is reachable only via the plain unstyled
+  link added to Home's current content (see Floating Tab Bar v2)
 - Onboarding 3-screen flow redesign (Phase E)
-- True CSS-style `saturate()` filter on glass surfaces (RN has no
-  equivalent; `GlassSurface` approximates with blur + overlay tint only)
+- True CSS-style `blur()`/`saturate()` filters on glass surfaces (RN has
+  no equivalent; `GlassCard` approximates with a tint + shine-gradient
+  overlay only, no dependency added for real blur)
 - Skia-based rendering (no `@shopify/react-native-skia` dependency added
-  this phase; gradients/blur use `expo-linear-gradient` + `expo-blur` +
-  plain Views)
+  this phase; gradients use `expo-linear-gradient` + plain Views)
 - Per-screen aurora parallax-on-scroll (handoff marks this "optional")
 
 ## Open Follow-ups (tracked, not blocking)
 
-- `AuroraBackground`'s blur approximation (opacity-falloff circles vs.
-  true blur) should be visually verified against the prototype on-device;
-  if `expo-blur`'s `BlurView` over a solid circle looks better than the
-  falloff-circle approach, prefer it — implementer's call, verified via
-  simulator screenshot during the task, not a re-planning gate.
-- `phaseSoft` dark-mode tint values are an implementation judgment call
-  (see Color System) — worth a design pass once real screens (Phase B+)
-  show them in context.
+- `AuroraBackground`'s falloff-circle blur approximation should be
+  visually verified against the prototype on-device during its task;
+  if it reads too hard-edged, adding `expo-blur` as a dependency at that
+  point is an acceptable implementer's-call escalation — verified via
+  simulator screenshot, not a re-planning gate.
+- `phaseSoft` dark-mode tint values, and the exact hex mapping for legacy
+  flat keys (`coral`/`iris`/`aqua`/`gold`/`berry`/`blush`/`pearl`), are
+  implementation judgment calls (see Color System and "Relationship to
+  feat/mascot-handoff") — worth a design pass once real screens
+  (Phase B+) show them in context.
