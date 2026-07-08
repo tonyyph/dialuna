@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { PropsWithChildren } from 'react';
 import {
@@ -6,6 +7,7 @@ import {
   StyleProp,
   StyleSheet,
   Text,
+  View,
   ViewStyle,
 } from 'react-native';
 
@@ -40,10 +42,12 @@ export function AppButton({
   };
 
   const variantStyle: Record<AppButtonVariant, ViewStyle> = {
-    primary: { backgroundColor: colors.primary, ...shadows.glow },
+    primary: {},
     secondary: { backgroundColor: colors.softRose, borderWidth: 1, borderColor: colors.glassBorder },
     ghost: { backgroundColor: 'transparent' },
   };
+
+  const textColor = variant === 'primary' ? colors.royalViolet : colors.primary;
 
   return (
     <Pressable
@@ -52,26 +56,32 @@ export function AppButton({
       accessibilityState={{ disabled: inactive, busy: loading }}
       disabled={inactive}
       onPress={handlePress}
-      style={({ pressed }) => [
-        styles.base,
-        variantStyle[variant],
-        inactive && styles.disabled,
-        pressed && !inactive && styles.pressed,
-        style,
-      ]}
+      style={[variant === 'primary' && !inactive ? shadows.glow : null, style]}
     >
-      {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? colors.card : colors.primary} />
-      ) : (
-        <Text
+      {({ pressed }) => (
+        <View
           style={[
-            styles.label,
-            typography.button,
-            { color: variant === 'primary' ? colors.card : colors.primary },
+            styles.base,
+            variantStyle[variant],
+            inactive && styles.disabled,
+            pressed && !inactive && styles.pressed,
           ]}
         >
-          {label}
-        </Text>
+          {variant === 'primary' ? (
+            <LinearGradient
+              pointerEvents="none"
+              colors={colors.gradients.pearl}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFill}
+            />
+          ) : null}
+          {loading ? (
+            <ActivityIndicator color={textColor} />
+          ) : (
+            <Text style={[styles.label, typography.button, { color: textColor }]}>{label}</Text>
+          )}
+        </View>
       )}
     </Pressable>
   );
