@@ -3,7 +3,7 @@ import { Tabs, router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { LunaOrb } from '@/components/mascot/LunaOrb';
+import { MoonMark } from '@/components/ui/MoonMark';
 import { useTheme } from '@/theme/useTheme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
@@ -58,10 +58,10 @@ function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable
       <Pressable
         onPress={() => router.push('/(tabs)/ai')}
         accessibilityRole="button"
-        accessibilityLabel="Chat with Luna"
+        accessibilityLabel="Open AI chat"
         style={styles.orbButton}
       >
-        <LunaOrb state="idle" size={58} />
+        <MoonMark state="idle" size={58} />
       </Pressable>
     </View>
   );

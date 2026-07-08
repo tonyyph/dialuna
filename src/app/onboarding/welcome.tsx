@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
-import { LunaOrb } from '@/components/mascot/LunaOrb';
+import { MoonMark } from '@/components/ui/MoonMark';
 import { radius, spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 
@@ -20,7 +20,7 @@ export default function Welcome() {
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
           <View style={styles.lunaHalo}>
-            <LunaOrb state="celebrating" size={132} />
+            <MoonMark state="celebrating" size={132} />
           </View>
           <View style={styles.copy}>
             <Text style={[typography.caption, styles.appName]}>{t('common.appName')}</Text>
