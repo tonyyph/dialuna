@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedProps,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 import { useTheme } from '@/theme/useTheme';
 
@@ -19,7 +19,8 @@ interface Props {
 }
 
 export function ScoreRing({ score, size = 140, label }: Props) {
-  const { colors, typography } = useTheme();
+  const { colors, typography, shadows } = useTheme();
+  const gradientId = useId();
   const strokeWidth = 12;
   const r = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * r;
@@ -35,11 +36,17 @@ export function ScoreRing({ score, size = 140, label }: Props) {
 
   return (
     <View
-      style={{ width: size, height: size }}
+      style={[{ width: size, height: size }, shadows.glow, { shadowColor: colors.primary }]}
       accessibilityRole="progressbar"
       accessibilityLabel={label ? `${label}: ${score}/100` : `${score}/100`}
     >
       <Svg width={size} height={size}>
+        <Defs>
+          <LinearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor={colors.lavender} />
+            <Stop offset="100%" stopColor={colors.pearl} />
+          </LinearGradient>
+        </Defs>
         <Circle
           cx={size / 2}
           cy={size / 2}
@@ -52,7 +59,7 @@ export function ScoreRing({ score, size = 140, label }: Props) {
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke={colors.primary}
+          stroke={`url(#${gradientId})`}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           fill="none"
