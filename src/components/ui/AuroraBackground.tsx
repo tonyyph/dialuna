@@ -57,7 +57,7 @@ export function AuroraBackground() {
 
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
-      <View style={[StyleSheet.absoluteFill, { backgroundColor: colors.background }]} />
+      <View style={[StyleSheet.absoluteFill, { backgroundColor: colors.deepMidnight }]} />
       <Animated.View
         style={[
           styles.layer,

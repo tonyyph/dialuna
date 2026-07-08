@@ -127,7 +127,7 @@ export function HomeScreen() {
               icon="flash"
               label={t('home.forecast.energy')}
               value={twin.energyScore}
-              color={colors.gold}
+              color={colors.ovulationBlue}
             />
             <MetricTile
               icon="heart"
@@ -139,13 +139,13 @@ export function HomeScreen() {
               icon="leaf"
               label={t('home.forecast.pain')}
               value={100 - twin.painRisk}
-              color={colors.aqua}
+              color={colors.auroraBlue}
             />
             <MetricTile
               icon="bulb"
               label={t('home.forecast.focus')}
               value={twin.focusScore}
-              color={colors.iris}
+              color={colors.lilac}
             />
           </View>
         </Animated.View>
@@ -161,19 +161,19 @@ export function HomeScreen() {
             <QuickAction
               icon="chatbubble-ellipses"
               label={t('home.askAi')}
-              tone={colors.iris}
+              tone={colors.lilac}
               onPress={() => router.push('/(tabs)/ai')}
             />
             <QuickAction
               icon="calendar"
               label={t('tabs.calendar')}
-              tone={colors.aqua}
+              tone={colors.auroraBlue}
               onPress={() => router.push('/(tabs)/calendar')}
             />
             <QuickAction
               icon="analytics"
               label={t('tabs.insights')}
-              tone={colors.gold}
+              tone={colors.ovulationBlue}
               onPress={() => router.push('/(tabs)/insights')}
             />
           </View>
@@ -195,12 +195,12 @@ export function HomeScreen() {
                 value={prediction.nextPeriodStart}
               />
               <TimelineRow
-                color={colors.peach}
+                color={colors.softPeach}
                 label={t('phases.pms')}
                 value={`${prediction.pmsWindowStart} - ${prediction.pmsWindowEnd}`}
               />
               <TimelineRow
-                color={colors.gold}
+                color={colors.ovulationBlue}
                 label={t('calendar.legend.ovulation')}
                 value={prediction.ovulationEstimate}
               />

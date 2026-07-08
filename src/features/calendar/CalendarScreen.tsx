@@ -69,12 +69,12 @@ export function CalendarScreen() {
 
   return (
     <Screen>
-      <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
+      <View style={[styles.hero, { backgroundColor: colors.royalViolet }]}>
         <View>
-          <Text style={[typography.caption, { color: colors.peach }]}>
+          <Text style={[typography.caption, { color: colors.softPeach }]}>
             {t('calendar.title')}
           </Text>
-          <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+          <Text style={[typography.headline, styles.title, { color: colors.moonWhite }]}>
             {format(parseISO(today), 'EEEE, MMM d')}
           </Text>
           <Text style={[typography.body, styles.subtitle]}>
@@ -99,12 +99,12 @@ export function CalendarScreen() {
           value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
         />
         <TimelineItem
-          color={colors.peach}
+          color={colors.softPeach}
           label={t('phases.pms')}
           value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
         />
         <TimelineItem
-          color={colors.gold}
+          color={colors.ovulationBlue}
           label={t('calendar.legend.ovulation')}
           value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
         />

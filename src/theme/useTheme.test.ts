@@ -5,15 +5,15 @@ import { lightTokens } from './tokens/light';
 import { buildTypography } from './typography';
 
 describe('theme resolution', () => {
-  it('dark mode + lavender accent resolves textPrimary/background correctly', () => {
+  it('dark mode + lavender accent resolves textPrimary/deepMidnight correctly', () => {
     const colors = applyAccent(darkTokens, 'lavender');
-    expect(colors.background).toBe('#0E0B1A');
+    expect(colors.deepMidnight).toBe('#120B2E');
     expect(colors.textPrimary).toBe('#F4F1FB');
   });
 
-  it('light mode resolves a light background regardless of accent', () => {
+  it('light mode resolves a light deepMidnight regardless of accent', () => {
     const colors = applyAccent(lightTokens, 'rose');
-    expect(colors.background).toBe('#F4F1FB');
+    expect(colors.deepMidnight).toBe('#F4F1FB');
     expect(colors.primary).toBe('#F5B8C4');
   });
 

@@ -36,11 +36,11 @@ export function InsightsScreen() {
   if (insights.logCount < MIN_LOGS) {
     return (
       <Screen>
-        <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
-          <Text style={[typography.caption, { color: colors.gold }]}>
+        <View style={[styles.hero, { backgroundColor: colors.royalViolet }]}>
+          <Text style={[typography.caption, { color: colors.ovulationBlue }]}>
             {t('insights.title')}
           </Text>
-          <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+          <Text style={[typography.headline, styles.title, { color: colors.moonWhite }]}>
             {t('insights.title')}
           </Text>
           <Text style={[typography.body, styles.subtitle]}>{t('insights.empty.body')}</Text>
@@ -56,11 +56,11 @@ export function InsightsScreen() {
 
   return (
     <Screen>
-      <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
-        <Text style={[typography.caption, { color: colors.gold }]}>
+      <View style={[styles.hero, { backgroundColor: colors.royalViolet }]}>
+        <Text style={[typography.caption, { color: colors.ovulationBlue }]}>
           {t('insights.title')}
         </Text>
-        <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+        <Text style={[typography.headline, styles.title, { color: colors.moonWhite }]}>
           {t('insights.title')}
         </Text>
         <Text style={[typography.body, styles.subtitle]}>{t('insights.subtitle')}</Text>

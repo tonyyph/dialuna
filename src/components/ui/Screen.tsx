@@ -55,7 +55,7 @@ export function Screen({
   );
 
   const body = (
-    <View style={[styles.safe, { backgroundColor: colors.background }, style]}>
+    <View style={[styles.safe, { backgroundColor: colors.deepMidnight }, style]}>
       <AuroraBackground />
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         {scroll ? (

@@ -76,7 +76,7 @@ export function SettingsScreen() {
       <View
         style={[
           styles.header,
-          { backgroundColor: colors.deepPlum, borderColor: 'rgba(255,255,255,0.18)' },
+          { backgroundColor: colors.royalViolet, borderColor: 'rgba(255,255,255,0.18)' },
         ]}
       >
         <Pressable
@@ -86,9 +86,9 @@ export function SettingsScreen() {
           hitSlop={8}
           style={styles.backBtn}
         >
-          <Text style={[typography.displayL, styles.backText, { color: colors.card }]}>‹</Text>
+          <Text style={[typography.displayL, styles.backText, { color: colors.moonWhite }]}>‹</Text>
         </Pressable>
-        <Text style={[typography.headline, { color: colors.card }]}>{t('settings.title')}</Text>
+        <Text style={[typography.headline, { color: colors.moonWhite }]}>{t('settings.title')}</Text>
       </View>
 
       <SectionTitle title={t('settings.sections.profile')} />
