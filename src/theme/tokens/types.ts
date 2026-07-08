@@ -6,50 +6,34 @@ export interface PhaseColors {
 }
 
 export interface ThemeTokens {
-  // Legacy flat keys — preserved 1:1 from Foundation v1 / feat/mascot-handoff
-  // so every existing call site keeps compiling after the access-pattern
-  // migration (Tasks 4-6).
+  // Core hues — semantic names derived from the app icon's palette.
+  deepMidnight: string;
+  royalViolet: string;
+  lavender: string;
   primary: string;
   primaryPressed: string;
-  coral: string;
-  iris: string;
-  aqua: string;
-  gold: string;
-  berry: string;
-  softRose: string;
-  lavender: string;
-  deepPlum: string;
-  cream: string;
-  blush: string;
+  lilac: string;
+  moonWhite: string;
   pearl: string;
+  champagneGold: string;
+  softPeach: string;
+  auroraBlue: string;
+  ovulationBlue: string;
+  roseDeep: string;
+  peachDeep: string;
+  mint: string;
+  error: string;
+  softRose: string;
   card: string;
   textPrimary: string;
   textSecondary: string;
-  mint: string;
-  peach: string;
-  error: string;
-  background: string;
+  textDisabled: string;
   border: string;
   overlay: string;
   glass: string;
   glassStrong: string;
   glassBorder: string;
   divider: string;
-
-  // New Aurora Night named keys — used by new components (LunaOrb,
-  // AuroraBackground, ProgressRing, tab bar v2). Not accent-reactive
-  // (except via `primary`/`lavender` above) — see accents.ts.
-  night: string;
-  nightElevated: string;
-  lavenderLight: string;
-  auroraBlue: string;
-  roseDeep: string;
-  peachDeep: string;
-  ovulationBlue: string;
-  textDisabled: string;
-  /** Fixed Luna Orb illustration details — same value in both modes, never accent-reactive. */
-  lunaEyeColor: string;
-  lunaShadowColor: string;
 
   phase: PhaseColors;
   phaseSoft: PhaseColors;
@@ -60,6 +44,7 @@ export interface ThemeTokens {
     aqua: readonly [string, string];
     gold: readonly [string, string];
     glass: readonly [string, string];
+    pearl: readonly [string, string, string];
   };
   surface: {
     background: string;
