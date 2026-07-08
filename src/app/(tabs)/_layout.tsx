@@ -16,17 +16,18 @@ const TAB_ICON: Record<string, IconName> = {
 };
 
 function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable<Parameters<typeof Tabs>[0]['tabBar']>>[0]) {
-  const { colors } = useTheme();
+  const { colors, shadows } = useTheme();
   const insets = useSafeAreaInsets();
 
   return (
     <View
       style={[
         styles.bar,
+        shadows.bloom,
         {
           bottom: 26 + Math.max(0, insets.bottom - 26),
-          backgroundColor: colors.glass,
-          borderColor: colors.glassBorder,
+          backgroundColor: colors.glassStrong,
+          borderColor: `${colors.moonWhite}33`,
         },
       ]}
     >
@@ -109,6 +110,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   orbButton: {
-    marginTop: -28,
+    marginTop: -34,
   },
 });
