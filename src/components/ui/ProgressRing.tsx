@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { View } from 'react-native';
 import Animated, {
   useAnimatedProps,
@@ -6,7 +6,7 @@ import Animated, {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 import { useThemeStore } from '@/store/themeStore';
 import { useTheme } from '@/theme/useTheme';
@@ -29,10 +29,11 @@ export function ProgressRing({
   color,
   trackColor,
 }: ProgressRingProps) {
-  const { colors } = useTheme();
+  const { colors, shadows } = useTheme();
   const reduceMotion = useThemeStore((s) => s.reduceMotion);
   const resolvedColor = color ?? colors.primary;
   const resolvedTrackColor = trackColor ?? colors.border;
+  const gradientId = useId();
 
   const r = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * r;
@@ -52,14 +53,23 @@ export function ProgressRing({
   }));
 
   return (
-    <View style={{ width: size, height: size }} accessibilityRole="progressbar">
+    <View
+      style={[{ width: size, height: size }, shadows.glow, { shadowColor: resolvedColor }]}
+      accessibilityRole="progressbar"
+    >
       <Svg width={size} height={size}>
+        <Defs>
+          <LinearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <Stop offset="0%" stopColor={resolvedColor} />
+            <Stop offset="100%" stopColor={colors.pearl} />
+          </LinearGradient>
+        </Defs>
         <Circle cx={size / 2} cy={size / 2} r={r} stroke={resolvedTrackColor} strokeWidth={strokeWidth} fill="none" />
         <AnimatedCircle
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke={resolvedColor}
+          stroke={`url(#${gradientId})`}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           fill="none"
