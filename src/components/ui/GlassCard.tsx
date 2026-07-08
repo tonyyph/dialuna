@@ -9,6 +9,7 @@ interface GlassCardProps {
   style?: StyleProp<ViewStyle>;
   contentStyle?: StyleProp<ViewStyle>;
   gradient?: boolean;
+  variant?: 'glass' | 'moonstone';
 }
 
 export function GlassCard({
@@ -16,8 +17,37 @@ export function GlassCard({
   style,
   contentStyle,
   gradient = true,
+  variant = 'glass',
 }: PropsWithChildren<GlassCardProps>) {
   const { colors, shadows } = useTheme();
+
+  if (variant === 'moonstone') {
+    // Bloom shadow needs an unclipped wrapper — the inner view has
+    // overflow:hidden for the gradient/corner-radius clip, which would
+    // otherwise clip the shadow itself on iOS.
+    return (
+      <View style={[shadows.bloom, style]}>
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: colors.glassStrong, borderColor: `${colors.moonWhite}40` },
+          ]}
+        >
+          {gradient ? (
+            <LinearGradient
+              pointerEvents="none"
+              colors={colors.gradients.pearl}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={[StyleSheet.absoluteFill, styles.pearlSheen]}
+            />
+          ) : null}
+          <View style={contentStyle}>{children}</View>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View
       style={[
@@ -46,5 +76,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: sizes.cardPadding,
     overflow: 'hidden',
+  },
+  pearlSheen: {
+    opacity: 0.16,
   },
 });

@@ -6,14 +6,18 @@ import { radius, shadows, sizes } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 
 interface Props {
-  variant?: 'solid' | 'glass';
+  variant?: 'solid' | 'glass' | 'moonstone';
   style?: StyleProp<ViewStyle>;
 }
 
 export function Card({ children, variant = 'solid', style }: PropsWithChildren<Props>) {
   const { colors } = useTheme();
-  if (variant === 'glass') {
-    return <GlassCard style={style}>{children}</GlassCard>;
+  if (variant === 'glass' || variant === 'moonstone') {
+    return (
+      <GlassCard variant={variant} style={style}>
+        {children}
+      </GlassCard>
+    );
   }
 
   return (
