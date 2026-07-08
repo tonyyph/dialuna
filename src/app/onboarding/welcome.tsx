@@ -19,7 +19,7 @@ export default function Welcome() {
     >
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
-          <View style={styles.lunaHalo}>
+          <View style={styles.markHalo}>
             <MoonMark state="celebrating" size={132} />
           </View>
           <View style={styles.copy}>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing(1.5),
   },
-  lunaHalo: {
+  markHalo: {
     width: 164,
     height: 164,
     borderRadius: 82,

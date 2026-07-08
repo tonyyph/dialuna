@@ -79,7 +79,7 @@ export function HomeScreen() {
             <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
             <Text style={[typography.body, styles.heroBody]}>{t(twin.coachMessageKey)}</Text>
           </View>
-          <View style={styles.lunaFrame}>
+          <View style={styles.markFrame}>
             <MoonMark state="idle" size={112} />
           </View>
         </View>
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   heroBody: {
     color: 'rgba(255,255,255,0.86)',
   },
-  lunaFrame: {
+  markFrame: {
     width: 128,
     height: 128,
     borderRadius: 64,

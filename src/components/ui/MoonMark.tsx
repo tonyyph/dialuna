@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useId } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   Easing,
@@ -24,6 +24,9 @@ interface MoonMarkProps {
 export function MoonMark({ state = 'idle', size = 96 }: MoonMarkProps) {
   const { colors } = useTheme();
   const reduceMotion = useThemeStore((s) => s.reduceMotion);
+
+  const crescentGradientId = useId();
+  const pearlGradientId = useId();
 
   const floatY = useSharedValue(0);
   const glowScale = useSharedValue(0.95);
@@ -103,12 +106,12 @@ export function MoonMark({ state = 'idle', size = 96 }: MoonMarkProps) {
       <Animated.View style={[markStyle, { width: size, height: size }]}>
         <Svg width={size} height={size} viewBox="0 0 100 100">
           <Defs>
-            <LinearGradient id="moonMarkCrescent" x1="10" y1="10" x2="90" y2="90">
+            <LinearGradient id={crescentGradientId} x1="10" y1="10" x2="90" y2="90">
               <Stop offset="0%" stopColor={colors.moonWhite} />
               <Stop offset="55%" stopColor={colors.champagneGold} />
               <Stop offset="100%" stopColor={colors.lilac} />
             </LinearGradient>
-            <RadialGradient id="moonMarkPearl" cx="42%" cy="42%" r="65%">
+            <RadialGradient id={pearlGradientId} cx="42%" cy="42%" r="65%">
               <Stop offset="0%" stopColor={colors.moonWhite} />
               <Stop offset="55%" stopColor={colors.pearl} />
               <Stop offset="100%" stopColor={colors.lilac} />
@@ -117,9 +120,9 @@ export function MoonMark({ state = 'idle', size = 96 }: MoonMarkProps) {
 
           <Path
             d="M62.5 12.5A37.5 37.5 0 1 1 38.9 79.2A29.2 29.2 0 0 0 62.5 12.5Z"
-            fill="url(#moonMarkCrescent)"
+            fill={`url(#${crescentGradientId})`}
           />
-          <Circle cx="46" cy="55" r="17" fill="url(#moonMarkPearl)" />
+          <Circle cx="46" cy="55" r="17" fill={`url(#${pearlGradientId})`} />
           <Ellipse cx="40" cy="49" rx="5.5" ry="3.5" fill={colors.moonWhite} opacity={0.85} />
 
           <Path
