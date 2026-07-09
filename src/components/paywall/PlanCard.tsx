@@ -33,7 +33,7 @@ export function PlanCard({ title, price, period, badge, selected, onPress }: Pro
     >
       {badge ? (
         <View style={[styles.badge, { backgroundColor: colors.mint }]}>
-          <Text style={[typography.caption, styles.badgeText, { color: colors.deepPlum }]}>
+          <Text style={[typography.caption, styles.badgeText, { color: colors.royalViolet }]}>
             {badge}
           </Text>
         </View>

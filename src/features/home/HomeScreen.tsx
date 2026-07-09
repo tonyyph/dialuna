@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { PhaseBadge } from '@/components/cycle/PhaseBadge';
 import { WeekStrip } from '@/components/cycle/WeekStrip';
-import { LunaOrb } from '@/components/mascot/LunaOrb';
+import { MoonMark } from '@/components/ui/MoonMark';
 import { PremiumBanner } from '@/components/paywall/PremiumBanner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -79,8 +79,8 @@ export function HomeScreen() {
             <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
             <Text style={[typography.body, styles.heroBody]}>{t(twin.coachMessageKey)}</Text>
           </View>
-          <View style={styles.lunaFrame}>
-            <LunaOrb state="idle" size={112} />
+          <View style={styles.markFrame}>
+            <MoonMark state="idle" size={112} />
           </View>
         </View>
 
@@ -127,7 +127,7 @@ export function HomeScreen() {
               icon="flash"
               label={t('home.forecast.energy')}
               value={twin.energyScore}
-              color={colors.gold}
+              color={colors.ovulationBlue}
             />
             <MetricTile
               icon="heart"
@@ -139,13 +139,13 @@ export function HomeScreen() {
               icon="leaf"
               label={t('home.forecast.pain')}
               value={100 - twin.painRisk}
-              color={colors.aqua}
+              color={colors.auroraBlue}
             />
             <MetricTile
               icon="bulb"
               label={t('home.forecast.focus')}
               value={twin.focusScore}
-              color={colors.iris}
+              color={colors.lilac}
             />
           </View>
         </Animated.View>
@@ -161,19 +161,19 @@ export function HomeScreen() {
             <QuickAction
               icon="chatbubble-ellipses"
               label={t('home.askAi')}
-              tone={colors.iris}
+              tone={colors.lilac}
               onPress={() => router.push('/(tabs)/ai')}
             />
             <QuickAction
               icon="calendar"
               label={t('tabs.calendar')}
-              tone={colors.aqua}
+              tone={colors.auroraBlue}
               onPress={() => router.push('/(tabs)/calendar')}
             />
             <QuickAction
               icon="analytics"
               label={t('tabs.insights')}
-              tone={colors.gold}
+              tone={colors.ovulationBlue}
               onPress={() => router.push('/(tabs)/insights')}
             />
           </View>
@@ -195,12 +195,12 @@ export function HomeScreen() {
                 value={prediction.nextPeriodStart}
               />
               <TimelineRow
-                color={colors.peach}
+                color={colors.softPeach}
                 label={t('phases.pms')}
                 value={`${prediction.pmsWindowStart} - ${prediction.pmsWindowEnd}`}
               />
               <TimelineRow
-                color={colors.gold}
+                color={colors.ovulationBlue}
                 label={t('calendar.legend.ovulation')}
                 value={prediction.ovulationEstimate}
               />
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
   heroBody: {
     color: 'rgba(255,255,255,0.86)',
   },
-  lunaFrame: {
+  markFrame: {
     width: 128,
     height: 128,
     borderRadius: 64,

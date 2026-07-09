@@ -25,7 +25,7 @@ export function WeekStrip({ days }: Props) {
                 {
                   height: `${Math.max(12, day.energyScore)}%`,
                   backgroundColor: day.isPmsWindow
-                    ? colors.peach
+                    ? colors.softPeach
                     : colors.phase[day.phase],
                 },
               ]}
@@ -36,7 +36,7 @@ export function WeekStrip({ days }: Props) {
               styles.dot,
               {
                 backgroundColor: day.isPmsWindow
-                  ? colors.peach
+                  ? colors.softPeach
                   : colors.phase[day.phase],
               },
             ]}

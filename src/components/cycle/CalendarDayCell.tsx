@@ -44,7 +44,7 @@ export function CalendarDayCell({ date, state, onPress }: Props) {
           styles.circle,
           { backgroundColor: bg },
           state.isPredictedPeriod && [styles.predicted, { borderColor: colors.primary }],
-          state.isToday && [styles.today, { borderColor: colors.deepPlum }],
+          state.isToday && [styles.today, { borderColor: colors.royalViolet }],
         ]}
       >
         <Text

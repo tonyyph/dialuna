@@ -87,7 +87,7 @@ export default function RootLayout() {
           headerShown: false,
           animation: 'fade_from_bottom',
           animationDuration: 220,
-          contentStyle: { backgroundColor: colors.background },
+          contentStyle: { backgroundColor: colors.deepMidnight },
         }}
       >
         <Stack.Screen name="index" />

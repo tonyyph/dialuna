@@ -26,7 +26,14 @@ export function useTheme(): UseThemeResult {
     const base = mode === 'dark' ? darkTokens : lightTokens;
     const colors = applyAccent(base, accent);
     const typography = buildTypography(colors);
-    const shadows = { ...shadowShapes, glow: { ...shadowShapes.glow, shadowColor: colors.primary } };
+    const shadows = {
+      ...shadowShapes,
+      glow: { ...shadowShapes.glow, shadowColor: colors.primary },
+      bloom: {
+        ...shadowShapes.bloom,
+        shadowColor: mode === 'dark' ? colors.royalViolet : colors.lilac,
+      },
+    };
     return { colors, typography, shadows, mode, reduceMotion };
   }, [mode, accent, reduceMotion]);
 }

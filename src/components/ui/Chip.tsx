@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function Chip({ label, emoji, selected, onPress }: Props) {
-  const { colors, typography } = useTheme();
+  const { colors, typography, shadows } = useTheme();
   const handlePress = () => {
     Haptics.selectionAsync();
     onPress();
@@ -27,7 +27,12 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
       style={({ pressed }) => [
         styles.base,
         { backgroundColor: colors.card, borderColor: colors.border },
-        selected && { backgroundColor: colors.softRose, borderColor: colors.primary },
+        selected && {
+          backgroundColor: `${colors.lilac}33`,
+          borderColor: colors.lilac,
+          ...shadows.glow,
+          shadowColor: colors.lilac,
+        },
         pressed && styles.pressed,
       ]}
     >

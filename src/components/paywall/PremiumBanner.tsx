@@ -20,7 +20,7 @@ export function PremiumBanner({ onPress }: Props) {
       style={({ pressed }) => [pressed && styles.pressed]}
     >
       <LinearGradient
-        colors={[colors.lavender, colors.deepPlum]}
+        colors={[colors.lavender, colors.royalViolet]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.banner}
@@ -34,7 +34,7 @@ export function PremiumBanner({ onPress }: Props) {
           </Text>
         </View>
         <View style={[styles.cta, { backgroundColor: colors.card }]}>
-          <Text style={[typography.caption, styles.ctaText, { color: colors.deepPlum }]}>
+          <Text style={[typography.caption, styles.ctaText, { color: colors.royalViolet }]}>
             {t('home.premiumBanner.cta')}
           </Text>
         </View>

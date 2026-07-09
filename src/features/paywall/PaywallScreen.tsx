@@ -56,7 +56,7 @@ export function PaywallScreen() {
       }
     >
       <LinearGradient
-        colors={[colors.lavender, colors.primary, colors.deepPlum]}
+        colors={[colors.lavender, colors.primary, colors.royalViolet]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.hero}
@@ -68,11 +68,11 @@ export function PaywallScreen() {
           style={[styles.closeBtn, { backgroundColor: colors.glass }]}
           hitSlop={8}
         >
-          <Text style={[typography.subtitle, { color: colors.deepPlum }]}>✕</Text>
+          <Text style={[typography.subtitle, { color: colors.royalViolet }]}>✕</Text>
         </Pressable>
         <Text style={styles.heroEmoji}>🌙✨</Text>
         <Text style={[typography.caption, styles.heroKicker]}>{t('common.premium')}</Text>
-        <Text style={[typography.displayXl, styles.heroTitle, { color: colors.card }]}>
+        <Text style={[typography.displayXl, styles.heroTitle, { color: colors.moonWhite }]}>
           {t('paywall.title')}
         </Text>
         <Text style={[typography.body, styles.heroSubtitle, { color: colors.softRose }]}>

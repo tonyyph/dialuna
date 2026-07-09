@@ -113,11 +113,11 @@ export function LogScreen() {
       keyboardAvoiding
       bottomAction={<Button label={t('log.save')} onPress={onSave} />}
     >
-      <View style={[styles.hero, { backgroundColor: colors.deepPlum }]}>
-        <Text style={[typography.caption, { color: colors.peach }]}>
+      <View style={[styles.hero, { backgroundColor: colors.royalViolet }]}>
+        <Text style={[typography.caption, { color: colors.softPeach }]}>
           {t('common.today')}
         </Text>
-        <Text style={[typography.headline, styles.title, { color: colors.card }]}>
+        <Text style={[typography.headline, styles.title, { color: colors.moonWhite }]}>
           {t('log.title')}
         </Text>
         <Text style={[typography.body, styles.subtitle]}>{t('log.subtitle')}</Text>

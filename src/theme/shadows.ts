@@ -37,6 +37,13 @@ export const shadows = {
     shadowRadius: 24,
     elevation: 4,
   },
+  bloom: {
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.28,
+    shadowRadius: 28,
+    elevation: 5,
+  },
 } satisfies Record<string, ViewStyle>;
 
 // Deprecated alias — Card.tsx is the sole remaining consumer of the old

@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import { MessageBubble } from '@/components/ai/MessageBubble';
 import { SuggestedPrompts } from '@/components/ai/SuggestedPrompts';
-import { LunaOrb } from '@/components/mascot/LunaOrb';
+import { MoonMark } from '@/components/ui/MoonMark';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
@@ -37,13 +37,13 @@ export function AiChatScreen() {
 
   return (
     <Screen scroll={false} edgeToEdge keyboardAvoiding>
-      <View style={[styles.header, { backgroundColor: colors.deepPlum }]}>
+      <View style={[styles.header, { backgroundColor: colors.royalViolet }]}>
         <View style={styles.coachAvatar}>
-          <LunaOrb state="thinking" size={70} />
+          <MoonMark state="thinking" size={70} />
         </View>
         <View style={styles.headerText}>
-          <Text style={[typography.caption, { color: colors.peach }]}>{t('ai.subtitle')}</Text>
-          <Text style={[typography.headline, { color: colors.card }]}>{t('ai.title')}</Text>
+          <Text style={[typography.caption, { color: colors.softPeach }]}>{t('ai.subtitle')}</Text>
+          <Text style={[typography.headline, { color: colors.moonWhite }]}>{t('ai.title')}</Text>
           <Text style={[typography.caption, styles.counter]}>
             {isPremium
               ? t('ai.unlimited')
