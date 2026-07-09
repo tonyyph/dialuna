@@ -158,11 +158,36 @@
     "logCta": "How are you today?",
     "logCtaBody": "Log your symptoms, mood, and energy to sharpen your forecasts.",
     "logNow": "Log today",
+    "quickActions": "Today's rituals",
     "weekForecast": "7-day forecast",
     "premiumBanner": {
       "title": "Unlock your full Hormone Twin",
       "body": "Unlimited AI coach, 7-day forecasts, and monthly reports.",
       "cta": "See Premium"
+    },
+    "lunar": {
+      "cover": "Today's Lunar Cover",
+      "todayNote": "Today's lunar note",
+      "noteTitle": "A softer read for today",
+      "beginRitual": "Begin today's ritual",
+      "twinBody": "A living estimate of energy, mood, comfort, and focus from your recent rhythm.",
+      "forecastRibbon": "The next seven days",
+      "innerCircle": "Inner Circle",
+      "headline": {
+        "menstrual": "Your body may be asking for softness today",
+        "follicular": "Energy is returning gently",
+        "ovulation": "Today favors clarity and connection",
+        "luteal": "A quieter rhythm is rising"
+      },
+      "islands": {
+        "log": "Log Ritual",
+        "logValue": "2 minutes",
+        "ai": "Ask Luna",
+        "aiValue": "Gentle read",
+        "calendar": "Orbit Map",
+        "insights": "Constellation",
+        "forecast": "Forecast"
+      }
     },
     "plan": {
       "title": "Today's plan",
@@ -186,6 +211,17 @@
       "title": "Forecast",
       "logDay": "Log this day",
       "viewLog": "View log"
+    },
+    "orbit": {
+      "kicker": "Orbit Map",
+      "title": "Moon phase atlas",
+      "cycleDay": "cycle day",
+      "gridTitle": "Calendar grid",
+      "gridHint": "Tap a day for detail",
+      "mode": {
+        "orbit": "Orbit",
+        "grid": "Grid"
+      }
     }
   },
   "log": {
@@ -203,6 +239,31 @@
     "save": "Save today's log",
     "saved": "Saved ✨",
     "reflectionTitle": "From your Hormone Twin",
+    "ritual": {
+      "title": "Daily Ritual",
+      "progress": "Ritual progress",
+      "introTitle": "Begin today's ritual",
+      "introBody": "A few gentle questions help Luna understand your emotional weather and body signals.",
+      "start": "Start ritual",
+      "moodTitle": "What is your emotional weather?",
+      "moodHelper": "Choose whatever feels closest to now.",
+      "multiSelect": "You can choose more than one.",
+      "signalsTitle": "What signals is your body sending?",
+      "signalsHelper": "Add flow and any body signals you noticed today.",
+      "energyTitle": "How much light do you have today?",
+      "energyHelper": "Energy, sleep, and stress help Luna read your rhythm more clearly.",
+      "movementTitle": "How did your body move?",
+      "movementHelper": "Rest counts. Soft movement counts too.",
+      "reflectionTitle": "Leave a note for future you",
+      "reflectionHelper": "A sentence is enough. Luna will remember the pattern.",
+      "reflectionPlaceholder": "Today I noticed...",
+      "complete": "Complete ritual",
+      "completeTitle": "Your ritual is complete",
+      "completeBody": "Luna has added today's signals to your constellation.",
+      "saved": "Saved to your constellation",
+      "returnOrbit": "Return to orbit",
+      "askLuna": "Ask Luna about this"
+    },
     "reflection": {
       "menstrual": "Thanks for logging, {{name}}. Cramps or low energy may fit your menstrual phase. Warmth, hydration, and rest can help today.",
       "follicular": "Thanks for logging, {{name}}. Your follicular phase often brings rising energy — a lovely time to build momentum.",
@@ -223,6 +284,15 @@
     "limitReached": "You've used your 3 free questions today. Premium unlocks unlimited coaching.",
     "emptyTitle": "Ask me anything about your cycle",
     "emptyBody": "I use your logs and cycle phase to answer. Try a suggestion below.",
+    "luna": {
+      "kicker": "Luna Companion",
+      "title": "Ask Luna",
+      "emptyTitle": "Bring Luna a question",
+      "emptyBody": "Ask about mood, energy, your phase, or what your body may be asking for today.",
+      "placeholder": "Ask what your body may be telling you...",
+      "thinking": "Luna is reading your rhythm",
+      "note": "Luna note"
+    },
     "prompts": {
       "p1": "Why am I feeling tired today?",
       "p2": "Can I do HIIT today?",
@@ -418,6 +488,19 @@
       "title": "Deeper patterns are Premium",
       "body": "Unlock energy, sleep, and PMS pattern analysis.",
       "cta": "Unlock insights"
+    },
+    "constellation": {
+      "kicker": "Constellation",
+      "title": "Your pattern map",
+      "weekly": "This week's constellation",
+      "noSymptoms": "No repeated symptom pattern yet.",
+      "nodes": {
+        "energy": "Energy",
+        "mood": "Mood",
+        "comfort": "Comfort",
+        "sleep": "Sleep",
+        "premium": "Inner Circle"
+      }
     }
   },
   "paywall": {
@@ -442,6 +525,12 @@
     "saveBadge": "Save 52%",
     "popularBadge": "Most popular",
     "cta": "Start Premium",
+    "innerCircle": {
+      "kicker": "Inner Circle",
+      "title": "Enter the Inner Circle",
+      "body": "Go deeper into your rhythm with richer forecasts, unlimited Luna guidance, and monthly constellation reports.",
+      "cta": "Start Inner Circle"
+    },
     "restore": "Restore purchase",
     "success": "Welcome to Premium ✨",
     "mockNote": "Demo build: no real payment is processed.",
@@ -456,6 +545,14 @@
       "preferences": "Preferences",
       "privacy": "Privacy & data",
       "about": "About"
+    },
+    "atelier": {
+      "kicker": "Atelier",
+      "title": "Quiet controls",
+      "body": "Tune Dialuna without leaving the calm of your lunar space.",
+      "appearance": "Appearance",
+      "darkMode": "Dark mode",
+      "reduceMotion": "Reduce motion"
     },
     "nickname": "Nickname",
     "ageRange": "Age range",

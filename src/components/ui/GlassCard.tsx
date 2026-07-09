@@ -30,7 +30,8 @@ export function GlassCard({
         <View
           style={[
             styles.card,
-            { backgroundColor: colors.glassStrong, borderColor: `${colors.moonWhite}40` },
+            styles.moonstone,
+            { backgroundColor: colors.glassStrong, borderColor: `${colors.moonWhite}66` },
           ]}
         >
           {gradient ? (
@@ -76,6 +77,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: sizes.cardPadding,
     overflow: 'hidden',
+  },
+  moonstone: {
+    borderTopColor: 'rgba(255,255,255,0.82)',
+    borderLeftColor: 'rgba(255,255,255,0.72)',
   },
   pearlSheen: {
     opacity: 0.16,

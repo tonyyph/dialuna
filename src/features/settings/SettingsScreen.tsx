@@ -1,27 +1,20 @@
+import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ReactNode, useState } from 'react';
+import { Alert, Pressable, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { LoadingAurora } from '@/components/lunar/LoadingAurora';
 import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { Stepper } from '@/features/onboarding/Stepper';
 import i18n, { setAppLanguage } from '@/i18n';
 import { resetAllData, usePremiumStore, useUserStore } from '@/store';
 import { useThemeStore } from '@/store/themeStore';
-import { radius, spacing } from '@/theme';
+import { radius, shadows, spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 import { ALL_AGE_RANGES } from '@/types';
 import { nicknameSchema } from '@/utils/validation';
@@ -48,51 +41,45 @@ export function SettingsScreen() {
   const reduceMotion = useThemeStore((s) => s.reduceMotion);
   const setReduceMotion = useThemeStore((s) => s.setReduceMotion);
 
-  if (!profile) return null;
+  if (!profile) return <LoadingAurora fullScreen label={t('common.loading')} />;
 
   const language = i18n.language === 'vi' ? 'vi' : 'en';
 
   const confirmDelete = () => {
-    Alert.alert(
-      t('settings.deleteConfirmTitle'),
-      t('settings.deleteConfirmBody'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('settings.deleteConfirmCta'),
-          style: 'destructive',
-          onPress: () => {
-            resetAllData();
-            router.dismissAll();
-            router.replace('/onboarding');
-          },
+    Alert.alert(t('settings.deleteConfirmTitle'), t('settings.deleteConfirmBody'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      {
+        text: t('settings.deleteConfirmCta'),
+        style: 'destructive',
+        onPress: () => {
+          resetAllData();
+          router.dismissAll();
+          router.replace('/onboarding');
         },
-      ]
-    );
+      },
+    ]);
   };
 
   return (
-    <Screen>
-      <View
-        style={[
-          styles.header,
-          { backgroundColor: colors.royalViolet, borderColor: 'rgba(255,255,255,0.18)' },
-        ]}
-      >
+    <Screen contentContainerStyle={styles.screenContent}>
+      <View style={[styles.hero, { backgroundColor: colors.surface.elevated, borderColor: colors.border }]}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('common.back')}
           onPress={() => router.back()}
-          hitSlop={8}
-          style={styles.backBtn}
+          hitSlop={10}
+          style={[styles.backButton, { backgroundColor: colors.softRose }]}
         >
-          <Text style={[typography.displayL, styles.backText, { color: colors.moonWhite }]}>‹</Text>
+          <Ionicons name="chevron-back" size={22} color={colors.primary} />
         </Pressable>
-        <Text style={[typography.headline, { color: colors.moonWhite }]}>{t('settings.title')}</Text>
+        <View style={styles.heroText}>
+          <Text style={[typography.caption, { color: colors.primary }]}>{t('settings.atelier.kicker')}</Text>
+          <Text style={typography.displayL}>{t('settings.atelier.title')}</Text>
+          <Text style={typography.body}>{t('settings.atelier.body')}</Text>
+        </View>
       </View>
 
-      <SectionTitle title={t('settings.sections.profile')} />
-      <Card variant="glass" style={styles.rows}>
+      <AtelierGroup title={t('settings.sections.profile')} icon="person">
         <Text style={typography.bodyLarge}>{t('settings.nickname')}</Text>
         <TextInput
           style={[
@@ -103,8 +90,8 @@ export function SettingsScreen() {
           defaultValue={profile.nickname}
           accessibilityLabel={t('settings.nickname')}
           maxLength={30}
-          onEndEditing={(e) => {
-            const nickname = e.nativeEvent.text.trim();
+          onEndEditing={(event) => {
+            const nickname = event.nativeEvent.text.trim();
             if (nicknameSchema.safeParse(nickname).success) {
               updateProfile({ nickname });
             }
@@ -121,10 +108,9 @@ export function SettingsScreen() {
             />
           ))}
         </View>
-      </Card>
+      </AtelierGroup>
 
-      <SectionTitle title={t('settings.sections.cycle')} />
-      <Card variant="glass" style={styles.rows}>
+      <AtelierGroup title={t('settings.sections.cycle')} icon="sync">
         <Stepper
           label={t('settings.cycleLength')}
           unit={t('onboarding.profile.daysUnit')}
@@ -141,129 +127,104 @@ export function SettingsScreen() {
           max={10}
           onChange={(averagePeriodLength) => updateProfile({ averagePeriodLength })}
         />
-        <View style={styles.infoRow}>
-          <Text style={typography.bodyLarge}>{t('settings.lastPeriodStart')}</Text>
-          <Text style={[typography.body, styles.value, { color: colors.primary }]}>
-            {profile.lastPeriodStartDate}
-          </Text>
-        </View>
-      </Card>
+        <InfoRow label={t('settings.lastPeriodStart')} value={profile.lastPeriodStartDate} />
+      </AtelierGroup>
 
-      <SectionTitle title={t('settings.sections.notifications')} />
-      <Card variant="glass" style={styles.rows}>
+      <AtelierGroup title={t('settings.sections.notifications')} icon="notifications">
         <ToggleRow label={t('settings.notifDaily')} value={notifDaily} onChange={setNotifDaily} />
         <ToggleRow label={t('settings.notifPeriod')} value={notifPeriod} onChange={setNotifPeriod} />
         <ToggleRow label={t('settings.notifPms')} value={notifPms} onChange={setNotifPms} />
         <Text style={typography.caption}>{t('settings.notifDeferred')}</Text>
-      </Card>
+      </AtelierGroup>
 
-      <SectionTitle title="Appearance" />
-      <Card variant="glass" style={styles.rows}>
+      <AtelierGroup title={t('settings.atelier.appearance')} icon="color-palette">
         <ToggleRow
-          label="Dark mode"
+          label={t('settings.atelier.darkMode')}
           value={mode === 'dark'}
-          onChange={(v) => setMode(v ? 'dark' : 'light')}
+          onChange={(value) => setMode(value ? 'dark' : 'light')}
         />
         <View style={styles.chipRow}>
           <Chip label="Lavender" selected={accent === 'lavender'} onPress={() => setAccent('lavender')} />
           <Chip label="Rose" selected={accent === 'rose'} onPress={() => setAccent('rose')} />
           <Chip label="Aurora Blue" selected={accent === 'auroraBlue'} onPress={() => setAccent('auroraBlue')} />
         </View>
-        <ToggleRow label="Reduce motion" value={reduceMotion} onChange={setReduceMotion} />
-      </Card>
+        <ToggleRow label={t('settings.atelier.reduceMotion')} value={reduceMotion} onChange={setReduceMotion} />
+      </AtelierGroup>
 
-      <SectionTitle title={t('settings.sections.preferences')} />
-      <Card variant="glass" style={styles.rows}>
+      <AtelierGroup title={t('settings.sections.preferences')} icon="language">
         <Text style={typography.bodyLarge}>{t('settings.language')}</Text>
         <View style={styles.chipRow}>
-          <Chip
-            label={t('settings.languageEn')}
-            selected={language === 'en'}
-            onPress={() => setAppLanguage('en')}
-          />
-          <Chip
-            label={t('settings.languageVi')}
-            selected={language === 'vi'}
-            onPress={() => setAppLanguage('vi')}
-          />
+          <Chip label={t('settings.languageEn')} selected={language === 'en'} onPress={() => setAppLanguage('en')} />
+          <Chip label={t('settings.languageVi')} selected={language === 'vi'} onPress={() => setAppLanguage('vi')} />
         </View>
-      </Card>
+      </AtelierGroup>
 
-      <SectionTitle title={t('common.premium')} />
-      <Card variant="glass" style={styles.rows}>
-        <View style={styles.infoRow}>
-          <Text style={typography.bodyLarge}>{t('settings.premiumStatus')}</Text>
-          <Text style={[typography.body, styles.value, { color: colors.primary }]}>
-            {isPremium
-              ? t('settings.premiumActive', {
-                  plan: plan ? t(`paywall.plans.${plan}`) : '',
-                })
-              : t('settings.premiumInactive')}
-          </Text>
-        </View>
-        <LinkRow
-          label={t('settings.managePremium')}
-          onPress={() => router.push('/paywall')}
+      <AtelierGroup title={t('common.premium')} icon="sparkles">
+        <InfoRow
+          label={t('settings.premiumStatus')}
+          value={
+            isPremium
+              ? t('settings.premiumActive', { plan: plan ? t(`paywall.plans.${plan}`) : '' })
+              : t('settings.premiumInactive')
+          }
         />
-        <ToggleRow
-          label={t('settings.devToggle')}
-          value={isPremium}
-          onChange={togglePremiumDev}
-        />
-      </Card>
+        <LinkRow label={t('settings.managePremium')} onPress={() => router.push('/paywall')} />
+        <ToggleRow label={t('settings.devToggle')} value={isPremium} onChange={togglePremiumDev} />
+      </AtelierGroup>
 
-      <SectionTitle title={t('settings.sections.privacy')} />
-      <Card variant="glass" style={styles.rows}>
-        <LinkRow
-          label={t('settings.privacyTitle')}
-          onPress={() => setPrivacyOpen((v) => !v)}
-        />
-        {privacyOpen && (
-          <Text style={[typography.body, styles.bodyText]}>{t('settings.privacyBody')}</Text>
-        )}
-        <LinkRow
-          label={t('settings.medicalTitle')}
-          onPress={() => setMedicalOpen((v) => !v)}
-        />
-        {medicalOpen && <DisclaimerBox text={t('disclaimer.full')} />}
-        <View style={styles.infoRow}>
-          <Text style={typography.bodyLarge}>{t('settings.exportData')}</Text>
-          <Text style={typography.caption}>{t('settings.exportSoon')}</Text>
-        </View>
+      <AtelierGroup title={t('settings.sections.privacy')} icon="shield-checkmark">
+        <LinkRow label={t('settings.privacyTitle')} onPress={() => setPrivacyOpen((value) => !value)} />
+        {privacyOpen ? <Text style={typography.body}>{t('settings.privacyBody')}</Text> : null}
+        <LinkRow label={t('settings.medicalTitle')} onPress={() => setMedicalOpen((value) => !value)} />
+        {medicalOpen ? <DisclaimerBox text={t('disclaimer.full')} /> : null}
+        <InfoRow label={t('settings.exportData')} value={t('settings.exportSoon')} muted />
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('settings.deleteData')}
           onPress={confirmDelete}
-          style={styles.deleteBtn}
+          style={styles.deleteRow}
         >
-          <Text style={[typography.bodyLarge, styles.deleteText, { color: colors.error }]}>
-            {t('settings.deleteData')}
-          </Text>
+          <Ionicons name="trash" size={19} color={colors.error} />
+          <Text style={[typography.bodyLarge, { color: colors.error }]}>{t('settings.deleteData')}</Text>
         </Pressable>
-      </Card>
+      </AtelierGroup>
 
       <View style={styles.footer}>
         <Text style={typography.caption}>
-          🌙 {t('common.appName')} · {t('settings.version')}{' '}
-          {Constants.expoConfig?.version ?? '0.1.0'}
+          {t('common.appName')} · {t('settings.version')} {Constants.expoConfig?.version ?? '0.1.0'}
         </Text>
       </View>
     </Screen>
   );
 }
 
-function ToggleRow({
-  label,
-  value,
-  onChange,
+function AtelierGroup({
+  title,
+  icon,
+  children,
 }: {
-  label: string;
-  value: boolean;
-  onChange: (value: boolean) => void;
+  title: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  children: ReactNode;
 }) {
   const { colors, typography } = useTheme();
   return (
-    <View style={styles.infoRow}>
+    <Card variant="glass" style={styles.group}>
+      <View style={styles.groupHeader}>
+        <View style={[styles.groupIcon, { backgroundColor: colors.softRose }]}>
+          <Ionicons name={icon} size={18} color={colors.primary} />
+        </View>
+        <Text style={typography.title}>{title}</Text>
+      </View>
+      {children}
+    </Card>
+  );
+}
+
+function ToggleRow({ label, value, onChange }: { label: string; value: boolean; onChange: (value: boolean) => void }) {
+  const { colors, typography } = useTheme();
+  return (
+    <View style={styles.row}>
       <Text style={typography.bodyLarge}>{label}</Text>
       <Switch
         value={value}
@@ -275,6 +236,18 @@ function ToggleRow({
   );
 }
 
+function InfoRow({ label, value, muted = false }: { label: string; value: string; muted?: boolean }) {
+  const { colors, typography } = useTheme();
+  return (
+    <View style={styles.row}>
+      <Text style={typography.bodyLarge}>{label}</Text>
+      <Text style={[typography.body, styles.value, { color: muted ? colors.textSecondary : colors.primary }]}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
 function LinkRow({ label, onPress }: { label: string; onPress: () => void }) {
   const { colors, typography } = useTheme();
   return (
@@ -282,43 +255,56 @@ function LinkRow({ label, onPress }: { label: string; onPress: () => void }) {
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
-      style={styles.linkRow}
+      style={({ pressed }) => [styles.linkRow, pressed && styles.pressed]}
     >
       <Text style={typography.bodyLarge}>{label}</Text>
-      <Text style={[typography.title, { color: colors.textSecondary }]}>›</Text>
+      <Ionicons name="chevron-forward" size={19} color={colors.textSecondary} />
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: spacing(1.5),
-    padding: spacing(2),
-    gap: spacing(1),
+  screenContent: {
+    paddingBottom: spacing(13),
+  },
+  hero: {
     borderRadius: radius.sheet,
     borderWidth: 1,
+    padding: spacing(2.5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1.5),
+    ...shadows.md,
   },
-  backBtn: {
-    width: 44,
-    height: 44,
+  backButton: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: radius.lg,
-    backgroundColor: 'rgba(255,255,255,0.16)',
   },
-  backText: {
-    lineHeight: 40,
+  heroText: {
+    flex: 1,
+    gap: spacing(0.35),
   },
-  rows: {
+  group: {
     gap: spacing(1.5),
+    marginTop: spacing(2),
   },
-  value: {
-    fontWeight: '600',
+  groupHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
+  },
+  groupIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
-    borderRadius: radius.lg,
+    borderRadius: radius.card,
     borderWidth: 1,
     paddingHorizontal: spacing(2),
     minHeight: 52,
@@ -328,31 +314,35 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: spacing(1),
   },
-  infoRow: {
+  row: {
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: spacing(1),
+    gap: spacing(1.5),
+  },
+  value: {
+    flexShrink: 1,
+    textAlign: 'right',
   },
   linkRow: {
+    minHeight: 48,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: 44,
+    gap: spacing(1.5),
   },
-  bodyText: {
-    lineHeight: 21,
+  pressed: {
+    opacity: 0.72,
   },
-  deleteBtn: {
-    minHeight: 44,
-    justifyContent: 'center',
-  },
-  deleteText: {
-    fontWeight: '600',
+  deleteRow: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
   },
   footer: {
     alignItems: 'center',
-    gap: spacing(1),
     marginTop: spacing(4),
   },
 });

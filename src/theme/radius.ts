@@ -4,7 +4,7 @@ export const radius = {
   lg: 20,
   xl: 24,
   xxl: 32,
-  card: 24,
-  sheet: 32,
+  card: 28,
+  sheet: 40,
   pill: 999,
 } as const;

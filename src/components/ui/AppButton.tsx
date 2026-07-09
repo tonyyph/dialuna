@@ -43,11 +43,11 @@ export function AppButton({
 
   const variantStyle: Record<AppButtonVariant, ViewStyle> = {
     primary: {},
-    secondary: { backgroundColor: colors.softRose, borderWidth: 1, borderColor: colors.glassBorder },
+    secondary: { backgroundColor: colors.glassStrong, borderWidth: 1, borderColor: colors.glassBorder },
     ghost: { backgroundColor: 'transparent' },
   };
 
-  const textColor = variant === 'primary' ? colors.royalViolet : colors.primary;
+  const textColor = variant === 'primary' ? colors.royalViolet : colors.textPrimary;
 
   return (
     <Pressable
@@ -90,7 +90,7 @@ export function AppButton({
 const styles = StyleSheet.create({
   base: {
     minHeight: sizes.buttonHeight,
-    borderRadius: radius.lg,
+    borderRadius: radius.pill,
     paddingHorizontal: spacing(3),
     alignItems: 'center',
     justifyContent: 'center',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.94,
-    transform: [{ scale: 0.975 }],
+    transform: [{ scale: 0.97 }],
   },
   label: {
     textAlign: 'center',

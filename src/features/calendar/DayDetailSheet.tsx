@@ -1,11 +1,10 @@
 import { format, parseISO } from 'date-fns';
 import { router } from 'expo-router';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { SlideInDown } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { PhaseBadge } from '@/components/cycle/PhaseBadge';
+import { MoonSheet } from '@/components/lunar/MoonSheet';
 import { Button } from '@/components/ui/Button';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { getHormoneTwinProfile } from '@/services/hormoneTwinEngine';
@@ -21,8 +20,7 @@ interface Props {
 
 export function DayDetailSheet({ date, onClose }: Props) {
   const { t } = useTranslation();
-  const { colors, typography } = useTheme();
-  const insets = useSafeAreaInsets();
+  const { typography } = useTheme();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
 
@@ -32,21 +30,7 @@ export function DayDetailSheet({ date, onClose }: Props) {
   const isToday = date === todayISO();
 
   return (
-    <Modal visible transparent animationType="fade" onRequestClose={onClose}>
-      <Pressable
-        style={[styles.backdrop, { backgroundColor: colors.overlay }]}
-        onPress={onClose}
-        accessibilityLabel={t('common.close')}
-      />
-      <Animated.View
-        entering={SlideInDown.springify().damping(17).stiffness(150)}
-        style={[
-          styles.sheet,
-          { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder },
-          { paddingBottom: Math.max(insets.bottom + spacing(3), spacing(5)) },
-        ]}
-      >
-        <View style={[styles.handle, { backgroundColor: colors.border }]} />
+    <MoonSheet visible onClose={onClose} accessibilityLabel={t('common.close')}>
         <Text style={typography.title}>{format(parseISO(date), 'EEEE, MMM d')}</Text>
         <View style={styles.badgeRow}>
           <PhaseBadge phase={twin.phase} pms={twin.isPmsWindow} />
@@ -75,8 +59,7 @@ export function DayDetailSheet({ date, onClose }: Props) {
             style={styles.cta}
           />
         )}
-      </Animated.View>
-    </Modal>
+    </MoonSheet>
   );
 }
 
@@ -93,22 +76,6 @@ function ScoreRow({ label, value }: { label: string; value: number }) {
 }
 
 const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-  },
-  sheet: {
-    borderTopLeftRadius: radius.sheet,
-    borderTopRightRadius: radius.sheet,
-    borderWidth: 1,
-    padding: spacing(3),
-    gap: spacing(1.5),
-  },
-  handle: {
-    alignSelf: 'center',
-    width: 40,
-    height: 4,
-    borderRadius: radius.pill,
-  },
   badgeRow: {
     flexDirection: 'row',
     alignItems: 'center',

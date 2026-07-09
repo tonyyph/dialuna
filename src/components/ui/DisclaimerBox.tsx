@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { radius, spacing } from '@/theme';
@@ -14,7 +15,7 @@ export function DisclaimerBox({ text }: Props) {
       style={[styles.box, { backgroundColor: colors.phaseSoft.ovulation }]}
       accessibilityRole="text"
     >
-      <Text style={styles.icon}>🌿</Text>
+      <Ionicons name="leaf" size={15} color={colors.semantic.info} style={styles.icon} />
       <Text style={[styles.text, typography.caption]}>{text}</Text>
     </View>
   );
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   icon: {
-    fontSize: 14,
     marginTop: 1,
   },
   text: {

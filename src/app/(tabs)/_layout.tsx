@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs, router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MoonMark } from '@/components/ui/MoonMark';
@@ -51,7 +51,16 @@ function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable
             accessibilityLabel={descriptors[route.key].options.title ?? route.name}
             style={[styles.tabButton, isFocused && { transform: [{ scale: 1.05 }] }]}
           >
-            <Ionicons name={iconName} size={24} color={isFocused ? colors.primary : colors.textSecondary} />
+            <Ionicons name={iconName} size={22} color={isFocused ? colors.primary : colors.textSecondary} />
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.tabLabel,
+                { color: isFocused ? colors.primary : colors.textSecondary },
+              ]}
+            >
+              {descriptors[route.key].options.title ?? route.name}
+            </Text>
             <View style={[styles.dot, { backgroundColor: isFocused ? colors.primary : 'transparent' }]} />
           </Pressable>
         );
@@ -92,17 +101,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 22,
-    paddingVertical: 12,
-    borderRadius: 30,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 34,
     borderWidth: 1,
   },
   tabButton: {
     alignItems: 'center',
-    gap: 4,
-    width: 44,
-    height: 44,
+    gap: 2,
+    width: 58,
+    minHeight: 50,
     justifyContent: 'center',
+  },
+  tabLabel: {
+    fontFamily: 'PlusJakartaSans_600SemiBold',
+    fontSize: 9,
+    lineHeight: 12,
   },
   dot: {
     width: 4,

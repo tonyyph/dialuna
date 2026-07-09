@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { radius, spacing } from '@/theme';
@@ -13,7 +14,11 @@ export function MessageBubble({ role, text }: Props) {
   const isUser = role === 'user';
   return (
     <View style={[styles.row, isUser && styles.rowUser]}>
-      {!isUser && <Text style={styles.avatar}>🌙</Text>}
+      {!isUser && (
+        <View style={[styles.avatar, { backgroundColor: colors.softRose }]}>
+          <Ionicons name="moon" size={15} color={colors.primary} />
+        </View>
+      )}
       <View
         style={[
           styles.bubble,
@@ -46,7 +51,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   avatar: {
-    fontSize: 20,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bubble: {
     maxWidth: '82%',
