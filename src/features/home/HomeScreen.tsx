@@ -225,7 +225,7 @@ export function HomeScreen() {
       </View>
 
       <Pressable onPress={() => router.push('/(tabs)/log')} accessibilityRole="button">
-        <Text>Log how you're feeling</Text>
+        <Text>{"Log how you're feeling"}</Text>
       </Pressable>
     </Screen>
   );
