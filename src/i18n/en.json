@@ -166,7 +166,7 @@
       "cta": "See Premium"
     },
     "lunar": {
-      "cover": "Today's Lunar Cover",
+      "cover": "Today's Observatory",
       "todayNote": "Today's lunar note",
       "noteTitle": "A softer read for today",
       "beginRitual": "Begin today's ritual",
@@ -182,7 +182,7 @@
       "islands": {
         "log": "Log Ritual",
         "logValue": "2 minutes",
-        "ai": "Ask Luna",
+        "ai": "Ask Coach",
         "aiValue": "Gentle read",
         "calendar": "Orbit Map",
         "insights": "Constellation",
@@ -243,7 +243,7 @@
       "title": "Daily Ritual",
       "progress": "Ritual progress",
       "introTitle": "Begin today's ritual",
-      "introBody": "A few gentle questions help Luna understand your emotional weather and body signals.",
+      "introBody": "A few gentle questions map your emotional weather and body signals.",
       "start": "Start ritual",
       "moodTitle": "What is your emotional weather?",
       "moodHelper": "Choose whatever feels closest to now.",
@@ -251,18 +251,18 @@
       "signalsTitle": "What signals is your body sending?",
       "signalsHelper": "Add flow and any body signals you noticed today.",
       "energyTitle": "How much light do you have today?",
-      "energyHelper": "Energy, sleep, and stress help Luna read your rhythm more clearly.",
+      "energyHelper": "Energy, sleep, and stress make your rhythm easier to read.",
       "movementTitle": "How did your body move?",
       "movementHelper": "Rest counts. Soft movement counts too.",
       "reflectionTitle": "Leave a note for future you",
-      "reflectionHelper": "A sentence is enough. Luna will remember the pattern.",
+      "reflectionHelper": "A sentence is enough. Dialuna will save the pattern.",
       "reflectionPlaceholder": "Today I noticed...",
       "complete": "Complete ritual",
       "completeTitle": "Your ritual is complete",
-      "completeBody": "Luna has added today's signals to your constellation.",
+      "completeBody": "Today's signals have been added to your constellation.",
       "saved": "Saved to your constellation",
       "returnOrbit": "Return to orbit",
-      "askLuna": "Ask Luna about this"
+      "askCoach": "Ask AI Coach about this"
     },
     "reflection": {
       "menstrual": "Thanks for logging, {{name}}. Cramps or low energy may fit your menstrual phase. Warmth, hydration, and rest can help today.",
@@ -284,14 +284,14 @@
     "limitReached": "You've used your 3 free questions today. Premium unlocks unlimited coaching.",
     "emptyTitle": "Ask me anything about your cycle",
     "emptyBody": "I use your logs and cycle phase to answer. Try a suggestion below.",
-    "luna": {
-      "kicker": "Luna Companion",
-      "title": "Ask Luna",
-      "emptyTitle": "Bring Luna a question",
+    "coach": {
+      "kicker": "AI Coach",
+      "title": "Ask AI Coach",
+      "emptyTitle": "Ask about your rhythm",
       "emptyBody": "Ask about mood, energy, your phase, or what your body may be asking for today.",
       "placeholder": "Ask what your body may be telling you...",
-      "thinking": "Luna is reading your rhythm",
-      "note": "Luna note"
+      "thinking": "Reading your rhythm",
+      "note": "Coach note"
     },
     "prompts": {
       "p1": "Why am I feeling tired today?",
@@ -528,7 +528,7 @@
     "innerCircle": {
       "kicker": "Inner Circle",
       "title": "Enter the Inner Circle",
-      "body": "Go deeper into your rhythm with richer forecasts, unlimited Luna guidance, and monthly constellation reports.",
+      "body": "Go deeper into your rhythm with richer forecasts, unlimited AI coaching, and monthly constellation reports.",
       "cta": "Start Inner Circle"
     },
     "restore": "Restore purchase",
@@ -585,7 +585,7 @@
   "tabs": {
     "home": "Home",
     "calendar": "Calendar",
-    "log": "Log",
+    "log": "Track",
     "ai": "AI",
     "insights": "Insights"
   }

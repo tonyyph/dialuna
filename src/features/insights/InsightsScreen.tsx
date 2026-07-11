@@ -8,10 +8,10 @@ import { useTranslation } from 'react-i18next';
 import { AuroraStage } from '@/components/lunar/AuroraStage';
 import { ConstellationMap } from '@/components/lunar/ConstellationMap';
 import { LoadingAurora } from '@/components/lunar/LoadingAurora';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { Screen } from '@/components/ui/Screen';
 import { computeInsights } from '@/services/insightsEngine';
 import { useLogStore, usePremiumStore, useUserStore } from '@/store';
@@ -64,7 +64,7 @@ export function InsightsScreen() {
       <View style={styles.content}>
         {notEnoughLogs ? (
           <Card variant="moonstone" style={styles.emptyPanel}>
-            <LunarCompanion size={104} state="thinking" />
+            <OrbitalMark size={104} state="thinking" />
             <Text style={[typography.displayL, styles.emptyTitle]}>{t('insights.empty.title')}</Text>
             <Text style={[typography.bodyLarge, styles.centerText]}>{t('insights.empty.body')}</Text>
             <Button label={t('home.lunar.beginRitual')} onPress={() => router.push('/(tabs)/log')} />

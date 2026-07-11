@@ -6,8 +6,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { AuroraStage } from '@/components/lunar/AuroraStage';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
 import { LunarButton } from '@/components/lunar/LunarButton';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { Screen } from '@/components/ui/Screen';
 import { usePremiumStore } from '@/store';
 import { radius, shadows, spacing } from '@/theme';
@@ -69,7 +69,7 @@ export function PaywallScreen() {
         <View style={styles.innerCircleHero}>
           <View style={[styles.outerRing, { borderColor: colors.champagneGold }]} />
           <View style={[styles.midRing, { borderColor: colors.lilac }]} />
-          <LunarCompanion size={126} premium state="celebrating" />
+          <OrbitalMark size={126} premium state="celebrating" />
         </View>
 
         <View style={styles.heroCopy}>

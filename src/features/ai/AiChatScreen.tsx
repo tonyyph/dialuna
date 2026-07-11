@@ -6,8 +6,8 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { AuroraStage } from '@/components/lunar/AuroraStage';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
@@ -38,21 +38,21 @@ export function AiChatScreen() {
       <AuroraStage style={styles.stage}>
         <View style={styles.hero}>
           <View style={styles.heroCopy}>
-            <Text style={[typography.caption, styles.heroMeta]}>{t('ai.luna.kicker')}</Text>
-            <Text style={[typography.displayXl, styles.heroTitle]}>{t('ai.luna.title')}</Text>
+            <Text style={[typography.caption, styles.heroMeta]}>{t('ai.coach.kicker')}</Text>
+            <Text style={[typography.displayXl, styles.heroTitle]}>{t('ai.coach.title')}</Text>
             <Text style={[typography.body, styles.heroBody]}>
               {isPremium ? t('ai.unlimited') : t('ai.remaining', { count: remaining() })}
             </Text>
           </View>
-          <LunarCompanion state={typing ? 'thinking' : 'listening'} size={104} premium={isPremium} />
+          <OrbitalMark state={typing ? 'thinking' : 'listening'} size={104} premium={isPremium} />
         </View>
       </AuroraStage>
 
       <View style={styles.chatShell}>
         {messages.length === 0 ? (
           <Animated.View entering={FadeInDown.duration(360)} style={styles.emptyState}>
-            <Text style={[typography.displayL, styles.emptyTitle]}>{t('ai.luna.emptyTitle')}</Text>
-            <Text style={typography.bodyLarge}>{t('ai.luna.emptyBody')}</Text>
+            <Text style={[typography.displayL, styles.emptyTitle]}>{t('ai.coach.emptyTitle')}</Text>
+            <Text style={typography.bodyLarge}>{t('ai.coach.emptyBody')}</Text>
             <PromptConstellation onSelect={submit} />
           </Animated.View>
         ) : (
@@ -60,7 +60,7 @@ export function AiChatScreen() {
             ref={listRef}
             data={messages}
             keyExtractor={(message) => message.id}
-            renderItem={({ item }) => <LunaMessage role={item.role} text={item.text} />}
+            renderItem={({ item }) => <CoachMessage role={item.role} text={item.text} />}
             contentContainerStyle={styles.list}
             onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: true })}
             ListFooterComponent={typing ? <SignalPulse /> : null}
@@ -74,9 +74,9 @@ export function AiChatScreen() {
             style={[typography.bodyLarge, styles.input]}
             value={input}
             onChangeText={setInput}
-            placeholder={t('ai.luna.placeholder')}
+            placeholder={t('ai.coach.placeholder')}
             placeholderTextColor={colors.textSecondary}
-            accessibilityLabel={t('ai.luna.placeholder')}
+            accessibilityLabel={t('ai.coach.placeholder')}
             onSubmitEditing={() => submit(input)}
             returnKeyType="send"
           />
@@ -170,7 +170,7 @@ function PromptSignal({
   );
 }
 
-function LunaMessage({ role, text }: { role: 'user' | 'coach'; text: string }) {
+function CoachMessage({ role, text }: { role: 'user' | 'coach'; text: string }) {
   const { t } = useTranslation();
   const { colors, typography } = useTheme();
   const isUser = role === 'user';
@@ -195,7 +195,7 @@ function LunaMessage({ role, text }: { role: 'user' | 'coach'; text: string }) {
         ]}
       >
         {!isUser ? (
-          <Text style={[typography.caption, { color: colors.primary }]}>{t('ai.luna.note')}</Text>
+          <Text style={[typography.caption, { color: colors.primary }]}>{t('ai.coach.note')}</Text>
         ) : null}
         <Text style={[typography.bodyLarge, isUser && { color: colors.moonWhite }]}>{text}</Text>
       </View>
@@ -211,7 +211,7 @@ function SignalPulse() {
       <View style={[styles.pulseIcon, { backgroundColor: colors.softRose }]}>
         <Ionicons name="radio" size={18} color={colors.primary} />
       </View>
-      <Text style={[typography.caption, { color: colors.primary }]}>{t('ai.luna.thinking')}</Text>
+      <Text style={[typography.caption, { color: colors.primary }]}>{t('ai.coach.thinking')}</Text>
     </Animated.View>
   );
 }

@@ -3,9 +3,9 @@ import { ThemeTokens } from './tokens/types';
 export type AccentKey = 'lavender' | 'rose' | 'auroraBlue';
 
 export const accentPairs: Record<AccentKey, { secondary: string; primary: string }> = {
-  lavender: { secondary: '#8B6FE8', primary: '#B9A6F2' },
-  rose: { secondary: '#E87A97', primary: '#F5B8C4' },
-  auroraBlue: { secondary: '#5AA9E6', primary: '#8FD2F2' },
+  lavender: { secondary: '#287B7A', primary: '#76D1C5' },
+  rose: { secondary: '#B85E73', primary: '#D46A86' },
+  auroraBlue: { secondary: '#5C93D3', primary: '#82B6E8' },
 };
 
 /**

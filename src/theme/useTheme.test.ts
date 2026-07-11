@@ -7,14 +7,14 @@ import { buildTypography } from './typography';
 describe('theme resolution', () => {
   it('dark mode + lavender accent resolves textPrimary/deepMidnight correctly', () => {
     const colors = applyAccent(darkTokens, 'lavender');
-    expect(colors.deepMidnight).toBe('#0E0920');
-    expect(colors.textPrimary).toBe('#F4F1FB');
+    expect(colors.deepMidnight).toBe('#07080B');
+    expect(colors.textPrimary).toBe('#F6F1E8');
   });
 
   it('light mode resolves a light deepMidnight regardless of accent', () => {
     const colors = applyAccent(lightTokens, 'rose');
-    expect(colors.deepMidnight).toBe('#FBF7FF');
-    expect(colors.primary).toBe('#F5B8C4');
+    expect(colors.deepMidnight).toBe('#F6F1E8');
+    expect(colors.primary).toBe('#D46A86');
   });
 
   it('typography.body color matches the resolved textSecondary', () => {

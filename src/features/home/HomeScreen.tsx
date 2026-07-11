@@ -1,16 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { AuroraStage } from '@/components/lunar/AuroraStage';
 import { LoadingAurora } from '@/components/lunar/LoadingAurora';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
-import { OrbitalIsland } from '@/components/lunar/OrbitalIsland';
 import { PhaseRing } from '@/components/lunar/PhaseRing';
 import { PremiumBanner } from '@/components/paywall/PremiumBanner';
 import { Button } from '@/components/ui/Button';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { usePremiumStore } from '@/store';
@@ -42,20 +40,21 @@ export function HomeScreen() {
   const isPremium = usePremiumStore((s) => s.isPremium);
 
   if (!ctx) return <LoadingAurora fullScreen label={t('common.loading')} />;
+
   const { profile, prediction, twin, week } = ctx;
+  const cycleProgress = prediction.cycleDay / profile.averageCycleLength;
+  const phaseLabel = t(`phases.${prediction.phase}`);
   const periodText =
     prediction.daysUntilPeriod === 0
       ? t('home.periodToday')
       : t('home.periodIn', { count: prediction.daysUntilPeriod });
-  const cycleProgress = prediction.cycleDay / profile.averageCycleLength;
-  const phaseLabel = t(`phases.${prediction.phase}`);
 
   return (
     <Screen edgeToEdge contentContainerStyle={styles.screenContent}>
-      <AuroraStage style={styles.cover}>
-        <View style={styles.coverChrome}>
+      <AuroraStage style={styles.stage}>
+        <View style={styles.topBar}>
           <View>
-            <Text style={[typography.micro, styles.coverMeta]}>{t('home.lunar.cover')}</Text>
+            <Text style={[typography.micro, styles.meta]}>Today</Text>
             <Text style={[typography.subtitle, styles.greeting]}>
               {t(greetingKey(), { name: profile.nickname })}
             </Text>
@@ -65,115 +64,70 @@ export function HomeScreen() {
             accessibilityLabel={t('settings.title')}
             onPress={() => router.push('/settings')}
             hitSlop={10}
-            style={styles.settingsButton}
+            style={styles.iconButton}
           >
-            <Ionicons name="options-outline" size={22} color={colors.moonWhite} />
+            <Ionicons name="options-outline" size={21} color={colors.moonWhite} />
           </Pressable>
         </View>
 
-        <View style={styles.editorialBlock}>
-          <Text style={[typography.displayXl, styles.coverHeadline]}>
-            {t(headlineKey(prediction.phase))}
-          </Text>
-          <Text style={[typography.body, styles.coverBody]}>{t(twin.coachMessageKey)}</Text>
+        <View style={styles.signalStage}>
+          <View style={styles.phaseVisual}>
+            <PhaseRing phase={prediction.phase} progress={cycleProgress} size={232} />
+            <View style={styles.markCenter}>
+              <OrbitalMark size={112} premium={isPremium} />
+            </View>
+          </View>
+
+          <View style={styles.signalCopy}>
+            <View style={[styles.phasePill, { borderColor: colors.glassBorder, backgroundColor: colors.glass }]}>
+              <View style={[styles.phaseDot, { backgroundColor: colors.phase[prediction.phase] }]} />
+              <Text style={[typography.caption, styles.phaseText]}>{phaseLabel}</Text>
+              <Text style={[typography.caption, styles.phaseText]}>
+                {t('common.cycleDay', { day: prediction.cycleDay })}
+              </Text>
+            </View>
+            <Text style={[typography.displayXl, styles.headline]}>
+              {t(headlineKey(prediction.phase))}
+            </Text>
+            <Text style={[typography.bodyLarge, styles.body]}>{t(twin.coachMessageKey)}</Text>
+          </View>
         </View>
 
-        <View style={styles.moonSystem} pointerEvents="box-none">
-          <PhaseRing phase={prediction.phase} progress={cycleProgress} size={216} />
-          <View style={styles.companionCenter}>
-            <LunarCompanion size={136} premium={isPremium} />
-          </View>
-          <View style={[styles.phasePill, { backgroundColor: colors.glass, borderColor: colors.glassBorder }]}>
-            <Text style={[typography.caption, styles.phasePillText]}>{phaseLabel}</Text>
-          </View>
-        </View>
-
-        <View style={styles.orbitField} pointerEvents="box-none">
-          <OrbitalIsland
-            icon="add-circle"
-            label={t('home.lunar.islands.log')}
-            value={t('home.lunar.islands.logValue')}
-            accent={colors.roseDeep}
-            onPress={() => router.push('/(tabs)/log')}
-            style={styles.logIsland}
-          />
-          <OrbitalIsland
-            icon="chatbubble-ellipses"
-            label={t('home.lunar.islands.ai')}
-            value={t('home.lunar.islands.aiValue')}
-            accent={colors.auroraBlue}
+        <View style={styles.stageActions}>
+          <Button label={t('home.logNow')} onPress={() => router.push('/(tabs)/log')} />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('home.askAi')}
             onPress={() => router.push('/(tabs)/ai')}
-            style={styles.aiIsland}
-          />
-          <OrbitalIsland
-            icon="calendar"
-            label={t('home.lunar.islands.calendar')}
-            value={t('common.cycleDay', { day: prediction.cycleDay })}
-            accent={colors.ovulationBlue}
-            onPress={() => router.push('/(tabs)/calendar')}
-            style={styles.calendarIsland}
-          />
-          <OrbitalIsland
-            icon="analytics"
-            label={t('home.lunar.islands.insights')}
-            value={t(wellnessTone(twin.hormoneTwinScore))}
-            accent={colors.lilac}
-            onPress={() => router.push('/(tabs)/insights')}
-            style={styles.insightIsland}
-          />
-          <OrbitalIsland
-            icon="sparkles"
-            label={t('home.lunar.islands.forecast')}
-            value={periodText}
-            accent={colors.champagneGold}
-            onPress={() => router.push('/(tabs)/calendar')}
-            style={styles.forecastIsland}
-          />
+            style={({ pressed }) => [
+              styles.aiAction,
+              { borderColor: colors.glassBorder, backgroundColor: colors.glass },
+              pressed && styles.pressed,
+            ]}
+          >
+            <Ionicons name="sparkles" size={18} color={colors.primary} />
+            <Text style={[typography.button, { color: colors.moonWhite }]}>{t('home.askAi')}</Text>
+          </Pressable>
         </View>
       </AuroraStage>
 
-      <View style={styles.journal}>
-        <Animated.View entering={FadeInDown.duration(420)}>
-          <TodayNote message={t(twin.coachMessageKey)} />
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(80).duration(420)}>
-          <TwinOrbit
-            score={twin.hormoneTwinScore}
-            phase={phaseLabel}
-            energy={twin.energyScore}
-            mood={twin.moodScore}
-            focus={twin.focusScore}
-          />
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(140).duration(420)}>
-          <ForecastRibbon week={week} />
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(200).duration(420)}>
-          {isPremium ? <InnerCirclePlan twin={twin} /> : <PremiumBanner onPress={() => router.push('/paywall')} />}
-        </Animated.View>
+      <View style={styles.content}>
+        <RhythmScore
+          score={twin.hormoneTwinScore}
+          phase={phaseLabel}
+          energy={twin.energyScore}
+          mood={twin.moodScore}
+          focus={twin.focusScore}
+        />
+        <NextEvent value={periodText} />
+        <ForecastStrip week={week} />
+        {isPremium ? <InnerCirclePlan twin={twin} /> : <PremiumBanner onPress={() => router.push('/paywall')} />}
       </View>
     </Screen>
   );
 }
 
-function TodayNote({ message }: { message: string }) {
-  const { t } = useTranslation();
-  const { colors, typography } = useTheme();
-
-  return (
-    <View style={[styles.notePanel, { backgroundColor: colors.surface.elevated, borderColor: colors.border }]}>
-      <Text style={[typography.caption, { color: colors.primary }]}>{t('home.lunar.todayNote')}</Text>
-      <Text style={[typography.displayL, styles.noteTitle]}>{t('home.lunar.noteTitle')}</Text>
-      <Text style={typography.bodyLarge}>{message}</Text>
-      <Button label={t('home.lunar.beginRitual')} variant="secondary" onPress={() => router.push('/(tabs)/log')} />
-    </View>
-  );
-}
-
-function TwinOrbit({
+function RhythmScore({
   score,
   phase,
   energy,
@@ -190,20 +144,22 @@ function TwinOrbit({
   const { colors, typography } = useTheme();
 
   return (
-    <View style={[styles.twinPanel, { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder }]}>
-      <View style={styles.twinCopy}>
-        <Text style={[typography.caption, { color: colors.primary }]}>{phase}</Text>
-        <Text style={typography.headline}>{t('home.twinScore')}</Text>
-        <Text style={typography.body}>{t('home.lunar.twinBody')}</Text>
+    <View style={[styles.panel, { backgroundColor: colors.surface.elevated, borderColor: colors.border }]}>
+      <View style={styles.panelHeader}>
+        <View>
+          <Text style={[typography.caption, { color: colors.primary }]}>{phase}</Text>
+          <Text style={typography.headline}>{t('home.twinScore')}</Text>
+        </View>
+        <View style={[styles.scoreBadge, { borderColor: colors.glassBorder, backgroundColor: colors.softRose }]}>
+          <Text style={[typography.displayL, { color: colors.primary }]}>{score}</Text>
+          <Text style={[typography.caption, styles.scoreLabel]}>{t(wellnessTone(score))}</Text>
+        </View>
       </View>
-      <View style={[styles.scoreMoon, { backgroundColor: colors.softRose, borderColor: colors.glassBorder }]}>
-        <Text style={[typography.displayL, { color: colors.primary }]}>{score}</Text>
-        <Text style={[typography.caption, styles.scoreLabel]}>{t(wellnessTone(score))}</Text>
-      </View>
-      <View style={styles.signalRow}>
-        <Signal label={t('home.forecast.energy')} value={energy} color={colors.ovulationBlue} />
-        <Signal label={t('home.forecast.mood')} value={mood} color={colors.roseDeep} />
-        <Signal label={t('home.forecast.focus')} value={focus} color={colors.auroraBlue} />
+      <Text style={typography.body}>{t('home.lunar.twinBody')}</Text>
+      <View style={styles.signalGrid}>
+        <Signal label={t('home.forecast.energy')} value={energy} color={colors.phase.follicular} />
+        <Signal label={t('home.forecast.mood')} value={mood} color={colors.phase.menstrual} />
+        <Signal label={t('home.forecast.focus')} value={focus} color={colors.phase.ovulation} />
       </View>
     </View>
   );
@@ -220,31 +176,56 @@ function Signal({ label, value, color }: { label: string; value: number; color: 
   );
 }
 
-function ForecastRibbon({ week }: { week: HormoneTwinDailyProfile[] }) {
+function NextEvent({ value }: { value: string }) {
+  const { t } = useTranslation();
+  const { colors, typography } = useTheme();
+  return (
+    <View style={[styles.nextEvent, { backgroundColor: colors.glassStrong, borderColor: colors.glassBorder }]}>
+      <View style={[styles.eventIcon, { backgroundColor: colors.softRose }]}>
+        <Ionicons name="calendar" size={18} color={colors.primary} />
+      </View>
+      <View style={styles.eventCopy}>
+        <Text style={[typography.caption, { color: colors.text.tertiary }]}>{t('calendar.title')}</Text>
+        <Text style={typography.subtitle}>{value}</Text>
+      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={t('tabs.calendar')}
+        onPress={() => router.push('/(tabs)/calendar')}
+        hitSlop={10}
+        style={styles.eventButton}
+      >
+        <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+      </Pressable>
+    </View>
+  );
+}
+
+function ForecastStrip({ week }: { week: HormoneTwinDailyProfile[] }) {
   const { t } = useTranslation();
   const { colors, typography } = useTheme();
 
   return (
-    <View style={styles.ribbonSection}>
+    <View style={styles.forecastSection}>
       <View style={styles.sectionHeader}>
-        <Text style={typography.title}>{t('home.lunar.forecastRibbon')}</Text>
-        <Text style={[typography.caption, { color: colors.primary }]}>{t('home.weekForecast')}</Text>
+        <Text style={typography.title}>{t('home.weekForecast')}</Text>
+        <Text style={[typography.caption, { color: colors.primary }]}>7 days</Text>
       </View>
-      <View style={styles.ribbon}>
+      <View style={styles.forecastStrip}>
         {week.slice(0, 7).map((day, index) => (
           <View
             key={day.date}
             style={[
-              styles.ribbonDay,
+              styles.forecastDay,
               {
                 backgroundColor: colors.phaseSoft[day.phase],
                 borderColor: index === 0 ? colors.phase[day.phase] : colors.border,
               },
             ]}
           >
-            <Text style={[typography.caption, styles.ribbonDate]}>{day.date.slice(5)}</Text>
-            <View style={[styles.ribbonNode, { backgroundColor: colors.phase[day.phase] }]} />
-            <Text style={[typography.caption, styles.ribbonScore]}>{day.hormoneTwinScore}</Text>
+            <Text style={[typography.caption, styles.dayDate]}>{day.date.slice(5)}</Text>
+            <View style={[styles.dayMarker, { backgroundColor: colors.phase[day.phase] }]} />
+            <Text style={[typography.caption, styles.dayScore]}>{day.hormoneTwinScore}</Text>
           </View>
         ))}
       </View>
@@ -258,8 +239,7 @@ function InnerCirclePlan({ twin }: { twin: HormoneTwinDailyProfile }) {
   const tipKeys = [...twin.foodTipKeys, ...twin.workoutTipKeys, ...twin.selfCareTipKeys].slice(0, 3);
 
   return (
-    <View style={[styles.innerCircle, { backgroundColor: colors.royalViolet }]}>
-      <View style={[styles.innerRing, { borderColor: colors.champagneGold }]} />
+    <View style={[styles.innerCircle, { backgroundColor: colors.royalViolet, borderColor: colors.champagneGold }]}>
       <Text style={[typography.caption, styles.innerMeta]}>{t('home.lunar.innerCircle')}</Text>
       <Text style={[typography.headline, styles.innerTitle]}>{t('home.plan.title')}</Text>
       {tipKeys.map((key) => (
@@ -273,142 +253,128 @@ function InnerCirclePlan({ twin }: { twin: HormoneTwinDailyProfile }) {
 
 const styles = StyleSheet.create({
   screenContent: {
-    paddingBottom: spacing(14),
+    paddingBottom: spacing(13),
   },
-  cover: {
-    minHeight: 780,
+  stage: {
+    minHeight: 608,
     borderBottomLeftRadius: radius.sheet,
     borderBottomRightRadius: radius.sheet,
   },
-  coverChrome: {
+  topBar: {
     paddingTop: spacing(2.5),
-    paddingHorizontal: spacing(3),
+    paddingHorizontal: spacing(2.5),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: spacing(2),
   },
-  coverMeta: {
-    color: 'rgba(255,255,255,0.68)',
+  meta: {
+    color: 'rgba(246,241,232,0.62)',
   },
   greeting: {
-    color: '#FFF8F1',
+    color: '#F6F1E8',
     marginTop: 2,
   },
-  settingsButton: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+  iconButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.24)',
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderColor: 'rgba(246,241,232,0.18)',
+    backgroundColor: 'rgba(246,241,232,0.10)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  editorialBlock: {
-    paddingHorizontal: spacing(3),
-    marginTop: spacing(2.5),
-    width: '92%',
+  signalStage: {
+    paddingHorizontal: spacing(2.5),
+    paddingTop: spacing(2.5),
+    alignItems: 'center',
   },
-  coverHeadline: {
-    color: '#FFF8F1',
-    fontSize: 43,
-    lineHeight: 45,
-  },
-  coverBody: {
-    color: 'rgba(255,255,255,0.76)',
-    marginTop: spacing(1.25),
-    maxWidth: 318,
-  },
-  moonSystem: {
-    alignSelf: 'center',
-    width: 216,
-    height: 216,
+  phaseVisual: {
+    width: 232,
+    height: 232,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: spacing(2.25),
   },
-  companionCenter: {
+  markCenter: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  signalCopy: {
+    marginTop: spacing(2),
+    alignItems: 'center',
+    gap: spacing(1),
   },
   phasePill: {
-    position: 'absolute',
-    bottom: -12,
+    minHeight: 34,
     borderRadius: radius.pill,
     borderWidth: 1,
     paddingHorizontal: spacing(1.5),
-    paddingVertical: spacing(0.75),
-  },
-  phasePillText: {
-    color: 'rgba(255,255,255,0.8)',
-  },
-  orbitField: {
-    flex: 1,
-    marginTop: spacing(0.5),
-  },
-  logIsland: {
-    position: 'absolute',
-    left: spacing(3),
-    top: spacing(2),
-    width: 145,
-  },
-  aiIsland: {
-    position: 'absolute',
-    right: spacing(3),
-    top: spacing(0.75),
-    width: 142,
-  },
-  calendarIsland: {
-    position: 'absolute',
-    left: spacing(2.5),
-    top: spacing(13),
-    width: 154,
-  },
-  insightIsland: {
-    position: 'absolute',
-    right: spacing(2.5),
-    top: spacing(13.5),
-    width: 156,
-  },
-  forecastIsland: {
-    position: 'absolute',
-    left: '28%',
-    top: spacing(23.5),
-    width: 178,
-  },
-  journal: {
-    paddingHorizontal: spacing(2.5),
-    paddingTop: spacing(3),
-    gap: spacing(3),
-  },
-  notePanel: {
-    borderRadius: radius.sheet,
-    borderWidth: 1,
-    padding: spacing(3),
-    gap: spacing(1.5),
-    ...shadows.lg,
-  },
-  noteTitle: {
-    maxWidth: 260,
-  },
-  twinPanel: {
-    borderRadius: radius.sheet,
-    borderWidth: 1,
-    padding: spacing(2.5),
-    ...shadows.md,
-  },
-  twinCopy: {
-    width: '68%',
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: spacing(0.75),
   },
-  scoreMoon: {
-    position: 'absolute',
-    top: spacing(2.5),
-    right: spacing(2.5),
-    width: 92,
-    height: 92,
-    borderRadius: 46,
+  phaseDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  phaseText: {
+    color: 'rgba(246,241,232,0.78)',
+  },
+  headline: {
+    maxWidth: 348,
+    color: '#F6F1E8',
+    textAlign: 'center',
+    fontSize: 42,
+    lineHeight: 45,
+  },
+  body: {
+    color: 'rgba(246,241,232,0.72)',
+    textAlign: 'center',
+    maxWidth: 334,
+  },
+  stageActions: {
+    paddingHorizontal: spacing(2.5),
+    paddingTop: spacing(3),
+    gap: spacing(1.25),
+  },
+  aiAction: {
+    minHeight: 52,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing(0.75),
+  },
+  pressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.92,
+  },
+  content: {
+    paddingHorizontal: spacing(2.5),
+    paddingTop: spacing(3),
+    gap: spacing(2.5),
+  },
+  panel: {
+    borderRadius: radius.card,
+    borderWidth: 1,
+    padding: spacing(2.5),
+    gap: spacing(1.5),
+    ...shadows.md,
+  },
+  panelHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: spacing(2),
+  },
+  scoreBadge: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -416,10 +382,9 @@ const styles = StyleSheet.create({
   scoreLabel: {
     textAlign: 'center',
   },
-  signalRow: {
+  signalGrid: {
     flexDirection: 'row',
     gap: spacing(1),
-    marginTop: spacing(2.5),
   },
   signal: {
     flex: 1,
@@ -430,8 +395,34 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 5,
   },
-  ribbonSection: {
-    gap: spacing(1.5),
+  nextEvent: {
+    minHeight: 76,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    padding: spacing(1.5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1.25),
+  },
+  eventIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  eventCopy: {
+    flex: 1,
+  },
+  eventButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  forecastSection: {
+    gap: spacing(1.25),
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -439,56 +430,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: spacing(2),
   },
-  ribbon: {
+  forecastStrip: {
     flexDirection: 'row',
     gap: spacing(1),
   },
-  ribbonDay: {
+  forecastDay: {
     flex: 1,
-    minHeight: 110,
-    borderRadius: radius.xl,
+    minHeight: 104,
+    borderRadius: radius.lg,
     borderWidth: 1,
     paddingVertical: spacing(1.25),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  ribbonDate: {
+  dayDate: {
     fontSize: 10,
   },
-  ribbonNode: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+  dayMarker: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
   },
-  ribbonScore: {
+  dayScore: {
     fontSize: 11,
   },
   innerCircle: {
-    borderRadius: radius.sheet,
-    padding: spacing(3),
-    overflow: 'hidden',
+    borderRadius: radius.card,
+    borderWidth: 1,
+    padding: spacing(2.5),
     ...shadows.bloom,
   },
-  innerRing: {
-    position: 'absolute',
-    width: 210,
-    height: 210,
-    borderRadius: 105,
-    borderWidth: 1,
-    opacity: 0.28,
-    right: -72,
-    top: -64,
-  },
   innerMeta: {
-    color: 'rgba(255,255,255,0.68)',
+    color: 'rgba(246,241,232,0.62)',
   },
   innerTitle: {
-    color: '#FFF8F1',
+    color: '#F6F1E8',
     marginTop: spacing(0.5),
     marginBottom: spacing(1.5),
   },
   innerTip: {
-    color: 'rgba(255,255,255,0.78)',
+    color: 'rgba(246,241,232,0.72)',
     marginTop: spacing(0.5),
   },
 });

@@ -1,18 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Tabs, router } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { MoonMark } from '@/components/ui/MoonMark';
 import { useTheme } from '@/theme/useTheme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
 const TAB_ICON: Record<string, IconName> = {
-  home: 'moon',
+  home: 'planet',
   calendar: 'calendar',
+  log: 'create',
   insights: 'stats-chart',
-  premium: 'sparkles',
 };
 
 function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable<Parameters<typeof Tabs>[0]['tabBar']>>[0]) {
@@ -65,14 +64,6 @@ function CustomTabBar({ state, descriptors, navigation }: Parameters<NonNullable
           </Pressable>
         );
       })}
-      <Pressable
-        onPress={() => router.push('/(tabs)/ai')}
-        accessibilityRole="button"
-        accessibilityLabel="Open AI chat"
-        style={styles.orbButton}
-      >
-        <MoonMark state="idle" size={58} />
-      </Pressable>
     </View>
   );
 }
@@ -83,12 +74,12 @@ export default function TabsLayout() {
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen name="home" options={{ title: 'Home' }} />
+      <Tabs.Screen name="home" options={{ title: 'Today' }} />
       <Tabs.Screen name="calendar" options={{ title: 'Calendar' }} />
       <Tabs.Screen name="ai" options={{ title: 'Chat', href: null }} />
+      <Tabs.Screen name="log" options={{ title: 'Track' }} />
       <Tabs.Screen name="insights" options={{ title: 'Insights' }} />
-      <Tabs.Screen name="premium" options={{ title: 'Premium' }} />
-      <Tabs.Screen name="log" options={{ href: null }} />
+      <Tabs.Screen name="premium" options={{ href: null }} />
     </Tabs>
   );
 }
@@ -122,8 +113,5 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     borderRadius: 2,
-  },
-  orbButton: {
-    marginTop: -34,
   },
 });

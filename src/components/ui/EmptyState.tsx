@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { MoonMark, MoonMarkState } from '@/components/ui/MoonMark';
+import { OrbitalMark, OrbitalMarkState } from '@/components/ui/OrbitalMark';
 import { spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 
 interface Props {
-  markState?: MoonMarkState;
+  markState?: OrbitalMarkState;
   title: string;
   body: string;
 }
@@ -14,7 +14,7 @@ export function EmptyState({ markState = 'idle', title, body }: Props) {
   const { typography } = useTheme();
   return (
     <View style={styles.container}>
-      <MoonMark state={markState} size={88} />
+      <OrbitalMark state={markState} size={88} />
       <Text style={[styles.title, typography.title]}>{title}</Text>
       <Text style={[styles.body, typography.body]}>{body}</Text>
     </View>

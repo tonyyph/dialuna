@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { AuroraStage } from '@/components/lunar/AuroraStage';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { spacing } from '@/theme';
 import { useTheme } from '@/theme/useTheme';
 
@@ -15,7 +15,7 @@ export function LoadingAurora({ label, fullScreen = false }: LoadingAuroraProps)
 
   const content = (
     <View style={styles.content} accessibilityRole="progressbar" accessibilityLabel={label}>
-      <LunarCompanion size={fullScreen ? 118 : 72} state="thinking" />
+      <OrbitalMark size={fullScreen ? 118 : 72} state="thinking" />
       <ActivityIndicator color={colors.primary} />
       <Text style={[typography.caption, styles.label, { color: fullScreen ? 'rgba(255,255,255,0.72)' : colors.textSecondary }]}>
         {label}

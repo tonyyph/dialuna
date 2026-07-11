@@ -164,7 +164,7 @@
       "cta": "Xem Premium"
     },
     "lunar": {
-      "cover": "Lunar Cover hôm nay",
+      "cover": "Đài quan sát hôm nay",
       "todayNote": "Ghi chú mặt trăng hôm nay",
       "noteTitle": "Một nhịp đọc dịu dàng cho hôm nay",
       "beginRitual": "Bắt đầu nghi thức hôm nay",
@@ -180,7 +180,7 @@
       "islands": {
         "log": "Nghi thức",
         "logValue": "2 phút",
-        "ai": "Hỏi Luna",
+        "ai": "Hỏi Coach",
         "aiValue": "Đọc dịu dàng",
         "calendar": "Bản đồ quỹ đạo",
         "insights": "Chòm sao",
@@ -241,7 +241,7 @@
       "title": "Nghi thức hằng ngày",
       "progress": "Tiến trình nghi thức",
       "introTitle": "Bắt đầu nghi thức hôm nay",
-      "introBody": "Một vài câu hỏi dịu nhẹ giúp Luna hiểu thời tiết cảm xúc và tín hiệu cơ thể của bạn.",
+      "introBody": "Một vài câu hỏi dịu nhẹ giúp ghi lại thời tiết cảm xúc và tín hiệu cơ thể của bạn.",
       "start": "Bắt đầu nghi thức",
       "moodTitle": "Thời tiết cảm xúc của bạn thế nào?",
       "moodHelper": "Chọn cảm giác gần nhất với hiện tại.",
@@ -249,18 +249,18 @@
       "signalsTitle": "Cơ thể bạn đang gửi tín hiệu gì?",
       "signalsHelper": "Thêm lượng kinh và bất kỳ tín hiệu cơ thể nào bạn nhận thấy hôm nay.",
       "energyTitle": "Hôm nay bạn có bao nhiêu ánh sáng?",
-      "energyHelper": "Năng lượng, giấc ngủ và căng thẳng giúp Luna đọc nhịp của bạn rõ hơn.",
+      "energyHelper": "Năng lượng, giấc ngủ và căng thẳng giúp nhịp của bạn rõ hơn.",
       "movementTitle": "Cơ thể bạn đã chuyển động thế nào?",
       "movementHelper": "Nghỉ ngơi cũng được tính. Vận động nhẹ cũng được tính.",
       "reflectionTitle": "Để lại một ghi chú cho bạn trong tương lai",
-      "reflectionHelper": "Một câu là đủ. Luna sẽ ghi nhớ nhịp này.",
+      "reflectionHelper": "Một câu là đủ. Dialuna sẽ lưu lại nhịp này.",
       "reflectionPlaceholder": "Hôm nay mình nhận thấy...",
       "complete": "Hoàn tất nghi thức",
       "completeTitle": "Nghi thức của bạn đã hoàn tất",
-      "completeBody": "Luna đã thêm tín hiệu hôm nay vào chòm sao của bạn.",
+      "completeBody": "Tín hiệu hôm nay đã được thêm vào chòm sao của bạn.",
       "saved": "Đã lưu vào chòm sao của bạn",
       "returnOrbit": "Quay về quỹ đạo",
-      "askLuna": "Hỏi Luna về điều này"
+      "askCoach": "Hỏi AI Coach về điều này"
     },
     "reflection": {
       "menstrual": "Cảm ơn bạn đã ghi lại, {{name}}. Đau bụng hay ít năng lượng có thể phù hợp với kỳ hành kinh. Hơi ấm, uống đủ nước và nghỉ ngơi sẽ giúp ích hôm nay.",
@@ -281,14 +281,14 @@
     "limitReached": "Bạn đã dùng hết 3 câu hỏi miễn phí hôm nay. Premium mở khóa coaching không giới hạn.",
     "emptyTitle": "Hỏi mình bất cứ điều gì về chu kỳ",
     "emptyBody": "Mình dùng nhật ký và pha chu kỳ của bạn để trả lời. Thử một gợi ý bên dưới nhé.",
-    "luna": {
-      "kicker": "Luna Companion",
-      "title": "Hỏi Luna",
-      "emptyTitle": "Mang một câu hỏi đến Luna",
+    "coach": {
+      "kicker": "AI Coach",
+      "title": "Hỏi AI Coach",
+      "emptyTitle": "Hỏi về nhịp của bạn",
       "emptyBody": "Hỏi về tâm trạng, năng lượng, pha chu kỳ hoặc điều cơ thể bạn có thể đang cần hôm nay.",
       "placeholder": "Hỏi xem cơ thể bạn có thể đang nói gì...",
-      "thinking": "Luna đang đọc nhịp của bạn",
-      "note": "Ghi chú từ Luna"
+      "thinking": "Đang đọc nhịp của bạn",
+      "note": "Ghi chú từ Coach"
     },
     "prompts": {
       "p1": "Sao hôm nay mình mệt thế?",
@@ -524,7 +524,7 @@
     "innerCircle": {
       "kicker": "Inner Circle",
       "title": "Bước vào Inner Circle",
-      "body": "Đi sâu hơn vào nhịp của bạn với dự báo giàu hơn, Luna không giới hạn và báo cáo chòm sao hằng tháng.",
+      "body": "Đi sâu hơn vào nhịp của bạn với dự báo giàu hơn, AI Coach không giới hạn và báo cáo chòm sao hằng tháng.",
       "cta": "Bắt đầu Inner Circle"
     },
     "restore": "Khôi phục giao dịch",
@@ -581,7 +581,7 @@
   "tabs": {
     "home": "Trang chủ",
     "calendar": "Lịch",
-    "log": "Nhật ký",
+    "log": "Theo dõi",
     "ai": "AI",
     "insights": "Insights"
   }

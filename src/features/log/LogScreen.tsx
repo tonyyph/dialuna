@@ -7,9 +7,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { AuroraStage } from '@/components/lunar/AuroraStage';
-import { LunarCompanion } from '@/components/lunar/LunarCompanion';
 import { Button } from '@/components/ui/Button';
 import { LevelSlider } from '@/components/ui/LevelSlider';
+import { OrbitalMark } from '@/components/ui/OrbitalMark';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
@@ -137,32 +137,13 @@ export function LogScreen() {
     saveRitual();
   };
 
-  const goBack = () => {
-    if (step === 'intro') {
-      router.back();
-      return;
-    }
-    if (step === 'complete') {
-      setStep('reflection');
-      return;
-    }
-    const previousStep = STEP_ORDER[STEP_ORDER.indexOf(step) - 1] ?? 'intro';
-    setStep(previousStep);
-  };
-
   return (
     <Screen edgeToEdge keyboardAvoiding contentContainerStyle={styles.screenContent}>
       <AuroraStage intensity="ritual" style={styles.stage}>
         <View style={styles.header}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('common.back')}
-            onPress={goBack}
-            hitSlop={10}
-            style={styles.iconButton}
-          >
-            <Ionicons name="chevron-back" size={22} color={colors.moonWhite} />
-          </Pressable>
+          <View style={styles.iconButton}>
+            <Ionicons name="create" size={21} color={colors.moonWhite} />
+          </View>
           <View style={styles.headerCopy}>
             <Text style={[typography.caption, styles.headerMeta]}>{t('log.ritual.title')}</Text>
             <Text style={[typography.subtitle, styles.headerTitle]}>{selectedSummary}</Text>
@@ -175,7 +156,7 @@ export function LogScreen() {
         </View>
 
         <View style={styles.moonHeader}>
-          <LunarCompanion size={92} state={step === 'complete' ? 'celebrating' : 'idle'} />
+          <OrbitalMark size={92} state={step === 'complete' ? 'celebrating' : 'idle'} />
           <View style={styles.phaseStrip} accessibilityLabel={t('log.ritual.progress')}>
             {STEP_ORDER.map((item, index) => (
               <View
@@ -425,7 +406,7 @@ function CompleteStep({ reflection }: { reflection: string | null }) {
   return (
     <Animated.View entering={FadeInDown.duration(360)} style={styles.step}>
       <View style={styles.completeMoon}>
-        <LunarCompanion size={128} state="celebrating" />
+        <OrbitalMark size={128} state="celebrating" />
       </View>
       <Text style={[typography.displayXl, styles.completeTitle]}>{t('log.ritual.completeTitle')}</Text>
       <Text style={typography.bodyLarge}>
@@ -437,7 +418,7 @@ function CompleteStep({ reflection }: { reflection: string | null }) {
       </View>
       <View style={styles.completionActions}>
         <Button label={t('log.ritual.returnOrbit')} onPress={() => router.push('/(tabs)/home')} />
-        <Button label={t('log.ritual.askLuna')} variant="secondary" onPress={() => router.push('/(tabs)/ai')} />
+        <Button label={t('log.ritual.askCoach')} variant="secondary" onPress={() => router.push('/(tabs)/ai')} />
       </View>
     </Animated.View>
   );
