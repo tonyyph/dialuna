@@ -16,7 +16,11 @@ export interface Insights {
   nextPmsEnd: string;
 }
 
-function phaseOf(date: string, profile: UserProfile): CyclePhase {
+function phaseOf(
+  date: string,
+  profile: UserProfile,
+  lutealLength?: number
+): CyclePhase {
   const days = daysBetween(profile.lastPeriodStartDate, date);
   const offset =
     ((days % profile.averageCycleLength) + profile.averageCycleLength) %
@@ -24,7 +28,8 @@ function phaseOf(date: string, profile: UserProfile): CyclePhase {
   return getPhaseForCycleDay(
     offset + 1,
     profile.averagePeriodLength,
-    profile.averageCycleLength
+    profile.averageCycleLength,
+    lutealLength
   );
 }
 
@@ -35,8 +40,9 @@ function round1(v: number): number {
 export function computeInsights(args: {
   profile: UserProfile;
   logs: Record<string, DailyLog>;
+  lutealLength?: number;
 }): Insights {
-  const { profile, logs } = args;
+  const { profile, logs, lutealLength } = args;
   const logList = Object.values(logs);
 
   const symptomCounts = new Map<Symptom, number>();
@@ -49,7 +55,7 @@ export function computeInsights(args: {
     for (const symptom of log.symptoms) {
       symptomCounts.set(symptom, (symptomCounts.get(symptom) ?? 0) + 1);
     }
-    const phase = phaseOf(log.date, profile);
+    const phase = phaseOf(log.date, profile, lutealLength);
     energyByPhase.set(phase, [...(energyByPhase.get(phase) ?? []), log.energyLevel]);
     sleepByPhase.set(phase, [...(sleepByPhase.get(phase) ?? []), log.sleepQuality]);
 
@@ -58,6 +64,7 @@ export function computeInsights(args: {
       averageCycleLength: profile.averageCycleLength,
       averagePeriodLength: profile.averagePeriodLength,
       today: log.date,
+      lutealLength,
     });
     (prediction.isPmsWindow ? pmsSleep : otherSleep).push(log.sleepQuality);
   }
@@ -76,6 +83,7 @@ export function computeInsights(args: {
     averageCycleLength: profile.averageCycleLength,
     averagePeriodLength: profile.averagePeriodLength,
     today,
+    lutealLength,
   });
 
   return {

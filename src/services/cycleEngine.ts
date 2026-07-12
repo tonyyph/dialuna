@@ -6,6 +6,7 @@ export interface CycleEngineInput {
   averageCycleLength: number;
   averagePeriodLength: number;
   today: string;
+  lutealLength?: number;
 }
 
 type CycleProfile = Pick<
@@ -23,16 +24,20 @@ export interface DayInfo {
 }
 
 const PMS_WINDOW_DAYS = 5;
-const LUTEAL_LENGTH = 14;
+export const LUTEAL_LENGTH_DEFAULT = 14;
 const FERTILE_SPREAD = 3;
 
 export function getPhaseForCycleDay(
   cycleDay: number,
   periodLength: number,
-  cycleLength: number
+  cycleLength: number,
+  lutealLength: number = LUTEAL_LENGTH_DEFAULT
 ): CyclePhase {
-  const follicularEnd = Math.min(12, cycleLength - 2);
-  const ovulationEnd = Math.min(16, cycleLength - 1);
+  // Ovulation lands lutealLength days before the next period (cycle day
+  // cycleLength - lutealLength + 1); window is O-2..O+1, follicular ends O-3.
+  const ovulationDay = cycleLength - lutealLength + 1;
+  const follicularEnd = Math.max(periodLength, ovulationDay - 3);
+  const ovulationEnd = Math.min(cycleLength - 1, ovulationDay + 1);
   if (cycleDay <= periodLength) return 'menstrual';
   if (cycleDay <= follicularEnd) return 'follicular';
   if (cycleDay <= ovulationEnd) return 'ovulation';
@@ -56,6 +61,7 @@ export function getCyclePrediction(input: CycleEngineInput): CyclePrediction {
     averageCycleLength: input.averageCycleLength,
     averagePeriodLength: input.averagePeriodLength,
   };
+  const lutealLength = input.lutealLength ?? LUTEAL_LENGTH_DEFAULT;
   const cycleStart = cycleStartFor(input.today, profile);
   const cycleDay = daysBetween(cycleStart, input.today) + 1;
   const nextPeriodStart = addDaysISO(cycleStart, input.averageCycleLength);
@@ -63,7 +69,7 @@ export function getCyclePrediction(input: CycleEngineInput): CyclePrediction {
 
   const ovulationEstimate = addDaysISO(
     cycleStart,
-    input.averageCycleLength - LUTEAL_LENGTH
+    input.averageCycleLength - lutealLength
   );
   const fertileWindowStart = addDaysISO(ovulationEstimate, -FERTILE_SPREAD);
   const fertileWindowEnd = addDaysISO(ovulationEstimate, FERTILE_SPREAD);
@@ -80,7 +86,8 @@ export function getCyclePrediction(input: CycleEngineInput): CyclePrediction {
     phase: getPhaseForCycleDay(
       cycleDay,
       input.averagePeriodLength,
-      input.averageCycleLength
+      input.averageCycleLength,
+      lutealLength
     ),
     isPmsWindow,
     nextPeriodStart,
@@ -94,12 +101,17 @@ export function getCyclePrediction(input: CycleEngineInput): CyclePrediction {
   };
 }
 
-export function getDayInfo(date: string, profile: CycleProfile): DayInfo {
+export function getDayInfo(
+  date: string,
+  profile: CycleProfile,
+  lutealLength: number = LUTEAL_LENGTH_DEFAULT
+): DayInfo {
   const prediction = getCyclePrediction({
     lastPeriodStartDate: profile.lastPeriodStartDate,
     averageCycleLength: profile.averageCycleLength,
     averagePeriodLength: profile.averagePeriodLength,
     today: date,
+    lutealLength,
   });
   // Dates before the first tracked period: normalize cycle day into range so
   // the calendar can still render a phase estimate.
@@ -110,7 +122,8 @@ export function getDayInfo(date: string, profile: CycleProfile): DayInfo {
   const phase = getPhaseForCycleDay(
     normalizedDay,
     profile.averagePeriodLength,
-    profile.averageCycleLength
+    profile.averageCycleLength,
+    lutealLength
   );
   const isFuturePredictedCycle = date > profile.lastPeriodStartDate
     ? cycleIndexFor(date, profile) >= 1

@@ -18,7 +18,7 @@ import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
-import { useLogStore, useUserStore } from '@/store';
+import { useLogStore, useSettingsStore, useUserStore } from '@/store';
 import { colors, radius, spacing, typography } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
 
@@ -47,6 +47,7 @@ export function CalendarScreen() {
   const { t } = useTranslation();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
+  const lutealLength = useSettingsStore((s) => s.lutealLength);
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const today = todayISO();
@@ -62,6 +63,7 @@ export function CalendarScreen() {
     averageCycleLength: profile.averageCycleLength,
     averagePeriodLength: profile.averagePeriodLength,
     today,
+    lutealLength,
   });
 
   return (
@@ -123,7 +125,7 @@ export function CalendarScreen() {
         <View style={styles.grid}>
           {days.map((day) => {
             const iso = toISODate(day);
-            const info = getDayInfo(iso, profile);
+            const info = getDayInfo(iso, profile, lutealLength);
             const log = logs[iso];
             const isPeriodLogged =
               (log && log.flow !== 'none') ||

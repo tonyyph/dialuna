@@ -11,7 +11,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { computeInsights } from '@/services/insightsEngine';
-import { useLogStore, usePremiumStore, useUserStore } from '@/store';
+import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
 import { colors, radius, spacing, typography } from '@/theme';
 import { CyclePhase } from '@/types';
 
@@ -23,10 +23,11 @@ export function InsightsScreen() {
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
   const isPremium = usePremiumStore((s) => s.isPremium);
+  const lutealLength = useSettingsStore((s) => s.lutealLength);
 
   const insights = useMemo(
-    () => (profile ? computeInsights({ profile, logs }) : null),
-    [profile, logs]
+    () => (profile ? computeInsights({ profile, logs, lutealLength }) : null),
+    [profile, logs, lutealLength]
   );
 
   if (!profile || !insights) return null;

@@ -50,13 +50,15 @@ export function getHormoneTwinProfile(args: {
   date: string;
   profile: UserProfile;
   logs: Record<string, DailyLog>;
+  lutealLength?: number;
 }): HormoneTwinDailyProfile {
-  const { date, profile, logs } = args;
+  const { date, profile, logs, lutealLength } = args;
   const prediction = getCyclePrediction({
     lastPeriodStartDate: profile.lastPeriodStartDate,
     averageCycleLength: profile.averageCycleLength,
     averagePeriodLength: profile.averagePeriodLength,
     today: date,
+    lutealLength,
   });
 
   const base = prediction.isPmsWindow ? PMS_SCORES : PHASE_SCORES[prediction.phase];
@@ -99,12 +101,14 @@ export function getWeekForecast(args: {
   startDate: string;
   profile: UserProfile;
   logs: Record<string, DailyLog>;
+  lutealLength?: number;
 }): HormoneTwinDailyProfile[] {
   return Array.from({ length: 7 }, (_, i) =>
     getHormoneTwinProfile({
       date: addDaysISO(args.startDate, i),
       profile: args.profile,
       logs: args.logs,
+      lutealLength: args.lutealLength,
     })
   );
 }
