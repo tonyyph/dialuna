@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="stylesheet" href="_ds/classical-af5d4b3a-b15e-4230-bf6c-d0a8d6c59e07/styles.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+  body{margin:0}
+  ::-webkit-scrollbar{width:0;height:0}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes dot{0%,80%,100%{opacity:.25}40%{opacity:1}}
+  @keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,4%) scale(1.06)}}
+  @keyframes sheetIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes storyIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+  @keyframes screenFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 100% at 20% 0%,#f3e9de 0%,#ece0e6 45%,#e3dbe8 100%);padding:40px 20px;font-family:'Manrope',sans-serif;">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="{{ appRootStyle }}">
+
+<!-- ═══════════════════════ ONBOARDING ═══════════════════════ -->
+<sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+<div style="height:100%;display:flex;flex-direction:column;background:linear-gradient(165deg,#fbf3ec 0%,#f7ecee 45%,#f1e9f0 100%);position:relative;overflow:hidden;">
+
+  <sc-if value="{{ isObWelcome }}">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 32px 40px;text-align:center;position:relative;">
+    <div style="position:absolute;top:8%;left:-15%;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(182,130,53,0.22),transparent 70%);filter:blur(4px);animation:blobFloat 10s ease-in-out infinite;pointer-events:none;"></div>
+    <div style="width:72px;height:72px;border-radius:28px;background:linear-gradient(150deg,var(--color-neutral-900),#3a3532);position:relative;margin-bottom:30px;box-shadow:0 16px 32px rgba(0,0,0,0.18);">
+      <div style="position:absolute;top:8px;right:10px;width:48px;height:48px;border-radius:50%;background:#fbf3ec;"></div>
+    </div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:42px;margin:0 0 10px;position:relative;">Dialuna</h1>
+    <p style="font-size:15px;color:var(--color-text);opacity:0.65;max-width:260px;line-height:1.6;margin:0 0 40px;position:relative;">A quiet place to know your body, cycle by cycle.</p>
+    <button style="width:100%;max-width:220px;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);position:relative;" onClick="{{ obNext }}">Get started</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isObNotWelcome }}">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:60px 20px 8px;">
+    <button style="width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,0.7);box-shadow:0 4px 10px rgba(90,60,20,0.1);display:flex;align-items:center;justify-content:center;" onClick="{{ obBack }}" aria-label="Back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2L4 8l6 6" stroke="var(--color-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div style="display:flex;gap:6px;">
+      <sc-for list="{{ obDots }}" as="d" hint-placeholder-count="4">
+        <div style="{{ d.style }}"></div>
+      </sc-for>
+    </div>
+    <div style="width:38px;"></div>
+  </div>
+
+  <sc-if value="{{ isObCycle }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:16px 24px 24px;overflow:auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:6px 0 6px;">Let's set your baseline</h2>
+    <p style="font-size:13px;opacity:0.6;margin:0 0 24px;">You can always adjust these later in Settings.</p>
+
+    <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+      <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:8px;">Average cycle length</label>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button style="width:38px;height:38px;border-radius:50%;border:none;background:#fff;box-shadow:0 4px 10px rgba(90,60,20,0.1);font-size:16px;" onClick="{{ decCycleLen }}">−</button>
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;min-width:70px;text-align:center;">{{ profile.avgCycle }} days</div>
+        <button style="width:38px;height:38px;border-radius:50%;border:none;background:#fff;box-shadow:0 4px 10px rgba(90,60,20,0.1);font-size:16px;" onClick="{{ incCycleLen }}">+</button>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+      <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:8px;">Period length</label>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button style="width:38px;height:38px;border-radius:50%;border:none;background:#fff;box-shadow:0 4px 10px rgba(90,60,20,0.1);font-size:16px;" onClick="{{ decPeriodLen }}">−</button>
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;min-width:70px;text-align:center;">{{ profile.periodLen }} days</div>
+        <button style="width:38px;height:38px;border-radius:50%;border:none;background:#fff;box-shadow:0 4px 10px rgba(90,60,20,0.1);font-size:16px;" onClick="{{ incPeriodLen }}">+</button>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:8px;">
+      <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:8px;">First day of last period</label>
+      <input class="input" style="background:transparent;border:none;font-size:15px;padding:0;" type="date" value="{{ profile.lastPeriod }}" onChange="{{ setLastPeriod }}"/>
+    </div>
+
+    <div style="flex:1;"></div>
+    <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);" onClick="{{ obNext }}">Continue</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isObGoals }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:16px 24px 24px;overflow:auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:6px 0 6px;">What brings you to Dialuna?</h2>
+    <p style="font-size:13px;opacity:0.6;margin:0 0 20px;">Choose all that apply.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+      <sc-for list="{{ goalsList }}" as="g" hint-placeholder-count="6">
+        <div style="{{ g.style }}" onClick="{{ g.onClick }}">{{ g.label }}</div>
+      </sc-for>
+    </div>
+    <div style="flex:1;"></div>
+    <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);" onClick="{{ obNext }}">Continue</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isObSymptoms }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:16px 24px 24px;overflow:auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:6px 0 6px;">Symptoms you often notice</h2>
+    <p style="font-size:13px;opacity:0.6;margin:0 0 20px;">This helps Insights find patterns sooner.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+      <sc-for list="{{ symptomsObList }}" as="s" hint-placeholder-count="8">
+        <div style="{{ s.style }}" onClick="{{ s.onClick }}">{{ s.label }}</div>
+      </sc-for>
+    </div>
+    <div style="flex:1;"></div>
+    <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);" onClick="{{ obNext }}">Continue</button>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isObAccount }}">
+  <div style="flex:1;display:flex;flex-direction:column;padding:16px 24px 24px;overflow:auto;">
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:6px 0 6px;">Create your account</h2>
+    <p style="font-size:13px;opacity:0.6;margin:0 0 22px;">Your logs stay private, synced to this account only.</p>
+    <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+      <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:6px;">Name</label>
+      <input class="input" style="background:transparent;border:none;font-size:15px;padding:0;" type="text" placeholder="Your name" value="{{ profile.name }}" onChange="{{ setName }}"/>
+    </div>
+    <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:22px;">
+      <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:6px;">Email</label>
+      <input class="input" style="background:transparent;border:none;font-size:15px;padding:0;" type="email" placeholder="you@email.com" value="{{ profile.email }}" onChange="{{ setEmail }}"/>
+    </div>
+    <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);margin-bottom:10px;" onClick="{{ finishOnboarding }}">Create account</button>
+    <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:rgba(255,255,255,0.65);box-shadow:0 4px 12px rgba(90,60,20,0.08);">Continue with Apple</button>
+  </div>
+  </sc-if>
+  </sc-if>
+</div>
+</sc-if>
+
+<!-- ═══════════════════════ MAIN APP ═══════════════════════ -->
+<sc-if value="{{ isApp }}">
+<div style="height:100%;display:flex;flex-direction:column;position:relative;">
+
+  <div style="flex:1;overflow:auto;padding-bottom:92px;">
+
+    <sc-if value="{{ isTabToday }}">
+    <div style="padding:56px 18px 20px;animation:screenFade .45s ease both;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.5;font-weight:600;">{{ todayDateLabel }}</div>
+          <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:2px 0 0;">{{ greeting }}</h1>
+        </div>
+        <button style="width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,0.6);box-shadow:0 2px 8px rgba(60,40,20,0.08);display:flex;align-items:center;justify-content:center;" onClick="{{ openSettings }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="var(--color-text)" stroke-width="1.6"/><path d="M19 12a7 7 0 00-.1-1.2l2-1.5-2-3.4-2.3.9a7 7 0 00-2-1.2L14 3h-4l-.6 2.6a7 7 0 00-2 1.2l-2.3-.9-2 3.4 2 1.5A7 7 0 005 12c0 .4 0 .8.1 1.2l-2 1.5 2 3.4 2.3-.9c.6.5 1.3.9 2 1.2L10 21h4l.6-2.6c.7-.3 1.4-.7 2-1.2l2.3.9 2-3.4-2-1.5c.1-.4.1-.8.1-1.2z" stroke="var(--color-text)" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div style="position:relative;border-radius:32px 32px 32px 12px;padding:26px 22px 34px;overflow:visible;background:linear-gradient(150deg,var(--color-accent-100) 0%,#fbf3ec 55%,#f6ecf1 100%);box-shadow:0 18px 40px rgba(120,84,17,0.14);margin-bottom:34px;">
+        <div style="position:absolute;top:-30px;left:-30px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(182,130,53,0.28),transparent 70%);filter:blur(6px);animation:blobFloat 9s ease-in-out infinite;pointer-events:none;"></div>
+        <div style="position:relative;">
+          <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:var(--color-accent-700);margin-bottom:6px;">DAY {{ todayInfo.cycleDay }} · {{ todayInfo.phaseUpper }}</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:34px;line-height:1.05;margin-bottom:10px;">{{ todayInfo.phase }} phase</div>
+          <p style="font-size:13.5px;line-height:1.6;opacity:0.75;margin:0 0 14px;max-width:92%;">{{ todayInfo.blurb }}</p>
+          <div style="font-size:12px;font-weight:600;opacity:0.7;">Next period in {{ todayInfo.daysToNext }} days · {{ nextPeriodDateLabel }}</div>
+        </div>
+        <div style="position:absolute;right:18px;bottom:-26px;width:96px;height:96px;border-radius:26px;background:#fffdfb;box-shadow:0 14px 28px rgba(120,84,17,0.22);display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div style="font-size:9px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.55;font-weight:700;margin-bottom:2px;">TWIN</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;line-height:1;color:var(--color-accent-700);">{{ hormoneScore }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+        <sc-for list="{{ signalRows }}" as="sig" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.55);border-radius:16px;padding:10px 14px;">
+            <div style="font-size:12px;font-weight:600;width:56px;flex:none;opacity:0.75;">{{ sig.label }}</div>
+            <div style="flex:1;height:5px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;">
+              <div style="{{ sig.barStyle }}"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin:0 0 10px;">7-day forecast</div>
+      <div style="display:flex;gap:8px;margin-bottom:24px;overflow-x:auto;padding-bottom:2px;">
+        <sc-for list="{{ forecast }}" as="f" hint-placeholder-count="7">
+          <div style="{{ f.style }}">
+            <div style="font-size:10px;opacity:0.55;margin-bottom:4px;font-weight:600;">{{ f.label }}</div>
+            <div style="font-size:10px;font-family:'Cormorant Garamond',serif;font-weight:600;">{{ f.phaseShort }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <button style="flex:1;padding:15px;border-radius:18px;background:var(--color-neutral-900);color:#fbf3ec;font-size:13.5px;border:none;box-shadow:0 10px 22px rgba(0,0,0,0.16);" onClick="{{ goTrack }}">Log today</button>
+        <button style="flex:1;padding:15px;border-radius:18px;background:rgba(255,255,255,0.65);font-size:13.5px;border:none;display:flex;gap:7px;align-items:center;justify-content:center;" onClick="{{ goCoach }}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--color-accent)"><path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2z"/></svg>
+          Ask Coach
+        </button>
+      </div>
+
+      <sc-if value="{{ showPremiumBanner }}">
+      <div style="position:relative;border-radius:22px;padding:18px 20px;background:linear-gradient(120deg,#2c2620,#3a2f22);color:#f4ede1;cursor:pointer;overflow:hidden;" onClick="{{ openPaywall }}">
+        <div style="position:absolute;top:-20px;right:-10px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(182,130,53,0.4),transparent 70%);"></div>
+        <div style="position:relative;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:#e1ad66;margin-bottom:5px;">Dialuna Premium</div>
+        <div style="position:relative;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;margin-bottom:4px;">Unlock deeper pattern insights</div>
+        <p style="position:relative;font-size:12.5px;opacity:0.75;margin:0;">See your full Hormone Twin trend and symptom correlations.</p>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isTabTrack }}">
+    <div style="padding:56px 18px 20px;animation:screenFade .4s ease both;">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;">
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0;">Log today</h1>
+        <sc-if value="{{ todayLogged }}"><span style="font-size:11px;font-weight:700;padding:5px 12px;border-radius:12px;background:var(--color-accent-100);color:var(--color-accent-800);">Saved</span></sc-if>
+      </div>
+      <p style="font-size:12px;opacity:0.55;margin:0 0 20px;">{{ todayDateLabel }}</p>
+
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Mood</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">
+        <sc-for list="{{ moodChips }}" as="m" hint-placeholder-count="5">
+          <div style="{{ m.style }}" onClick="{{ m.onClick }}">{{ m.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Flow</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">
+        <sc-for list="{{ flowChips }}" as="fl" hint-placeholder-count="5">
+          <div style="{{ fl.style }}" onClick="{{ fl.onClick }}">{{ fl.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Symptoms</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+        <sc-for list="{{ symptomTrackList }}" as="st" hint-placeholder-count="8">
+          <div style="{{ st.style }}" onClick="{{ st.onClick }}">{{ st.label }}</div>
+        </sc-for>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+        <label style="font-size:12px;opacity:0.65;">Energy — {{ trackDraft.energy }}/5</label>
+        <input type="range" min="1" max="5" value="{{ trackDraft.energy }}" onChange="{{ setEnergy }}" style="width:100%;accent-color:var(--color-accent);margin-top:8px;"/>
+      </div>
+      <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+        <label style="font-size:12px;opacity:0.65;">Stress — {{ trackDraft.stress }}/5</label>
+        <input type="range" min="1" max="5" value="{{ trackDraft.stress }}" onChange="{{ setStress }}" style="width:100%;accent-color:var(--color-accent);margin-top:8px;"/>
+      </div>
+      <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+        <label style="font-size:12px;opacity:0.65;">Sleep — {{ trackDraft.sleep }} hrs</label>
+        <input type="range" min="3" max="11" value="{{ trackDraft.sleep }}" onChange="{{ setSleep }}" style="width:100%;accent-color:var(--color-accent);margin-top:8px;"/>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:14px;">
+        <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:8px;">Workout</label>
+        <div class="seg" style="width:fit-content;border-color:transparent;background:rgba(0,0,0,0.04);">
+          <label class="seg-opt"><input type="radio" name="workout" checked="{{ trackDraft.workoutNo }}" onChange="{{ setWorkoutNo }}"/>No</label>
+          <label class="seg-opt"><input type="radio" name="workout" checked="{{ trackDraft.workoutYes }}" onChange="{{ setWorkoutYes }}"/>Yes</label>
+        </div>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.55);border-radius:20px;padding:16px 18px;margin-bottom:20px;">
+        <label style="font-size:12px;opacity:0.65;display:block;margin-bottom:8px;">Notes</label>
+        <textarea class="input" style="background:transparent;border:none;padding:0;font-size:14px;" placeholder="Anything else worth remembering…" value="{{ trackDraft.notes }}" onChange="{{ setNotes }}"></textarea>
+      </div>
+
+      <button style="width:100%;padding:15px;border-radius:18px;border:none;font-size:14px;font-weight:600;background:var(--color-neutral-900);color:#fbf3ec;box-shadow:0 10px 22px rgba(0,0,0,0.16);" onClick="{{ saveLog }}">Save log</button>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isTabCalendar }}">
+    <div style="padding:56px 18px 20px;animation:screenFade .4s ease both;">
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0 0 16px;">Calendar</h1>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:rgba(255,255,255,0.55);border-radius:16px;padding:8px 12px;">
+        <button style="width:32px;height:32px;border-radius:50%;border:none;background:#fff;box-shadow:0 2px 6px rgba(90,60,20,0.08);display:flex;align-items:center;justify-content:center;" onClick="{{ prevMonth }}">
+          <svg width="13" height="13" viewBox="0 0 16 16"><path d="M10 2L4 8l6 6" stroke="var(--color-text)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+        </button>
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;">{{ monthLabel }}</div>
+        <button style="width:32px;height:32px;border-radius:50%;border:none;background:#fff;box-shadow:0 2px 6px rgba(90,60,20,0.08);display:flex;align-items:center;justify-content:center;" onClick="{{ nextMonth }}">
+          <svg width="13" height="13" viewBox="0 0 16 16"><path d="M6 2l6 6-6 6" stroke="var(--color-text)" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;">
+        <sc-for list="{{ dowLabels }}" as="d" hint-placeholder-count="7">
+          <div style="text-align:center;font-size:10px;opacity:0.5;">{{ d }}</div>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:18px;">
+        <sc-for list="{{ monthGrid }}" as="c" hint-placeholder-count="42">
+          <div style="{{ c.cellStyle }}" onClick="{{ c.onClick }}">
+            <span style="{{ c.numStyle }}">{{ c.num }}</span>
+            <sc-if value="{{ c.showDot }}"><div style="{{ c.dotStyle }}"></div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;gap:14px;margin-bottom:16px;font-size:11px;opacity:0.65;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-accent-300);"></div>Period</div>
+        <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-accent);"></div>Ovulation</div>
+        <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;border:1px solid var(--color-accent-700);background:transparent;"></div>PMS window</div>
+        <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--color-text);"></div>Logged</div>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);">
+        <div style="font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:var(--color-accent-700);margin-bottom:6px;">{{ selectedDayLabel }}</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:18px;margin-bottom:6px;">{{ selectedDayPhase }}</div>
+        <p style="font-size:13px;opacity:0.7;margin:0;">{{ selectedDaySummary }}</p>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isTabInsights }}">
+    <div style="padding:56px 18px 20px;animation:screenFade .4s ease both;">
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0 0 18px;">Insights</h1>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <sc-for list="{{ insightCards }}" as="ic" hint-placeholder-count="3">
+          <div style="{{ ic.wrapStyle }}">
+            <div style="font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;color:var(--color-accent-700);margin-bottom:6px;">{{ ic.kicker }}</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;margin-bottom:6px;">{{ ic.title }}</div>
+            <p style="font-size:13px;line-height:1.55;opacity:0.75;margin:0;">{{ ic.body }}</p>
+            <sc-if value="{{ ic.locked }}">
+              <div style="{{ lockOverlayStyle }}">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-bottom:8px;"><rect x="5" y="11" width="14" height="9" rx="2" stroke="var(--color-text)" stroke-width="1.5"/><path d="M8 11V8a4 4 0 018 0v3" stroke="var(--color-text)" stroke-width="1.5" fill="none"/></svg>
+                <button style="font-size:12px;padding:9px 18px;border-radius:14px;border:none;background:var(--color-neutral-900);color:#fbf3ec;" onClick="{{ openPaywall }}">Unlock with Premium</button>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isTabCoach }}">
+    <div style="height:100%;display:flex;flex-direction:column;animation:screenFade .4s ease both;">
+      <div style="padding:56px 18px 12px;flex:none;">
+        <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:28px;margin:0;">Coach</h1>
+      </div>
+      <div ref="{{ chatScrollRef }}" style="flex:1;overflow:auto;padding:0 18px;display:flex;flex-direction:column;gap:10px;">
+        <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
+          <div style="{{ msg.wrapStyle }}">
+            <div style="{{ msg.bubbleStyle }}">{{ msg.text }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ coachTyping }}">
+          <div style="align-self:flex-start;display:flex;gap:4px;padding:10px 4px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--color-accent);animation:dot 1.2s infinite;"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--color-accent);animation:dot 1.2s infinite .2s;"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--color-accent);animation:dot 1.2s infinite .4s;"></div>
+          </div>
+        </sc-if>
+        <div style="height:8px;flex:none;"></div>
+      </div>
+      <div style="flex:none;padding:10px 18px;">
+        <div style="display:flex;gap:8px;overflow-x:auto;margin-bottom:10px;padding-bottom:2px;">
+          <sc-for list="{{ chipsList }}" as="cp" hint-placeholder-count="4">
+            <div style="flex:none;font-size:12px;font-weight:600;padding:8px 14px;background:rgba(255,255,255,0.6);border-radius:16px;white-space:nowrap;cursor:pointer;box-shadow:0 2px 6px rgba(90,60,20,0.06);" onClick="{{ cp.onClick }}">{{ cp.label }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input class="input" style="flex:1;background:rgba(255,255,255,0.6);border:none;border-radius:16px;padding:11px 14px;" type="text" placeholder="Ask anything about your cycle…" value="{{ chatInput }}" onChange="{{ setChatInput }}" onKeyDown="{{ chatKeyDown }}"/>
+          <button style="width:42px;height:42px;border-radius:50%;border:none;background:var(--color-neutral-900);display:flex;align-items:center;justify-content:center;" onClick="{{ sendChatClick }}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 11l18-8-8 18-2-8-8-2z" stroke="#fbf3ec" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+  </div>
+
+  <!-- floating fluid dock -->
+  <div style="position:absolute;left:18px;right:18px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);height:62px;border-radius:31px;background:rgba(255,251,247,0.86);backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);box-shadow:0 14px 34px rgba(60,40,20,0.16),0 2px 8px rgba(60,40,20,0.08);display:flex;align-items:center;padding:0 6px;z-index:20;">
+    <div style="{{ dockIndicatorStyle }}"></div>
+    <div style="{{ tabToday.wrapStyle }}" onClick="{{ tabToday.onClick }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="{{ tabToday.iconStyle }}"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/></svg>
+      <div style="{{ tabToday.labelStyle }}">Today</div>
+    </div>
+    <div style="{{ tabTrack.wrapStyle }}" onClick="{{ tabTrack.onClick }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="{{ tabTrack.iconStyle }}"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 9v6M9 12h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <div style="{{ tabTrack.labelStyle }}">Track</div>
+    </div>
+    <div style="{{ tabCalendar.wrapStyle }}" onClick="{{ tabCalendar.onClick }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="{{ tabCalendar.iconStyle }}"><rect x="4" y="5" width="16" height="15" rx="4" stroke="currentColor" stroke-width="1.7"/><path d="M4 9.5h16" stroke="currentColor" stroke-width="1.7"/></svg>
+      <div style="{{ tabCalendar.labelStyle }}">Calendar</div>
+    </div>
+    <div style="{{ tabInsights.wrapStyle }}" onClick="{{ tabInsights.onClick }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="{{ tabInsights.iconStyle }}"><path d="M5 19V10M12 19V5M19 19v-7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <div style="{{ tabInsights.labelStyle }}">Insights</div>
+    </div>
+    <div style="{{ tabCoach.wrapStyle }}" onClick="{{ tabCoach.onClick }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" style="{{ tabCoach.iconStyle }}"><path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2z" fill="currentColor"/></svg>
+      <div style="{{ tabCoach.labelStyle }}">Coach</div>
+    </div>
+  </div>
+
+  <!-- ═══════ SETTINGS OVERLAY ═══════ -->
+  <sc-if value="{{ settingsOpen }}">
+  <div style="position:absolute;inset:0;background:linear-gradient(165deg,#fbf3ec 0%,#f7ecee 45%,#f1e9f0 100%);z-index:30;overflow:auto;animation:sheetIn .4s cubic-bezier(.2,.9,.3,1) both;">
+    <div style="display:flex;align-items:center;gap:12px;padding:56px 18px 16px;">
+      <button style="width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,0.7);box-shadow:0 4px 10px rgba(90,60,20,0.1);display:flex;align-items:center;justify-content:center;" onClick="{{ closeSettings }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 2L4 8l6 6" stroke="var(--color-text)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;margin:0;">Settings</h1>
+    </div>
+
+    <div style="padding:0 18px 40px;display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Profile &amp; account</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;flex-direction:column;gap:12px;">
+          <div class="field"><label>Name</label><input class="input" style="background:transparent;" type="text" value="{{ profile.name }}" onChange="{{ setName }}"/></div>
+          <div class="field"><label>Email</label><input class="input" style="background:transparent;" type="email" value="{{ profile.email }}" onChange="{{ setEmail }}"/></div>
+          <button style="width:100%;padding:12px;border-radius:14px;border:none;background:rgba(0,0,0,0.05);font-size:13px;font-weight:600;">Sign out</button>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Cycle setup</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label style="font-size:12px;opacity:0.65;">Average cycle length</label>
+            <div style="display:flex;align-items:center;gap:14px;margin-top:6px;">
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ decCycleLen }}">−</button>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;min-width:56px;text-align:center;">{{ profile.avgCycle }} d</div>
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ incCycleLen }}">+</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;opacity:0.65;">Period length</label>
+            <div style="display:flex;align-items:center;gap:14px;margin-top:6px;">
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ decPeriodLen }}">−</button>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;min-width:56px;text-align:center;">{{ profile.periodLen }} d</div>
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ incPeriodLen }}">+</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:12px;opacity:0.65;">Luteal phase length</label>
+            <div style="display:flex;align-items:center;gap:14px;margin-top:6px;">
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ decLuteal }}">−</button>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;min-width:56px;text-align:center;">{{ settings.lutealLen }} d</div>
+              <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,0.05);" onClick="{{ incLuteal }}">+</button>
+            </div>
+          </div>
+          <div class="field"><label>Last period start date</label><input class="input" style="background:transparent;" type="date" value="{{ profile.lastPeriod }}" onChange="{{ setLastPeriod }}"/></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Notifications</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Period reminder</span><div class="seg" style="border-color:transparent;background:rgba(0,0,0,0.04);"><label class="seg-opt"><input type="radio" checked="{{ notifPeriodOff }}" onChange="{{ toggleNotifPeriod }}"/>Off</label><label class="seg-opt"><input type="radio" checked="{{ notifPeriodOn }}" onChange="{{ toggleNotifPeriod }}"/>On</label></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Ovulation reminder</span><div class="seg" style="border-color:transparent;background:rgba(0,0,0,0.04);"><label class="seg-opt"><input type="radio" checked="{{ notifOvulationOff }}" onChange="{{ toggleNotifOvulation }}"/>Off</label><label class="seg-opt"><input type="radio" checked="{{ notifOvulationOn }}" onChange="{{ toggleNotifOvulation }}"/>On</label></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Daily log reminder</span><div class="seg" style="border-color:transparent;background:rgba(0,0,0,0.04);"><label class="seg-opt"><input type="radio" checked="{{ notifDailyOff }}" onChange="{{ toggleNotifDaily }}"/>Off</label><label class="seg-opt"><input type="radio" checked="{{ notifDailyOn }}" onChange="{{ toggleNotifDaily }}"/>On</label></div></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Appearance</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <label style="font-size:12px;opacity:0.65;">Units</label>
+            <div class="seg" style="border-color:transparent;background:rgba(0,0,0,0.04);margin-top:6px;"><label class="seg-opt"><input type="radio" checked="{{ unitsUS }}" onChange="{{ setUnitsUS }}"/>US</label><label class="seg-opt"><input type="radio" checked="{{ unitsMetric }}" onChange="{{ setUnitsMetric }}"/>Metric</label></div>
+          </div>
+          <div>
+            <label style="font-size:12px;opacity:0.65;">Theme</label>
+            <div class="seg" style="border-color:transparent;background:rgba(0,0,0,0.04);margin-top:6px;"><label class="seg-opt"><input type="radio" checked="{{ themeLight }}" onChange="{{ setThemeLight }}"/>Light</label><label class="seg-opt"><input type="radio" checked="{{ themeDark }}" onChange="{{ setThemeDark }}"/>Dark</label></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Privacy &amp; data</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;flex-direction:column;gap:10px;">
+          <button style="width:100%;padding:12px;border-radius:14px;border:none;background:rgba(0,0,0,0.05);font-size:13px;font-weight:600;" onClick="{{ exportData }}">Export my data</button>
+          <sc-if value="{{ exportedFlash }}"><div style="font-size:12px;color:var(--color-accent-700);">Export ready — check your email.</div></sc-if>
+          <button style="width:100%;padding:12px;border-radius:14px;border:none;background:rgba(0,0,0,0.05);font-size:13px;font-weight:600;" onClick="{{ deleteData }}">Delete all data</button>
+          <sc-if value="{{ deletedFlash }}"><div style="font-size:12px;color:var(--color-accent-700);">All logs deleted.</div></sc-if>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;opacity:0.5;margin-bottom:8px;">Subscription</div>
+        <div style="background:rgba(255,255,255,0.6);border-radius:22px;padding:18px 20px;box-shadow:0 10px 24px rgba(90,60,20,0.08);display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;">{{ subLabel }}</div>
+            <div style="font-size:12px;opacity:0.65;">{{ subSublabel }}</div>
+          </div>
+          <sc-if value="{{ premium }}"><button style="font-size:12px;font-weight:600;padding:10px 16px;border-radius:14px;border:none;background:rgba(0,0,0,0.05);" onClick="{{ cancelPremium }}">Manage</button></sc-if>
+          <sc-if value="{{ notPremium }}"><button style="font-size:12px;font-weight:600;padding:10px 16px;border-radius:14px;border:none;background:var(--color-neutral-900);color:#fbf3ec;" onClick="{{ openPaywallFromSettings }}">Upgrade</button></sc-if>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ═══════ PAYWALL OVERLAY ═══════ -->
+  <sc-if value="{{ paywallOpen }}">
+  <div style="position:absolute;inset:0;background:#1f1c18;z-index:40;display:flex;flex-direction:column;color:#f4ede1;animation:storyIn .38s ease both;">
+    <div style="display:flex;gap:5px;padding:56px 16px 0;">
+      <sc-for list="{{ paywallDots }}" as="pd" hint-placeholder-count="4">
+        <div style="{{ pd.style }}"></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:flex-end;padding:10px 16px 0;">
+      <button style="width:34px;height:34px;border-radius:50%;border:none;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;" onClick="{{ closePaywall }}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="#f4ede1" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <sc-if value="{{ isPwStory }}">
+    <div style="flex:1;position:relative;">
+      <div style="position:absolute;inset:0;display:flex;">
+        <div style="width:35%;" onClick="{{ paywallBack }}"></div>
+        <div style="flex:1;" onClick="{{ paywallNext }}"></div>
+      </div>
+      <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 36px;pointer-events:none;">
+        <sc-if value="{{ isPwStep0 }}"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" stroke="#f4ede1" stroke-width="1.3"/></svg></sc-if>
+        <sc-if value="{{ isPwStep1 }}"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M3 17l5-6 4 4 8-9" stroke="#f4ede1" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+        <sc-if value="{{ isPwStep2 }}"><svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="15" rx="2" stroke="#f4ede1" stroke-width="1.3"/><path d="M4 9h16" stroke="#f4ede1" stroke-width="1.3"/></svg></sc-if>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;margin:22px 0 10px;color:#f4ede1;">{{ pwSlide.title }}</h2>
+        <p style="font-size:14px;opacity:0.7;line-height:1.6;max-width:280px;">{{ pwSlide.body }}</p>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ isPwPlans }}">
+    <div style="flex:1;display:flex;flex-direction:column;padding:20px 24px 30px;overflow:auto;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;margin:8px 0 4px;color:#f4ede1;text-align:center;">Choose your plan</h2>
+      <p style="font-size:13px;opacity:0.65;text-align:center;margin:0 0 20px;">7 days free, cancel anytime.</p>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+        <sc-for list="{{ planOptions }}" as="p" hint-placeholder-count="2">
+          <div style="{{ p.style }}" onClick="{{ p.onClick }}">
+            <div>
+              <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;">{{ p.label }}</div>
+              <div style="font-size:12px;opacity:0.65;">{{ p.price }}</div>
+            </div>
+            <sc-if value="{{ p.badge }}"><div style="font-size:11px;font-weight:700;padding:5px 10px;border-radius:10px;background:var(--color-accent-800);color:#f4ede1;">{{ p.badge }}</div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+        <sc-for list="{{ featureList }}" as="ft" hint-placeholder-count="4">
+          <div style="display:flex;gap:10px;align-items:center;font-size:13px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ ft }}
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="flex:1;"></div>
+      <button style="width:100%;padding:16px;border-radius:18px;border:none;font-size:14px;font-weight:700;background:var(--color-accent);color:#1a1712;" onClick="{{ subscribe }}">Start 7-day free trial</button>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:14px;font-size:11px;opacity:0.55;">
+        <span>Restore purchase</span><span>Terms</span><span>Privacy</span>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+</div>
+</sc-if>
+
+</div>
+</x-import>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  GOALS = ['Understand my body','Reduce PMS symptoms','Plan pregnancy','Avoid pregnancy','Track fertility','General wellness'];
+  SYMPTOMS = ['Cramps','Bloating','Headaches','Fatigue','Mood swings','Acne','Tender breasts','Insomnia'];
+  MOODS = ['Great','Good','Okay','Low','Rough'];
+  FLOWS = ['None','Spotting','Light','Medium','Heavy'];
+  CHIPS = ["Why am I so tired today?", "When's my next period?", "Tips for PMS bloating", "What does my Hormone Twin score mean?"];
+  DOW = ['S','M','T','W','T','F','S'];
+  MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  PHASE_BLURB = {
+    Menstrual: 'Rest is productive right now. Energy tends to run low — be gentle with yourself.',
+    Follicular: 'Estrogen is rising. A good window for new starts and harder workouts.',
+    Ovulation: 'Peak energy and confidence. Communication tends to feel easier now.',
+    Luteal: 'Progesterone rises then dips. Cravings and mood swings are common late in this phase.'
+  };
+  SIGNALS = {
+    Menstrual: { energy: 35, mood: 45, focus: 50 },
+    Follicular: { energy: 75, mood: 70, focus: 80 },
+    Ovulation: { energy: 90, mood: 85, focus: 75 },
+    Luteal: { energy: 50, mood: 40, focus: 55 }
+  };
+  HORMONE_SCORE = { Menstrual: 64, Follicular: 82, Ovulation: 91, Luteal: 71 };
+  PW_SLIDES = [
+    { title: 'Know your patterns', body: 'Premium reveals how your energy, mood and focus move together across the full cycle — not just today.' },
+    { title: 'Your Hormone Twin, deeper', body: 'See your score trend against women with cycles like yours, not just a single number.' },
+    { title: 'Never guess your PMS window', body: 'Premium forecasts symptom-likely days two cycles out, so you can plan around them.' }
+  ];
+
+  state = {
+    screen: 'onboarding',
+    obStep: 0,
+    profile: {
+      avgCycle: 28, periodLen: 5,
+      lastPeriod: this.isoDaysAgo(12),
+      name: '', email: '',
+      goals: [], symptoms: []
+    },
+    tab: 'today',
+    logs: {},
+    trackDraft: this.blankDraft(),
+    calMonthOffset: 0,
+    calSelected: this.isoDaysAgo(0),
+    settingsOpen: false,
+    settings: { notifPeriod: true, notifOvulation: true, notifDaily: false, lutealLen: 14, units: 'us', theme: 'light' },
+    exportedFlash: false, deletedFlash: false,
+    paywallOpen: false, paywallStep: 0, plan: 'annual', premium: false,
+    chatMessages: [{ role: 'coach', text: "Hi, I'm your Coach. Ask me anything about your cycle, symptoms, or what today's phase means for you." }],
+    chatInput: '', coachTyping: false
+  };
+
+  blankDraft() { return { mood: null, flow: null, symptoms: [], energy: 3, stress: 3, sleep: 8, workout: false, notes: '' }; }
+  isoDaysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); }
+  isoPlusDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return d; }
+  fmtDate(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+
+  computePhase(dateObj) {
+    const p = this.state.profile;
+    const cycleLen = p.avgCycle, periodLen = p.periodLen;
+    const last = new Date(p.lastPeriod + 'T00:00:00');
+    const sod = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+    const sol = new Date(last.getFullYear(), last.getMonth(), last.getDate());
+    const diff = Math.floor((sod - sol) / 86400000);
+    const cycleDay = ((diff % cycleLen) + cycleLen) % cycleLen + 1;
+    const lutealLen = this.state.settings.lutealLen;
+    const ovulationDay = cycleLen - lutealLen;
+    let phase;
+    if (cycleDay <= periodLen) phase = 'Menstrual';
+    else if (cycleDay < ovulationDay - 2) phase = 'Follicular';
+    else if (cycleDay <= ovulationDay + 1) phase = 'Ovulation';
+    else phase = 'Luteal';
+    const daysToNext = cycleLen - cycleDay + 1;
+    return { cycleDay, phase, daysToNext };
+  }
+
+  toggleListField(bucket, key, value) {
+    this.setState(s => {
+      const arr = s[bucket][key];
+      const has = arr.includes(value);
+      return { [bucket]: { ...s[bucket], [key]: has ? arr.filter(v => v !== value) : [...arr, value] } };
+    });
+  }
+  setProfileField(key, val) { this.setState(s => ({ profile: { ...s.profile, [key]: val } })); }
+  setSettingsField(key, val) { this.setState(s => ({ settings: { ...s.settings, [key]: val } })); }
+
+  obNext() { this.setState(s => ({ obStep: s.obStep + 1 })); }
+  obBack() { this.setState(s => ({ obStep: Math.max(0, s.obStep - 1) })); }
+  finishOnboarding() { this.setState({ screen: 'app' }); }
+
+  incCycleLen() { this.setProfileField('avgCycle', Math.min(40, this.state.profile.avgCycle + 1)); }
+  decCycleLen() { this.setProfileField('avgCycle', Math.max(21, this.state.profile.avgCycle - 1)); }
+  incPeriodLen() { this.setProfileField('periodLen', Math.min(10, this.state.profile.periodLen + 1)); }
+  decPeriodLen() { this.setProfileField('periodLen', Math.max(2, this.state.profile.periodLen - 1)); }
+  incLuteal() { this.setSettingsField('lutealLen', Math.min(16, this.state.settings.lutealLen + 1)); }
+  decLuteal() { this.setSettingsField('lutealLen', Math.max(10, this.state.settings.lutealLen - 1)); }
+
+  setTab(t) { this.setState({ tab: t, settingsOpen: false }); }
+  goTrack() { this.setTab('track'); }
+  goCoach() { this.setTab('coach'); }
+  openSettings() { this.setState({ settingsOpen: true }); }
+  closeSettings() { this.setState({ settingsOpen: false }); }
+
+  openPaywall() { this.setState({ paywallOpen: true, paywallStep: 0 }); }
+  openPaywallFromSettings() { this.setState({ paywallOpen: true, paywallStep: 0, settingsOpen: false }); }
+  closePaywall() { this.setState({ paywallOpen: false }); }
+  paywallNext() { this.setState(s => ({ paywallStep: Math.min(3, s.paywallStep + 1) })); }
+  paywallBack() { this.setState(s => ({ paywallStep: Math.max(0, s.paywallStep - 1) })); }
+  subscribe() { this.setState({ premium: true, paywallOpen: false }); }
+  cancelPremium() { this.setState({ premium: false }); }
+
+  saveLog() {
+    const today = this.isoDaysAgo(0);
+    this.setState(s => ({ logs: { ...s.logs, [today]: { ...s.trackDraft } } }));
+  }
+  setTrackField(key, val) { this.setState(s => ({ trackDraft: { ...s.trackDraft, [key]: val } })); }
+
+  prevMonth() { this.setState(s => ({ calMonthOffset: s.calMonthOffset - 1 })); }
+  nextMonth() { this.setState(s => ({ calMonthOffset: s.calMonthOffset + 1 })); }
+  selectCalDay(iso) { this.setState({ calSelected: iso }); }
+
+  exportData() { this.setState({ exportedFlash: true, deletedFlash: false }); }
+  deleteData() { this.setState({ logs: {}, deletedFlash: true, exportedFlash: false }); }
+
+  coachReply(text) {
+    const t = text.toLowerCase();
+    const info = this.computePhase(new Date());
+    if (t.includes('tired') || t.includes('energy')) return `Low energy fits your ${info.phase} phase — hormone shifts here often blunt energy. Light movement and protein-forward meals tend to help.`;
+    if (t.includes('next') || t.includes('period')) return `Based on your logs, your next period is estimated in ${info.daysToNext} days.`;
+    if (t.includes('pms') || t.includes('bloat')) return `Bloating and mood swings are common in the ${info.phase} phase as progesterone shifts. Reducing salt and caffeine, and gentle movement, both help.`;
+    if (t.includes('hormone twin') || t.includes('score')) return `Your Hormone Twin score compares your signals to your own baseline — higher means today looks like your typical ${info.phase} day.`;
+    return `You're on day ${info.cycleDay}, in your ${info.phase} phase. ${this.PHASE_BLURB[info.phase]}`;
+  }
+  sendChat(text) {
+    if (!text || !text.trim()) return;
+    this.setState(s => ({ chatMessages: [...s.chatMessages, { role: 'user', text }], chatInput: '', coachTyping: true }));
+    setTimeout(() => {
+      this.setState(s => ({ chatMessages: [...s.chatMessages, { role: 'coach', text: this.coachReply(text) }], coachTyping: false }));
+    }, 700);
+  }
+  sendChatClick() { this.sendChat(this.state.chatInput); }
+  chatKeyDown(e) { if (e.key === 'Enter') this.sendChat(this.state.chatInput); }
+
+  chatScrollRef = React.createRef();
+  componentDidUpdate() {
+    if (this.chatScrollRef && this.chatScrollRef.current) {
+      this.chatScrollRef.current.scrollTop = this.chatScrollRef.current.scrollHeight;
+    }
+  }
+
+  buildMonthGrid() {
+    const now = new Date();
+    const base = new Date(now.getFullYear(), now.getMonth() + this.state.calMonthOffset, 1);
+    const year = base.getFullYear(), month = base.getMonth();
+    const firstDow = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const todayIso = this.isoDaysAgo(0);
+    const cells = [];
+    for (let i = 0; i < 42; i++) {
+      const dayNum = i - firstDow + 1;
+      const dateObj = new Date(year, month, dayNum);
+      const iso = dateObj.toISOString().slice(0, 10);
+      const inMonth = dayNum >= 1 && dayNum <= daysInMonth;
+      const info = this.computePhase(dateObj);
+      const isToday = iso === todayIso;
+      const isSelected = iso === this.state.calSelected;
+      const hasLog = !!this.state.logs[iso];
+      let bg = 'transparent', border = '1px solid transparent';
+      if (info.phase === 'Menstrual') bg = 'var(--color-accent-100)';
+      if (info.phase === 'Ovulation') bg = 'var(--color-accent-200)';
+      if (isSelected) border = '1.5px solid var(--color-accent)';
+      else if (isToday) border = '1.5px solid var(--color-text)';
+      cells.push({
+        num: inMonth ? dayNum : '',
+        cellStyle: `position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;background:${inMonth ? bg : 'transparent'};border:${border};opacity:${inMonth ? 1 : 0};cursor:${inMonth ? 'pointer' : 'default'};`,
+        numStyle: `font-size:12px;${isToday ? 'font-weight:600;' : ''}`,
+        showDot: inMonth && hasLog,
+        dotStyle: 'position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--color-text);',
+        onClick: inMonth ? () => this.selectCalDay(iso) : () => {}
+      });
+    }
+    return { cells, monthLabel: `${this.MONTHS[month]} ${year}` };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isOnboarding = s.screen === 'onboarding';
+    const isApp = s.screen === 'app';
+    const isObWelcome = isOnboarding && s.obStep === 0;
+    const isObNotWelcome = isOnboarding && s.obStep > 0;
+    const isObCycle = s.obStep === 1;
+    const isObGoals = s.obStep === 2;
+    const isObSymptoms = s.obStep === 3;
+    const isObAccount = s.obStep === 4;
+
+    const obDots = [1, 2, 3, 4].map(n => ({
+      style: `width:6px;height:6px;border-radius:50%;background:${s.obStep === n ? 'var(--color-accent)' : 'var(--color-neutral-300)'};`
+    }));
+
+    const chipStyle = (selected) => `padding:10px 16px;border-radius:18px;font-size:13px;font-weight:600;cursor:pointer;background:${selected ? 'linear-gradient(150deg,var(--color-accent-300),var(--color-accent-200))' : 'rgba(255,255,255,0.55)'};color:${selected ? 'var(--color-accent-800)' : 'var(--color-text)'};box-shadow:${selected ? '0 6px 14px rgba(120,84,17,0.22)' : '0 2px 6px rgba(90,60,20,0.06)'};`;
+
+    const goalsList = this.GOALS.map(g => ({
+      label: g, style: chipStyle(s.profile.goals.includes(g)),
+      onClick: () => this.toggleListField('profile', 'goals', g)
+    }));
+    const symptomsObList = this.SYMPTOMS.map(sy => ({
+      label: sy, style: chipStyle(s.profile.symptoms.includes(sy)),
+      onClick: () => this.toggleListField('profile', 'symptoms', sy)
+    }));
+    const symptomTrackList = this.SYMPTOMS.map(sy => ({
+      label: sy, style: chipStyle(s.trackDraft.symptoms.includes(sy)),
+      onClick: () => this.toggleListField('trackDraft', 'symptoms', sy)
+    }));
+    const moodChips = this.MOODS.map(m => ({
+      label: m, style: chipStyle(s.trackDraft.mood === m), onClick: () => this.setTrackField('mood', m)
+    }));
+    const flowChips = this.FLOWS.map(f => ({
+      label: f, style: chipStyle(s.trackDraft.flow === f), onClick: () => this.setTrackField('flow', f)
+    }));
+
+    const today = new Date();
+    const todayInfo = this.computePhase(today);
+    const nextPeriodDate = this.isoPlusDays(todayInfo.daysToNext);
+
+    const forecast = Array.from({ length: 7 }, (_, i) => {
+      const d = this.isoPlusDays(i);
+      const info = this.computePhase(d);
+      const isToday = i === 0;
+      return {
+        label: isToday ? 'Today' : this.DOW[d.getDay()],
+        phaseShort: info.phase.slice(0, 3),
+        style: `flex:none;width:54px;text-align:center;padding:11px 4px;border-radius:16px;background:${isToday ? 'linear-gradient(150deg,var(--color-accent-200),var(--color-accent-100))' : 'rgba(255,255,255,0.5)'};box-shadow:${isToday ? '0 6px 14px rgba(120,84,17,0.18)' : 'none'};`
+      };
+    });
+
+    const sig = this.SIGNALS[todayInfo.phase];
+    const signalRows = ['Energy', 'Mood', 'Focus'].map(label => {
+      const v = sig[label.toLowerCase()];
+      return { label, barStyle: `width:${v}%;height:100%;background:var(--color-accent);` };
+    });
+
+    const hormoneScore = this.HORMONE_SCORE[todayInfo.phase];
+
+    const grid = this.buildMonthGrid();
+    const selInfo = this.computePhase(new Date(s.calSelected + 'T00:00:00'));
+    const selLog = s.logs[s.calSelected];
+
+    const logsCount = Object.keys(s.logs).length;
+    let symCard;
+    if (logsCount < 3) {
+      symCard = { kicker: 'PATTERNS', title: 'Keep logging', body: 'Log at least 3 days to start surfacing symptom patterns.' };
+    } else {
+      const counts = {};
+      Object.values(s.logs).forEach(l => (l.symptoms || []).forEach(sy => counts[sy] = (counts[sy] || 0) + 1));
+      const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+      symCard = top
+        ? { kicker: 'SYMPTOMS', title: `${top[0]} shows up most`, body: `You logged ${top[0]} on ${top[1]} of your recent entries.` }
+        : { kicker: 'PATTERNS', title: 'No repeat symptoms yet', body: 'Keep logging to see what shows up most.' };
+    }
+    const cardBase = (radius) => `position:relative;background:rgba(255,255,255,0.6);border-radius:${radius};padding:18px 20px;box-shadow:0 10px 26px rgba(90,60,20,0.08);`;
+    const insightCards = [
+      { kicker: 'CYCLE LENGTH', title: `${s.profile.avgCycle}-day average`, body: `Your logged cycles are tracking close to your ${s.profile.avgCycle}-day baseline.`, wrapStyle: cardBase('26px 26px 26px 10px'), locked: false },
+      { ...symCard, wrapStyle: cardBase('14px'), locked: false },
+      { kicker: 'DEEP ANALYSIS', title: 'Hormone Twin trend', body: 'See how your Hormone Twin score moves across the full cycle, matched against women with similar patterns.', wrapStyle: cardBase('26px 10px 26px 26px') + (s.premium ? '' : 'overflow:hidden;filter:blur(2px);'), locked: !s.premium }
+    ];
+    const lockOverlayStyle = 'position:absolute;inset:0;background:rgba(251,243,236,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;';
+
+    const chatMessages = s.chatMessages.map(m => ({
+      wrapStyle: `display:flex;justify-content:${m.role === 'user' ? 'flex-end' : 'flex-start'};`,
+      bubbleStyle: `max-width:78%;padding:11px 14px;border-radius:16px;font-size:13.5px;line-height:1.5;${m.role === 'user' ? 'background:var(--color-accent-100);color:var(--color-accent-800);' : 'background:rgba(255,255,255,0.6);'}`,
+      text: m.text
+    }));
+    const chipsList = this.CHIPS.map(c => ({ label: c, onClick: () => this.sendChat(c) }));
+
+    const tabOrder = ['today', 'track', 'calendar', 'insights', 'coach'];
+    const tabIdx = Math.max(0, tabOrder.indexOf(s.tab));
+    const dockIndicatorStyle = `position:absolute;top:8px;height:46px;width:calc((100% - 12px)/5);left:calc(6px + (100% - 12px) * ${tabIdx / 5});border-radius:23px;background:linear-gradient(135deg,var(--color-accent-100),var(--color-accent-200));z-index:0;`;
+    const tabEntry = (id) => {
+      const active = s.tab === id;
+      return {
+        wrapStyle: `flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;position:relative;z-index:1;height:100%;`,
+        iconStyle: `color:${active ? 'var(--color-accent-700)' : 'var(--color-text)'};opacity:${active ? 1 : 0.5};`,
+        labelStyle: `font-size:9.5px;font-weight:600;color:var(--color-accent-700);opacity:${active ? 1 : 0};`,
+        onClick: () => this.setTab(id)
+      };
+    };
+    const tabToday = tabEntry('today');
+    const tabTrack = tabEntry('track');
+    const tabCalendar = tabEntry('calendar');
+    const tabInsights = tabEntry('insights');
+    const tabCoach = tabEntry('coach');
+
+    const paywallDots = [0, 1, 2, 3].map(i => ({
+      style: `flex:1;height:2.5px;border-radius:2px;background:${i <= s.paywallStep ? '#f4ede1' : 'rgba(244,237,225,0.25)'};`
+    }));
+    const pwSlide = this.PW_SLIDES[Math.min(s.paywallStep, 2)] || this.PW_SLIDES[0];
+    const isPwStep0 = s.paywallStep === 0, isPwStep1 = s.paywallStep === 1, isPwStep2 = s.paywallStep >= 2 && s.paywallStep < 3;
+    const planOptions = [
+      { id: 'monthly', label: 'Monthly', price: '$9.99/mo', badge: null },
+      { id: 'annual', label: 'Annual', price: '$59.99/yr · $5/mo', badge: 'SAVE 40%' }
+    ].map(p => ({
+      ...p,
+      style: `display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-radius:16px;border:1.5px solid ${s.plan === p.id ? 'var(--color-accent)' : 'rgba(244,237,225,0.2)'};background:${s.plan === p.id ? 'rgba(182,130,53,0.14)' : 'transparent'};cursor:pointer;`,
+      onClick: () => this.setState({ plan: p.id })
+    }));
+
+    return {
+      appRootStyle: `width:100%;height:100%;font-family:'Manrope',sans-serif;background:${s.settings.theme === 'dark' ? 'linear-gradient(160deg,#211d24,#1c1a1f)' : 'linear-gradient(165deg,#fbf3ec 0%,#f7ecee 45%,#f1e9f0 100%)'};color:${s.settings.theme === 'dark' ? '#f3f2f2' : 'var(--color-text)'};`,
+      isOnboarding, isApp, isObWelcome, isObNotWelcome, isObCycle, isObGoals, isObSymptoms, isObAccount,
+      obNext: () => this.obNext(), obBack: () => this.obBack(), finishOnboarding: () => this.finishOnboarding(),
+      obDots,
+      profile: s.profile,
+      incCycleLen: () => this.incCycleLen(), decCycleLen: () => this.decCycleLen(),
+      incPeriodLen: () => this.incPeriodLen(), decPeriodLen: () => this.decPeriodLen(),
+      incLuteal: () => this.incLuteal(), decLuteal: () => this.decLuteal(),
+      setLastPeriod: (e) => this.setProfileField('lastPeriod', e.target.value),
+      setName: (e) => this.setProfileField('name', e.target.value),
+      setEmail: (e) => this.setProfileField('email', e.target.value),
+      goalsList, symptomsObList, symptomTrackList, moodChips, flowChips,
+
+      tab: s.tab,
+      isTabToday: isApp && s.tab === 'today', isTabTrack: isApp && s.tab === 'track',
+      isTabCalendar: isApp && s.tab === 'calendar', isTabInsights: isApp && s.tab === 'insights',
+      isTabCoach: isApp && s.tab === 'coach',
+      todayDateLabel: today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
+      greeting: today.getHours() < 12 ? 'Good morning' : today.getHours() < 18 ? 'Good afternoon' : 'Good evening',
+      todayInfo: { ...todayInfo, phaseUpper: todayInfo.phase.toUpperCase() },
+      nextPeriodDateLabel: this.fmtDate(nextPeriodDate),
+      hormoneScore, signalRows, forecast,
+      goTrack: () => this.goTrack(), goCoach: () => this.goCoach(), openSettings: () => this.openSettings(),
+      showPremiumBanner: !s.premium,
+      openPaywall: () => this.openPaywall(),
+
+      todayLogged: !!s.logs[this.isoDaysAgo(0)],
+      trackDraft: { ...s.trackDraft, workoutYes: s.trackDraft.workout, workoutNo: !s.trackDraft.workout },
+      setEnergy: (e) => this.setTrackField('energy', Number(e.target.value)),
+      setStress: (e) => this.setTrackField('stress', Number(e.target.value)),
+      setSleep: (e) => this.setTrackField('sleep', Number(e.target.value)),
+      setWorkoutYes: () => this.setTrackField('workout', true), setWorkoutNo: () => this.setTrackField('workout', false),
+      setNotes: (e) => this.setTrackField('notes', e.target.value),
+      saveLog: () => this.saveLog(),
+
+      monthLabel: grid.monthLabel, dowLabels: this.DOW, monthGrid: grid.cells,
+      prevMonth: () => this.prevMonth(), nextMonth: () => this.nextMonth(),
+      selectedDayLabel: new Date(s.calSelected + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }),
+      selectedDayPhase: `${selInfo.phase} · Day ${selInfo.cycleDay}`,
+      selectedDaySummary: selLog ? `Logged: mood ${selLog.mood || '—'}, flow ${selLog.flow || '—'}${selLog.symptoms && selLog.symptoms.length ? ', ' + selLog.symptoms.join(', ') : ''}.` : 'No entry logged for this day.',
+
+      insightCards, lockOverlayStyle,
+
+      chatMessages, coachTyping: s.coachTyping, chipsList,
+      chatScrollRef: this.chatScrollRef,
+      chatInput: s.chatInput, setChatInput: (e) => this.setState({ chatInput: e.target.value }),
+      sendChatClick: () => this.sendChat(s.chatInput), chatKeyDown: (e) => this.chatKeyDown(e),
+
+      tabToday, tabTrack, tabCalendar, tabInsights, tabCoach, dockIndicatorStyle,
+
+      settingsOpen: s.settingsOpen, closeSettings: () => this.closeSettings(),
+      settings: s.settings,
+      notifPeriodOn: s.settings.notifPeriod, notifPeriodOff: !s.settings.notifPeriod,
+      toggleNotifPeriod: () => this.setSettingsField('notifPeriod', !s.settings.notifPeriod),
+      notifOvulationOn: s.settings.notifOvulation, notifOvulationOff: !s.settings.notifOvulation,
+      toggleNotifOvulation: () => this.setSettingsField('notifOvulation', !s.settings.notifOvulation),
+      notifDailyOn: s.settings.notifDaily, notifDailyOff: !s.settings.notifDaily,
+      toggleNotifDaily: () => this.setSettingsField('notifDaily', !s.settings.notifDaily),
+      unitsUS: s.settings.units === 'us', unitsMetric: s.settings.units === 'metric',
+      setUnitsUS: () => this.setSettingsField('units', 'us'), setUnitsMetric: () => this.setSettingsField('units', 'metric'),
+      themeLight: s.settings.theme === 'light', themeDark: s.settings.theme === 'dark',
+      setThemeLight: () => this.setSettingsField('theme', 'light'), setThemeDark: () => this.setSettingsField('theme', 'dark'),
+      exportData: () => this.exportData(), deleteData: () => this.deleteData(),
+      exportedFlash: s.exportedFlash, deletedFlash: s.deletedFlash,
+      subLabel: s.premium ? 'Premium' : 'Free plan',
+      subSublabel: s.premium ? `${s.plan === 'annual' ? 'Annual' : 'Monthly'} · active` : 'Upgrade for deeper insights',
+      premium: s.premium, notPremium: !s.premium,
+      cancelPremium: () => this.cancelPremium(), openPaywallFromSettings: () => this.openPaywallFromSettings(),
+
+      paywallOpen: s.paywallOpen, closePaywall: () => this.closePaywall(),
+      isPwStory: s.paywallStep < 3, isPwPlans: s.paywallStep === 3,
+      isPwStep0, isPwStep1, isPwStep2,
+      paywallDots, pwSlide, paywallNext: () => this.paywallNext(), paywallBack: () => this.paywallBack(),
+      planOptions, plan: s.plan,
+      featureList: ['Full Hormone Twin trend & history', 'Deep symptom pattern analysis', 'Unlimited AI Coach conversations', 'Two-cycle PMS forecast'],
+      subscribe: () => this.subscribe()
+    };
+  }
+}
+</script>
+</body>
+</html>
