@@ -8,7 +8,8 @@ export default defineConfig({
     },
   },
   test: {
-    include: ['src/services/**/*.test.ts', 'src/utils/**/*.test.ts'],
+    include: ['src/services/**/*.test.ts', 'src/utils/**/*.test.ts', 'src/store/**/*.test.ts'],
     environment: 'node',
+    setupFiles: ['./vitest.setup.ts'],
   },
 });

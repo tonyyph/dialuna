@@ -12,7 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 
 import { initI18n } from '@/i18n';
-import { useLogStore, usePremiumStore, useUserStore } from '@/store';
+import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -22,7 +22,8 @@ function useStoresHydrated(): boolean {
     () =>
       useUserStore.persist.hasHydrated() &&
       useLogStore.persist.hasHydrated() &&
-      usePremiumStore.persist.hasHydrated()
+      usePremiumStore.persist.hasHydrated() &&
+      useSettingsStore.persist.hasHydrated()
   );
 
   useEffect(() => {
@@ -31,7 +32,8 @@ function useStoresHydrated(): boolean {
       if (
         useUserStore.persist.hasHydrated() &&
         useLogStore.persist.hasHydrated() &&
-        usePremiumStore.persist.hasHydrated()
+        usePremiumStore.persist.hasHydrated() &&
+        useSettingsStore.persist.hasHydrated()
       ) {
         setHydrated(true);
       }
@@ -40,6 +42,7 @@ function useStoresHydrated(): boolean {
       useUserStore.persist.onFinishHydration(check),
       useLogStore.persist.onFinishHydration(check),
       usePremiumStore.persist.onFinishHydration(check),
+      useSettingsStore.persist.onFinishHydration(check),
     ];
     check();
     return () => subs.forEach((unsub) => unsub());
