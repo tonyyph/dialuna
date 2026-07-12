@@ -9,9 +9,9 @@ import { Screen } from '@/components/ui/Screen';
 import { OnboardingStepHeader } from '@/features/onboarding/OnboardingStepHeader';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
 import { spacing, typography, useTheme } from '@/theme';
-import { ONBOARDING_GOALS } from '@/types';
+import { ONBOARDING_SYMPTOMS } from '@/types';
 
-export default function Goals() {
+export default function Symptoms() {
   const { t } = useTranslation();
   const p = useTheme();
   const draft = useOnboardingDraft();
@@ -21,23 +21,22 @@ export default function Goals() {
       bottomAction={
         <Button
           label={t('common.continue')}
-          disabled={draft.goals.length === 0}
-          onPress={() => router.push('/onboarding/symptoms')}
+          onPress={() => router.push('/onboarding/account')}
         />
       }
     >
-      <OnboardingStepHeader step={2} />
-      <Text style={[styles.title, { color: p.text }]}>{t('onboarding.goals.title')}</Text>
+      <OnboardingStepHeader step={3} />
+      <Text style={[styles.title, { color: p.text }]}>{t('onboarding.symptoms.title')}</Text>
       <Text style={[styles.subtitle, { color: p.textMuted }]}>
-        {t('onboarding.goals.subtitle')}
+        {t('onboarding.symptoms.subtitle')}
       </Text>
       <ChipGroup>
-        {ONBOARDING_GOALS.map((goal) => (
+        {ONBOARDING_SYMPTOMS.map((symptom) => (
           <Chip
-            key={goal}
-            label={t(`goals.${goal}`)}
-            selected={draft.goals.includes(goal)}
-            onPress={() => draft.toggleGoal(goal)}
+            key={symptom}
+            label={t(`symptoms.${symptom}`)}
+            selected={draft.symptoms.includes(symptom)}
+            onPress={() => draft.toggleSymptom(symptom)}
           />
         ))}
       </ChipGroup>
