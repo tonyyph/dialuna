@@ -225,12 +225,9 @@
     "emptyBody": "Mình dùng nhật ký và pha chu kỳ của bạn để trả lời. Thử một gợi ý bên dưới nhé.",
     "prompts": {
       "p1": "Sao hôm nay mình mệt thế?",
-      "p2": "Hôm nay tập HIIT được không?",
-      "p3": "Sao mình thèm đồ ngọt?",
-      "p4": "Tâm trạng mình có liên quan chu kỳ không?",
-      "p5": "Hôm nay nên ăn gì?",
-      "p6": "Làm sao giảm đau bụng kinh?",
-      "p7": "Tuần này mình nên chuẩn bị gì?"
+      "p2": "Kỳ kinh tiếp theo của mình khi nào?",
+      "p3": "Mẹo giảm đầy hơi tiền kinh nguyệt",
+      "p4": "Điểm Hormone Twin của mình nghĩa là gì?"
     },
     "answer": {
       "tired": "Cảm giác mệt của bạn là dễ hiểu, {{name}}. Bạn đang ở ngày {{cycleDay}} của chu kỳ, trong {{phase}}, và năng lượng thường chùng xuống ở giai đoạn này.",

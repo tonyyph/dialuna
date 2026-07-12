@@ -227,13 +227,10 @@
     "emptyTitle": "Ask me anything about your cycle",
     "emptyBody": "I use your logs and cycle phase to answer. Try a suggestion below.",
     "prompts": {
-      "p1": "Why am I feeling tired today?",
-      "p2": "Can I do HIIT today?",
-      "p3": "Why am I craving sweets?",
-      "p4": "Is my mood related to my cycle?",
-      "p5": "What should I eat today?",
-      "p6": "How can I reduce cramps?",
-      "p7": "What should I expect this week?"
+      "p1": "Why am I so tired today?",
+      "p2": "When's my next period?",
+      "p3": "Tips for PMS bloating",
+      "p4": "What does my Hormone Twin score mean?"
     },
     "answer": {
       "tired": "It makes sense you feel tired, {{name}}. You're on cycle day {{cycleDay}}, in your {{phase}}, and energy often dips here.",

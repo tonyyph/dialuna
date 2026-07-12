@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Chip } from '@/components/ui/Chip';
 import { spacing } from '@/theme';
 
-const PROMPT_KEYS = ['p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7'] as const;
+const PROMPT_KEYS = ['p1', 'p2', 'p3', 'p4'] as const;
 
 interface Props {
   onSelect: (prompt: string) => void;

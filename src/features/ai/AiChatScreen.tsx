@@ -8,19 +8,19 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { MessageBubble } from '@/components/ai/MessageBubble';
 import { SuggestedPrompts } from '@/components/ai/SuggestedPrompts';
-import { Luna } from '@/components/mascot/Luna';
+import { TypingDots } from '@/components/ai/TypingDots';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 
 export function AiChatScreen() {
+  const p = useTheme();
   const { t } = useTranslation();
   const { messages, typing, send } = useChat();
   const isPremium = usePremiumStore((s) => s.isPremium);
@@ -36,24 +36,22 @@ export function AiChatScreen() {
   return (
     <Screen scroll={false} edgeToEdge keyboardAvoiding>
       <View style={styles.header}>
-        <View style={styles.coachAvatar}>
-          <Luna expression="thinking" size={70} />
-        </View>
-        <View style={styles.headerText}>
-          <Text style={styles.kicker}>{t('ai.subtitle')}</Text>
-          <Text style={styles.title}>{t('ai.title')}</Text>
-          <Text style={styles.counter}>
-            {isPremium
-              ? t('ai.unlimited')
-              : t('ai.remaining', { count: remaining() })}
-          </Text>
-        </View>
+        <Text style={[styles.title, { color: p.text }]}>{t('ai.title')}</Text>
+        <Text style={[styles.counter, { color: p.textFaint }]}>
+          {isPremium
+            ? t('ai.unlimited')
+            : t('ai.remaining', { count: remaining() })}
+        </Text>
       </View>
 
       {messages.length === 0 ? (
-        <View style={styles.emptyPanel}>
-          <Text style={styles.emptyTitle}>{t('ai.emptyTitle')}</Text>
-          <Text style={styles.emptyBody}>{t('ai.emptyBody')}</Text>
+        <View style={[styles.emptyPanel, { backgroundColor: p.surface }]}>
+          <Text style={[styles.emptyTitle, { color: p.text }]}>
+            {t('ai.emptyTitle')}
+          </Text>
+          <Text style={[styles.emptyBody, { color: p.textMuted }]}>
+            {t('ai.emptyBody')}
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -67,13 +65,7 @@ export function AiChatScreen() {
           onContentSizeChange={() =>
             listRef.current?.scrollToEnd({ animated: true })
           }
-          ListFooterComponent={
-            typing ? (
-              <Animated.Text entering={FadeInDown.duration(220)} style={styles.typing}>
-                {t('ai.typing')}
-              </Animated.Text>
-            ) : null
-          }
+          ListFooterComponent={typing ? <TypingDots /> : null}
         />
       )}
 
@@ -81,11 +73,14 @@ export function AiChatScreen() {
 
       <View style={styles.inputRow}>
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            { backgroundColor: p.surfaceStrong, color: p.text },
+          ]}
           value={input}
           onChangeText={setInput}
           placeholder={t('ai.placeholder')}
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={p.textFaint}
           accessibilityLabel={t('ai.placeholder')}
           onSubmitEditing={() => submit(input)}
           returnKeyType="send"
@@ -94,9 +89,13 @@ export function AiChatScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('common.next')}
           onPress={() => submit(input)}
-          style={({ pressed }) => [styles.sendBtn, pressed && styles.sendBtnPressed]}
+          style={({ pressed }) => [
+            styles.sendBtn,
+            { backgroundColor: p.primaryBtn },
+            pressed && styles.sendBtnPressed,
+          ]}
         >
-          <Ionicons name="arrow-up" size={20} color={colors.card} />
+          <Ionicons name="paper-plane" size={15} color={p.onPrimaryBtn} />
         </Pressable>
       </View>
 
@@ -109,49 +108,21 @@ export function AiChatScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing(1.5),
-    paddingHorizontal: spacing(2.5),
-    paddingTop: spacing(1.5),
+    paddingHorizontal: spacing(2.25),
+    paddingTop: spacing(1),
     paddingBottom: spacing(1.5),
-    marginHorizontal: spacing(2.5),
-    marginTop: spacing(1.5),
-    marginBottom: spacing(1),
-    borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
-  },
-  coachAvatar: {
-    width: 82,
-    height: 82,
-    borderRadius: radius.sheet,
-    backgroundColor: 'rgba(255,255,255,0.16)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerText: {
-    flex: 1,
-  },
-  kicker: {
-    ...typography.caption,
-    color: colors.peach,
   },
   title: {
     ...typography.headline,
-    color: colors.card,
   },
   counter: {
     ...typography.caption,
-    color: 'rgba(255,255,255,0.78)',
-    marginTop: spacing(0.5),
+    marginTop: 2,
   },
   emptyPanel: {
     flex: 1,
     marginHorizontal: spacing(2.5),
-    borderRadius: radius.sheet,
-    backgroundColor: colors.glassStrong,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
+    borderRadius: radius.md,
     padding: spacing(3),
     justifyContent: 'center',
   },
@@ -168,11 +139,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing(2.5),
     paddingVertical: spacing(1),
   },
-  typing: {
-    ...typography.caption,
-    marginLeft: spacing(4),
-    marginBottom: spacing(1),
-  },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -183,24 +149,20 @@ const styles = StyleSheet.create({
   input: {
     ...typography.body,
     flex: 1,
-    backgroundColor: colors.glassStrong,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
-    paddingHorizontal: spacing(2),
-    minHeight: 52,
+    borderRadius: radius.md,
+    borderWidth: 0,
+    paddingHorizontal: spacing(1.75),
+    minHeight: 44,
   },
   sendBtn: {
-    width: 52,
-    height: 52,
-    borderRadius: radius.lg,
-    backgroundColor: colors.primary,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
   },
   sendBtnPressed: {
-    transform: [{ scale: 0.96 }],
-    opacity: 0.9,
+    transform: [{ scale: 0.94 }],
   },
   disclaimer: {
     paddingHorizontal: spacing(2.5),

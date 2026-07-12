@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   role: 'user' | 'coach';
@@ -8,52 +9,35 @@ interface Props {
 }
 
 export function MessageBubble({ role, text }: Props) {
+  const p = useTheme();
   const isUser = role === 'user';
   return (
-    <View style={[styles.row, isUser && styles.rowUser]}>
-      {!isUser && <Text style={styles.avatar}>🌙</Text>}
-      <View style={[styles.bubble, isUser ? styles.user : styles.coach]}>
-        <Text style={[styles.text, isUser && styles.textUser]}>{text}</Text>
+    <Animated.View
+      entering={FadeInDown.duration(260)}
+      style={[styles.row, isUser && styles.rowUser]}
+    >
+      <View
+        style={[
+          styles.bubble,
+          { backgroundColor: isUser ? p.accent100 : p.surfaceStrong },
+        ]}
+      >
+        <Text style={[styles.text, { color: isUser ? p.accent800 : p.text }]}>
+          {text}
+        </Text>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: spacing(1),
-    marginBottom: spacing(1.5),
-  },
-  rowUser: {
-    justifyContent: 'flex-end',
-  },
-  avatar: {
-    fontSize: 20,
-  },
+  row: { flexDirection: 'row', marginBottom: spacing(1.25) },
+  rowUser: { justifyContent: 'flex-end' },
   bubble: {
-    maxWidth: '82%',
-    borderRadius: radius.lg,
-    paddingHorizontal: spacing(2),
-    paddingVertical: spacing(1.5),
+    maxWidth: '78%',
+    borderRadius: radius.md,
+    paddingHorizontal: spacing(1.75),
+    paddingVertical: spacing(1.4),
   },
-  user: {
-    backgroundColor: colors.primary,
-    borderBottomRightRadius: radius.sm,
-  },
-  coach: {
-    backgroundColor: colors.glassStrong,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
-    borderBottomLeftRadius: radius.sm,
-  },
-  text: {
-    ...typography.body,
-    fontSize: 15,
-    lineHeight: 21,
-  },
-  textUser: {
-    color: colors.card,
-  },
+  text: { ...typography.bodySmall, fontSize: 13.5, lineHeight: 20 },
 });
