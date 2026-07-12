@@ -161,6 +161,7 @@
     "logNow": "Ghi hôm nay",
     "weekForecast": "Dự báo 7 ngày",
     "premiumBanner": {
+      "kicker": "Dialuna Premium",
       "title": "Mở khóa Hormone Twin trọn vẹn",
       "body": "AI coach không giới hạn, dự báo 7 ngày và báo cáo hằng tháng.",
       "cta": "Xem Premium"
@@ -417,31 +418,27 @@
     }
   },
   "paywall": {
-    "title": "Hormone Twin trọn vẹn của bạn",
-    "subtitle": "Đi sâu hơn cùng Dialuna Premium",
-    "benefit": {
-      "b1": "Trò chuyện AI Coach không giới hạn",
-      "b2": "Dự báo Hormone Twin nâng cao",
-      "b3": "Dự đoán tâm trạng, năng lượng & độ dễ chịu 7 ngày",
-      "b4": "Kế hoạch ăn uống & tập luyện cá nhân hóa",
-      "b5": "Báo cáo wellness AI hằng tháng",
-      "b6": "Phân tích quy luật chu kỳ"
+    "slides": {
+      "s1": { "title": "Hiểu quy luật của bạn", "body": "Premium cho thấy năng lượng, tâm trạng và sự tập trung của bạn thay đổi cùng nhau ra sao trong cả chu kỳ — không chỉ hôm nay." },
+      "s2": { "title": "Hormone Twin, sâu hơn", "body": "Xem xu hướng điểm số của bạn so với những phụ nữ có chu kỳ tương tự, không chỉ một con số." },
+      "s3": { "title": "Không còn đoán mò kỳ PMS", "body": "Premium dự báo những ngày dễ có triệu chứng trước hai chu kỳ, để bạn chủ động sắp xếp." }
     },
-    "plans": {
-      "monthly": "Hằng tháng",
-      "yearly": "Hằng năm",
-      "lifetime": "Trọn đời",
-      "perMonth": "/tháng",
-      "perYear": "/năm",
-      "once": "một lần"
+    "choosePlan": "Chọn gói của bạn",
+    "trialNote": "Miễn phí 7 ngày, hủy bất cứ lúc nào.",
+    "plans": { "monthly": "Hàng tháng", "annual": "Hàng năm", "monthlyPrice": "9,99 US$/tháng", "annualPrice": "59,99 US$/năm · 5 US$/tháng" },
+    "saveBadge": "TIẾT KIỆM 40%",
+    "features": {
+      "f1": "Toàn bộ xu hướng & lịch sử Hormone Twin",
+      "f2": "Phân tích chuyên sâu quy luật triệu chứng",
+      "f3": "Trò chuyện không giới hạn với AI Coach",
+      "f4": "Dự báo PMS trước hai chu kỳ"
     },
-    "saveBadge": "Tiết kiệm 52%",
-    "popularBadge": "Phổ biến nhất",
-    "cta": "Bắt đầu Premium",
+    "cta": "Dùng thử 7 ngày miễn phí",
+    "success": "Bạn đã là Premium!",
     "restore": "Khôi phục giao dịch",
-    "success": "Chào mừng đến Premium ✨",
-    "mockNote": "Bản demo: không có thanh toán thật nào được xử lý.",
-    "finePrint": "Gói đăng ký tự động gia hạn cho đến khi hủy. Chỉ là hướng dẫn wellness — không phải tư vấn y khoa."
+    "terms": "Điều khoản",
+    "privacy": "Quyền riêng tư",
+    "mockNote": "Giao dịch được mô phỏng trong bản dựng này."
   },
   "settings": {
     "title": "Cài đặt",

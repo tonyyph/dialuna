@@ -160,7 +160,10 @@ export function SettingsScreen() {
           <Text style={styles.value}>
             {isPremium
               ? t('settings.premiumActive', {
-                  plan: plan ? t(`paywall.plans.${plan}`) : '',
+                  // Interim: Task 9 rewrites Settings. `paywall.plans.${plan}`
+                  // no longer resolves (annual/lifetime removed); point at an
+                  // existing key until then.
+                  plan: plan ? t('paywall.cta') : '',
                 })
               : t('settings.premiumInactive')}
           </Text>
