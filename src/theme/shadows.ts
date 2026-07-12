@@ -1,48 +1,38 @@
 import { ViewStyle } from 'react-native';
-import { colors } from './colors';
+
+const warm = '#5a3c14';
+
+const tiny: ViewStyle = {
+  shadowColor: warm, shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.08, shadowRadius: 8, elevation: 1,
+};
+const soft: ViewStyle = {
+  shadowColor: warm, shadowOffset: { width: 0, height: 10 },
+  shadowOpacity: 0.08, shadowRadius: 24, elevation: 3,
+};
+const float: ViewStyle = {
+  shadowColor: '#3c2814', shadowOffset: { width: 0, height: 14 },
+  shadowOpacity: 0.16, shadowRadius: 34, elevation: 8,
+};
+const hero: ViewStyle = {
+  shadowColor: '#785411', shadowOffset: { width: 0, height: 18 },
+  shadowOpacity: 0.14, shadowRadius: 40, elevation: 6,
+};
+const button: ViewStyle = {
+  shadowColor: '#000000', shadowOffset: { width: 0, height: 10 },
+  shadowOpacity: 0.16, shadowRadius: 22, elevation: 4,
+};
+const chip: ViewStyle = {
+  shadowColor: '#785411', shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.22, shadowRadius: 14, elevation: 3,
+};
 
 export const shadows = {
   none: {},
-  xs: {
-    shadowColor: colors.deepPlum,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.035,
-    shadowRadius: 5,
-    elevation: 1,
-  },
-  sm: {
-    shadowColor: colors.deepPlum,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.055,
-    shadowRadius: 14,
-    elevation: 2,
-  },
-  md: {
-    shadowColor: colors.deepPlum,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.07,
-    shadowRadius: 22,
-    elevation: 3,
-  },
-  lg: {
-    shadowColor: colors.deepPlum,
-    shadowOffset: { width: 0, height: 14 },
-    shadowOpacity: 0.09,
-    shadowRadius: 34,
-    elevation: 6,
-  },
-  glow: {
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.18,
-    shadowRadius: 24,
-    elevation: 4,
-  },
+  tiny, soft, float, hero, button, chip,
+  // Legacy aliases — deleted in the cleanup task once no consumer remains.
+  xs: tiny, sm: soft, md: float, lg: hero, glow: button,
 } satisfies Record<string, ViewStyle>;
 
-// Deprecated alias — Card.tsx is the sole remaining consumer of the old
-// `shadows.card` name; migrate it to `sm` directly when Card is next touched,
-// then delete this.
-export const legacyShadowAliases = {
-  card: shadows.sm,
-} satisfies Record<string, ViewStyle>;
+// Deprecated; Card.tsx migrates off this in the redesign, then it's deleted.
+export const legacyShadowAliases = { card: soft } satisfies Record<string, ViewStyle>;
