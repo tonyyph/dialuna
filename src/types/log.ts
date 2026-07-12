@@ -8,7 +8,9 @@ export type Symptom =
   | 'breastTenderness'
   | 'backPain'
   | 'nausea'
-  | 'fatigue';
+  | 'fatigue'
+  | 'moodSwings'
+  | 'insomnia';
 
 export type Mood = 'happy' | 'calm' | 'anxious' | 'sad' | 'angry' | 'sensitive';
 
@@ -43,6 +45,20 @@ export const ALL_SYMPTOMS: Symptom[] = [
   'backPain',
   'nausea',
   'fatigue',
+  'moodSwings',
+  'insomnia',
+];
+
+/** The eight symptoms offered during onboarding (handoff order). */
+export const ONBOARDING_SYMPTOMS: Symptom[] = [
+  'cramps',
+  'bloating',
+  'headache',
+  'fatigue',
+  'moodSwings',
+  'acne',
+  'breastTenderness',
+  'insomnia',
 ];
 
 export const ALL_MOODS: Mood[] = ['happy', 'calm', 'anxious', 'sad', 'angry', 'sensitive'];

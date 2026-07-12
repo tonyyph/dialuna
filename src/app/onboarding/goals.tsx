@@ -17,6 +17,9 @@ const GOAL_EMOJI: Record<Goal, string> = {
   skinInsights: '✨',
   pregnancyPlanning: '🤍',
   betterSleep: '😴',
+  avoidPregnancy: '🛡️',
+  trackFertility: '🌱',
+  generalWellness: '🌤️',
 };
 
 export default function Goals() {

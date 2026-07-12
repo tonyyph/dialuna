@@ -35,6 +35,8 @@ const SYMPTOM_EMOJI: Record<Symptom, string> = {
   backPain: '🦴',
   nausea: '🤢',
   fatigue: '🥱',
+  moodSwings: '🎭',
+  insomnia: '🌃',
 };
 
 const MOOD_EMOJI: Record<Mood, string> = {

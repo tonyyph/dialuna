@@ -46,7 +46,9 @@
     "breastTenderness": "Breast tenderness",
     "backPain": "Back pain",
     "nausea": "Nausea",
-    "fatigue": "Fatigue"
+    "fatigue": "Fatigue",
+    "moodSwings": "Mood swings",
+    "insomnia": "Insomnia"
   },
   "moods": {
     "happy": "Happy",
@@ -71,7 +73,10 @@
     "planWorkouts": "Plan workouts",
     "skinInsights": "Skin & acne insights",
     "pregnancyPlanning": "Pregnancy planning",
-    "betterSleep": "Better sleep"
+    "betterSleep": "Better sleep",
+    "avoidPregnancy": "Avoid pregnancy",
+    "trackFertility": "Track fertility",
+    "generalWellness": "General wellness"
   },
   "ageRanges": {
     "18-24": "18–24",
@@ -88,8 +93,8 @@
   },
   "onboarding": {
     "welcome": {
-      "title": "Understand your cycle with AI",
-      "subtitle": "Dialuna learns from your daily logs to forecast your energy, mood, and wellbeing — like a personal Hormone Twin.",
+      "title": "Dialuna",
+      "subtitle": "A quiet place to know your body, cycle by cycle.",
       "cta": "Get started"
     },
     "disclaimerScreen": {
@@ -98,37 +103,35 @@
       "cta": "I understand"
     },
     "profile": {
-      "title": "Tell us about you",
-      "subtitle": "This helps your Hormone Twin get started. You can change it anytime.",
-      "nickname": "Name or nickname",
-      "nicknamePlaceholder": "How should we call you?",
-      "ageRange": "Age range",
-      "cycleLength": "Average cycle length",
-      "periodLength": "Average period length",
       "daysUnit": "days"
     },
-    "lastPeriod": {
-      "title": "When did your last period start?",
-      "subtitle": "Pick the first day of your most recent period.",
-      "durationLabel": "How many days did it last?",
-      "notSure": "Not sure? Your average is fine — you can adjust later."
+    "cycleBasics": {
+      "title": "Let's set your baseline",
+      "subtitle": "You can always adjust these later in Settings.",
+      "cycleLength": "Average cycle length",
+      "periodLength": "Period length",
+      "lastPeriod": "First day of last period",
+      "daysUnit": "days"
     },
     "goals": {
       "title": "What brings you to Dialuna?",
-      "subtitle": "Choose everything that applies."
+      "subtitle": "Choose all that apply."
     },
-    "notifications": {
-      "title": "Stay gently in sync",
-      "subtitle": "We can remind you at the right moments. You stay in control.",
-      "daily": "Daily insight reminder",
-      "period": "Period reminder",
-      "pms": "PMS heads-up",
-      "note": "You can change these anytime in Settings."
+    "symptoms": {
+      "title": "Symptoms you often notice",
+      "subtitle": "This helps Insights find patterns sooner."
     },
-    "paywallPreview": {
-      "title": "Dialuna Premium",
-      "subtitle": "Your full Hormone Twin experience",
-      "continueFree": "Continue free"
+    "account": {
+      "title": "Create your account",
+      "subtitle": "Your logs stay private, synced to this account only.",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "cta": "Create account",
+      "apple": "Continue with Apple",
+      "appleSoon": "Apple sign-in is coming soon.",
+      "emailInvalid": "That email doesn't look right."
     }
   },
   "home": {

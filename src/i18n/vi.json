@@ -45,7 +45,9 @@
     "breastTenderness": "Căng tức ngực",
     "backPain": "Đau lưng",
     "nausea": "Buồn nôn",
-    "fatigue": "Mệt mỏi"
+    "fatigue": "Mệt mỏi",
+    "moodSwings": "Tâm trạng thất thường",
+    "insomnia": "Mất ngủ"
   },
   "moods": {
     "happy": "Vui vẻ",
@@ -70,7 +72,10 @@
     "planWorkouts": "Lên lịch tập luyện",
     "skinInsights": "Chăm sóc da & mụn",
     "pregnancyPlanning": "Chuẩn bị mang thai",
-    "betterSleep": "Ngủ ngon hơn"
+    "betterSleep": "Ngủ ngon hơn",
+    "avoidPregnancy": "Tránh thai",
+    "trackFertility": "Theo dõi khả năng thụ thai",
+    "generalWellness": "Sức khỏe tổng quát"
   },
   "ageRanges": {
     "18-24": "18–24",
@@ -87,8 +92,8 @@
   },
   "onboarding": {
     "welcome": {
-      "title": "Hiểu chu kỳ của bạn cùng AI",
-      "subtitle": "Dialuna học từ nhật ký hằng ngày để dự báo năng lượng, tâm trạng và sức khỏe của bạn — như một Hormone Twin cá nhân.",
+      "title": "Dialuna",
+      "subtitle": "Một nơi yên tĩnh để hiểu cơ thể bạn, qua từng chu kỳ.",
       "cta": "Bắt đầu"
     },
     "disclaimerScreen": {
@@ -97,37 +102,35 @@
       "cta": "Tôi đã hiểu"
     },
     "profile": {
-      "title": "Kể cho chúng mình nghe về bạn",
-      "subtitle": "Thông tin này giúp Hormone Twin khởi động. Bạn có thể đổi bất cứ lúc nào.",
-      "nickname": "Tên hoặc biệt danh",
-      "nicknamePlaceholder": "Bạn muốn được gọi là gì?",
-      "ageRange": "Độ tuổi",
-      "cycleLength": "Độ dài chu kỳ trung bình",
-      "periodLength": "Số ngày hành kinh trung bình",
       "daysUnit": "ngày"
     },
-    "lastPeriod": {
-      "title": "Kỳ kinh gần nhất bắt đầu khi nào?",
-      "subtitle": "Chọn ngày đầu tiên của kỳ kinh gần đây nhất.",
-      "durationLabel": "Kéo dài bao nhiêu ngày?",
-      "notSure": "Không chắc? Dùng số trung bình cũng được — bạn có thể chỉnh sau."
+    "cycleBasics": {
+      "title": "Thiết lập chu kỳ của bạn",
+      "subtitle": "Bạn luôn có thể điều chỉnh sau trong Cài đặt.",
+      "cycleLength": "Độ dài chu kỳ trung bình",
+      "periodLength": "Số ngày hành kinh",
+      "lastPeriod": "Ngày đầu của kỳ kinh gần nhất",
+      "daysUnit": "ngày"
     },
     "goals": {
       "title": "Điều gì đưa bạn đến Dialuna?",
-      "subtitle": "Chọn tất cả những gì phù hợp."
+      "subtitle": "Chọn tất cả mục phù hợp."
     },
-    "notifications": {
-      "title": "Nhẹ nhàng đồng hành cùng bạn",
-      "subtitle": "Dialuna có thể nhắc bạn đúng lúc. Bạn luôn là người quyết định.",
-      "daily": "Nhắc insight hằng ngày",
-      "period": "Nhắc kỳ kinh sắp đến",
-      "pms": "Báo trước giai đoạn PMS",
-      "note": "Bạn có thể thay đổi trong Cài đặt bất cứ lúc nào."
+    "symptoms": {
+      "title": "Triệu chứng bạn thường gặp",
+      "subtitle": "Giúp Insights tìm ra quy luật sớm hơn."
     },
-    "paywallPreview": {
-      "title": "Dialuna Premium",
-      "subtitle": "Trải nghiệm Hormone Twin trọn vẹn",
-      "continueFree": "Tiếp tục bản miễn phí"
+    "account": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Nhật ký của bạn được giữ riêng tư, chỉ đồng bộ với tài khoản này.",
+      "name": "Tên",
+      "namePlaceholder": "Tên của bạn",
+      "email": "Email",
+      "emailPlaceholder": "ban@email.com",
+      "cta": "Tạo tài khoản",
+      "apple": "Tiếp tục với Apple",
+      "appleSoon": "Đăng nhập Apple sắp ra mắt.",
+      "emailInvalid": "Email này có vẻ chưa đúng."
     }
   },
   "home": {
