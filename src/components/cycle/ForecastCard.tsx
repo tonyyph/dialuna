@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Card } from '@/components/ui/Card';
-import { colors, spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   emoji: string;
@@ -19,13 +19,14 @@ function levelKey(score: number): string {
 
 export function ForecastCard({ emoji, label, score }: Props) {
   const { t } = useTranslation();
+  const p = useTheme();
   return (
     <Card style={styles.card}>
       <Text style={styles.emoji}>{emoji}</Text>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.level}>{t(levelKey(score))}</Text>
-      <View style={styles.barTrack}>
-        <View style={[styles.barFill, { width: `${score}%` }]} />
+      <View style={[styles.barTrack, { backgroundColor: p.accent100 }]}>
+        <View style={[styles.barFill, { width: `${score}%`, backgroundColor: p.accent }]} />
       </View>
     </Card>
   );
@@ -49,13 +50,11 @@ const styles = StyleSheet.create({
   barTrack: {
     height: 6,
     borderRadius: 3,
-    backgroundColor: colors.softRose,
     marginTop: spacing(0.5),
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
     borderRadius: 3,
-    backgroundColor: colors.primary,
   },
 });

@@ -12,7 +12,7 @@ import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
 import { useLogStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, spacing, typography, useTheme } from '@/theme';
 import {
   ALL_FLOW_LEVELS,
   ALL_MOODS,
@@ -59,6 +59,7 @@ const WORKOUT_EMOJI: Record<WorkoutType, string> = {
 
 export function LogScreen() {
   const { t } = useTranslation();
+  const p = useTheme();
   const today = todayISO();
   const existing = useLogStore((s) => s.logs[today]);
   const saveLog = useLogStore((s) => s.saveLog);
@@ -113,16 +114,16 @@ export function LogScreen() {
       keyboardAvoiding
       bottomAction={<Button label={t('log.save')} onPress={onSave} />}
     >
-      <View style={styles.hero}>
-        <Text style={styles.kicker}>{t('common.today')}</Text>
-        <Text style={styles.title}>{t('log.title')}</Text>
+      <View style={[styles.hero, { backgroundColor: p.primaryBtn }]}>
+        <Text style={[styles.kicker, { color: p.accent400 }]}>{t('common.today')}</Text>
+        <Text style={[styles.title, { color: p.onPrimaryBtn }]}>{t('log.title')}</Text>
         <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
       </View>
 
       <Card variant="glass" style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.flow')}</Text>
-          <Text style={styles.cardMeta}>{t(`flow.${flow}`)}</Text>
+          <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`flow.${flow}`)}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_FLOW_LEVELS.map((level) => (
@@ -139,7 +140,7 @@ export function LogScreen() {
       <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.mood')}</Text>
-          <Text style={styles.cardMeta}>{moods.length}</Text>
+          <Text style={[styles.cardMeta, { color: p.accent }]}>{moods.length}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_MOODS.map((mood) => (
@@ -157,7 +158,7 @@ export function LogScreen() {
 
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.symptoms')}</Text>
-          <Text style={styles.cardMeta}>{symptoms.length}</Text>
+          <Text style={[styles.cardMeta, { color: p.accent }]}>{symptoms.length}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_SYMPTOMS.map((symptom) => (
@@ -175,7 +176,7 @@ export function LogScreen() {
       <Card variant="glass" style={styles.sliders}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('home.twinScore')}</Text>
-          <Text style={styles.cardMeta}>{t('common.today')}</Text>
+          <Text style={[styles.cardMeta, { color: p.accent }]}>{t('common.today')}</Text>
         </View>
         <LevelSlider
           label={t('log.energy')}
@@ -197,7 +198,7 @@ export function LogScreen() {
       <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.workout')}</Text>
-          <Text style={styles.cardMeta}>{t(`workouts.${workoutType}`)}</Text>
+          <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`workouts.${workoutType}`)}</Text>
         </View>
         <View style={styles.chips}>
           {ALL_WORKOUTS.map((workout) => (
@@ -213,11 +214,11 @@ export function LogScreen() {
 
         <Text style={styles.noteLabel}>{t('log.note')}</Text>
         <TextInput
-          style={styles.noteInput}
+          style={[styles.noteInput, { backgroundColor: p.surfaceStrong, color: p.text }]}
           value={note}
           onChangeText={setNote}
           placeholder={t('log.notePlaceholder')}
-          placeholderTextColor={colors.textSecondary}
+          placeholderTextColor={p.textMuted}
           accessibilityLabel={t('log.note')}
           multiline
         />
@@ -243,15 +244,12 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
     padding: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
   },
   kicker: {
     ...typography.caption,
-    color: colors.peach,
   },
   title: {
     ...typography.headline,
-    color: colors.card,
     marginTop: spacing(0.5),
   },
   subtitle: {
@@ -274,7 +272,6 @@ const styles = StyleSheet.create({
   },
   cardMeta: {
     ...typography.caption,
-    color: colors.primary,
   },
   chips: {
     flexDirection: 'row',
@@ -283,7 +280,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: colors.divider,
   },
   sliders: {
     gap: spacing(2.5),
@@ -294,10 +290,7 @@ const styles = StyleSheet.create({
   },
   noteInput: {
     ...typography.body,
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(2),
     minHeight: 96,
     textAlignVertical: 'top',

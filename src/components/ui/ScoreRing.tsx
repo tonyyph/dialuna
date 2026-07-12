@@ -7,7 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Circle } from 'react-native-svg';
 
-import { colors, typography } from '@/theme';
+import { typography, useTheme } from '@/theme';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -16,9 +16,14 @@ interface Props {
   score: number;
   size?: number;
   label?: string;
+  color?: string;
+  trackColor?: string;
 }
 
-export function ScoreRing({ score, size = 140, label }: Props) {
+export function ScoreRing({ score, size = 140, label, color, trackColor }: Props) {
+  const p = useTheme();
+  const ringColor = color ?? p.accent;
+  const track = trackColor ?? p.track;
   const strokeWidth = 12;
   const r = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * r;
@@ -43,7 +48,7 @@ export function ScoreRing({ score, size = 140, label }: Props) {
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke={colors.softRose}
+          stroke={track}
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -51,7 +56,7 @@ export function ScoreRing({ score, size = 140, label }: Props) {
           cx={size / 2}
           cy={size / 2}
           r={r}
-          stroke={colors.primary}
+          stroke={ringColor}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           fill="none"
@@ -61,8 +66,8 @@ export function ScoreRing({ score, size = 140, label }: Props) {
         />
       </Svg>
       <View style={styles.center}>
-        <Text style={styles.score}>{score}</Text>
-        <Text style={styles.outOf}>/ 100</Text>
+        <Text style={[styles.score, { color: p.text }]}>{score}</Text>
+        <Text style={[styles.outOf, { color: p.textMuted }]}>/ 100</Text>
       </View>
     </View>
   );
