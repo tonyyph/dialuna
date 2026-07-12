@@ -1,7 +1,7 @@
 import * as Haptics from 'expo-haptics';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { shadows, spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   label: string;
@@ -13,6 +13,7 @@ interface Props {
 }
 
 export function Stepper({ label, unit, value, min, max, onChange }: Props) {
+  const p = useTheme();
   const step = (delta: number) => {
     const next = Math.min(max, Math.max(min, value + delta));
     if (next !== value) {
@@ -21,28 +22,30 @@ export function Stepper({ label, unit, value, min, max, onChange }: Props) {
     }
   };
 
+  const circle = { backgroundColor: p.surfaceSolid };
+
   return (
-    <View style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
+    <View style={styles.wrap}>
+      <Text style={[styles.label, { color: p.textMuted }]}>{label}</Text>
       <View style={styles.controls}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${label} -`}
           onPress={() => step(-1)}
-          style={styles.btn}
+          style={({ pressed }) => [styles.btn, circle, pressed && styles.pressed]}
         >
-          <Text style={styles.btnText}>−</Text>
+          <Text style={[styles.btnText, { color: p.text }]}>−</Text>
         </Pressable>
-        <Text style={styles.value}>
+        <Text style={[styles.value, { color: p.text }]}>
           {value} {unit}
         </Text>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={`${label} +`}
           onPress={() => step(1)}
-          style={styles.btn}
+          style={({ pressed }) => [styles.btn, circle, pressed && styles.pressed]}
         >
-          <Text style={styles.btnText}>+</Text>
+          <Text style={[styles.btnText, { color: p.text }]}>+</Text>
         </Pressable>
       </View>
     </View>
@@ -50,35 +53,22 @@ export function Stepper({ label, unit, value, min, max, onChange }: Props) {
 }
 
 const styles = StyleSheet.create({
-  row: {
-    gap: spacing(1),
-  },
-  label: {
-    ...typography.subtitle,
-  },
+  wrap: { gap: spacing(1) },
+  label: { ...typography.caption },
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.glassStrong,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    padding: spacing(1),
   },
   btn: {
-    width: 44,
-    height: 44,
-    borderRadius: radius.sm,
-    backgroundColor: colors.softRose,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
+    ...shadows.tiny,
   },
-  btnText: {
-    ...typography.title,
-    color: colors.primary,
-  },
-  value: {
-    ...typography.subtitle,
-  },
+  pressed: { transform: [{ scale: 0.94 }], opacity: 0.9 },
+  btnText: { fontSize: 18, lineHeight: 22, fontFamily: 'Manrope_600SemiBold' },
+  value: { ...typography.serifValue, minWidth: 80, textAlign: 'center' },
 });

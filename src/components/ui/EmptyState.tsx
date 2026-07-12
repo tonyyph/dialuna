@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Luna, LunaExpression } from '@/components/mascot/Luna';
-import { spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   lunaExpression?: LunaExpression;
@@ -10,11 +10,12 @@ interface Props {
 }
 
 export function EmptyState({ lunaExpression = 'happy', title, body }: Props) {
+  const p = useTheme();
   return (
     <View style={styles.container}>
       <Luna expression={lunaExpression} size={88} />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.body}>{body}</Text>
+      <Text style={[styles.title, { color: p.text }]}>{title}</Text>
+      <Text style={[styles.body, { color: p.textMuted }]}>{body}</Text>
     </View>
   );
 }
