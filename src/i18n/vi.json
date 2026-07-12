@@ -419,13 +419,27 @@
   },
   "paywall": {
     "slides": {
-      "s1": { "title": "Hiểu quy luật của bạn", "body": "Premium cho thấy năng lượng, tâm trạng và sự tập trung của bạn thay đổi cùng nhau ra sao trong cả chu kỳ — không chỉ hôm nay." },
-      "s2": { "title": "Hormone Twin, sâu hơn", "body": "Xem xu hướng điểm số của bạn so với những phụ nữ có chu kỳ tương tự, không chỉ một con số." },
-      "s3": { "title": "Không còn đoán mò kỳ PMS", "body": "Premium dự báo những ngày dễ có triệu chứng trước hai chu kỳ, để bạn chủ động sắp xếp." }
+      "s1": {
+        "title": "Hiểu quy luật của bạn",
+        "body": "Premium cho thấy năng lượng, tâm trạng và sự tập trung của bạn thay đổi cùng nhau ra sao trong cả chu kỳ — không chỉ hôm nay."
+      },
+      "s2": {
+        "title": "Hormone Twin, sâu hơn",
+        "body": "Xem xu hướng điểm số của bạn so với những phụ nữ có chu kỳ tương tự, không chỉ một con số."
+      },
+      "s3": {
+        "title": "Không còn đoán mò kỳ PMS",
+        "body": "Premium dự báo những ngày dễ có triệu chứng trước hai chu kỳ, để bạn chủ động sắp xếp."
+      }
     },
     "choosePlan": "Chọn gói của bạn",
     "trialNote": "Miễn phí 7 ngày, hủy bất cứ lúc nào.",
-    "plans": { "monthly": "Hàng tháng", "annual": "Hàng năm", "monthlyPrice": "9,99 US$/tháng", "annualPrice": "59,99 US$/năm · 5 US$/tháng" },
+    "plans": {
+      "monthly": "Hàng tháng",
+      "annual": "Hàng năm",
+      "monthlyPrice": "9,99 US$/tháng",
+      "annualPrice": "59,99 US$/năm · 5 US$/tháng"
+    },
     "saveBadge": "TIẾT KIỆM 40%",
     "features": {
       "f1": "Toàn bộ xu hướng & lịch sử Hormone Twin",
@@ -443,39 +457,50 @@
   "settings": {
     "title": "Cài đặt",
     "sections": {
-      "profile": "Hồ sơ",
-      "cycle": "Cài đặt chu kỳ",
+      "account": "Hồ sơ & tài khoản",
+      "cycle": "Thiết lập chu kỳ",
       "notifications": "Thông báo",
-      "preferences": "Tùy chọn",
-      "privacy": "Riêng tư & dữ liệu",
-      "about": "Về ứng dụng"
+      "appearance": "Giao diện",
+      "privacy": "Quyền riêng tư & dữ liệu",
+      "subscription": "Gói đăng ký"
     },
-    "nickname": "Biệt danh",
-    "ageRange": "Độ tuổi",
+    "name": "Tên",
+    "email": "Email",
+    "signOut": "Đăng xuất",
     "cycleLength": "Độ dài chu kỳ trung bình",
-    "periodLength": "Số ngày hành kinh trung bình",
-    "lastPeriodStart": "Kỳ kinh gần nhất bắt đầu",
+    "periodLength": "Số ngày hành kinh",
+    "lutealLength": "Độ dài pha hoàng thể",
+    "lastPeriodStart": "Ngày bắt đầu kỳ kinh gần nhất",
+    "notifPeriod": "Nhắc kỳ kinh",
+    "notifOvulation": "Nhắc rụng trứng",
+    "notifDaily": "Nhắc ghi nhật ký hằng ngày",
+    "notifDeferred": "Cài đặt được lưu, tính năng lên lịch sắp ra mắt.",
+    "on": "Bật",
+    "off": "Tắt",
+    "units": "Đơn vị",
+    "unitsUS": "US",
+    "unitsMetric": "Mét",
+    "themeLabel": "Chủ đề",
+    "themeLight": "Sáng",
+    "themeDark": "Tối",
     "language": "Ngôn ngữ",
     "languageEn": "English",
     "languageVi": "Tiếng Việt",
-    "notifDaily": "Insight hằng ngày",
-    "notifPeriod": "Nhắc kỳ kinh",
-    "notifPms": "Báo trước PMS",
-    "notifDeferred": "Tính năng nhắc sẽ được kích hoạt trong bản cập nhật tới.",
-    "privacyTitle": "Dữ liệu của bạn ở lại trên thiết bị này",
-    "privacyBody": "Dialuna lưu mọi thứ bạn ghi ngay trên điện thoại. Không có gì được tải lên, bán hay chia sẻ. Không tài khoản, không theo dõi. Nếu bạn xóa ứng dụng hoặc dùng 'Xóa toàn bộ dữ liệu', thông tin sẽ biến mất vĩnh viễn.",
-    "medicalTitle": "Miễn trừ trách nhiệm y khoa",
-    "exportData": "Xuất dữ liệu",
-    "exportSoon": "Sắp ra mắt",
-    "premiumStatus": "Trạng thái Premium",
-    "premiumActive": "Premium đang hoạt động — {{plan}}",
-    "premiumInactive": "Gói miễn phí",
-    "managePremium": "Quản lý gói đăng ký",
-    "devToggle": "Dev: bật/tắt premium",
+    "privacyTitle": "Dữ liệu của bạn được xử lý thế nào",
+    "privacyBody": "Mọi dữ liệu nằm trên thiết bị này. Không có gì được tải lên.",
+    "medicalTitle": "Miễn trừ trách nhiệm y tế",
+    "exportData": "Xuất dữ liệu của tôi",
+    "exportReady": "Đã sẵn sàng — kiểm tra email của bạn.",
     "deleteData": "Xóa toàn bộ dữ liệu",
-    "deleteConfirmTitle": "Xóa tất cả?",
-    "deleteConfirmBody": "Thao tác này xóa vĩnh viễn hồ sơ, nhật ký và cài đặt khỏi thiết bị. Không thể hoàn tác.",
-    "deleteConfirmCta": "Xóa toàn bộ dữ liệu",
+    "deleteConfirmBody": "Thao tác này xóa vĩnh viễn hồ sơ và toàn bộ nhật ký.",
+    "deleteConfirmCta": "Có, xóa tất cả",
+    "planFree": "Gói miễn phí",
+    "planPremium": "Premium",
+    "planFreeSub": "Nâng cấp để có phân tích sâu hơn",
+    "planActiveSub": "{{plan}} · đang hoạt động",
+    "upgrade": "Nâng cấp",
+    "manage": "Quản lý",
+    "devToggle": "Dev: bật premium",
     "version": "Phiên bản"
   },
   "tabs": {
