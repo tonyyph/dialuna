@@ -9,25 +9,20 @@ import { PhaseBadge } from '@/components/cycle/PhaseBadge';
 import { WeekStrip } from '@/components/cycle/WeekStrip';
 import { Luna } from '@/components/mascot/Luna';
 import { PremiumBanner } from '@/components/paywall/PremiumBanner';
+import { BlobGlow } from '@/components/ui/BlobGlow';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { usePremiumStore } from '@/store';
-import { radius, shadows, spacing, typography, useTheme } from '@/theme';
+import { radius, shadows, spacing, staggerDelay, typography, useTheme } from '@/theme';
 
 function greetingKey(): string {
   const hour = new Date().getHours();
   if (hour < 12) return 'home.greeting.morning';
   if (hour < 18) return 'home.greeting.afternoon';
   return 'home.greeting.evening';
-}
-
-function wellnessTone(score: number): string {
-  if (score < 45) return 'home.level.low';
-  if (score < 65) return 'home.level.steady';
-  return 'home.level.high';
 }
 
 export function HomeScreen() {
@@ -45,54 +40,87 @@ export function HomeScreen() {
 
   return (
     <Screen edgeToEdge>
-      <LinearGradient
-        colors={p.heroGradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.hero}
-      >
-        <View style={styles.heroTop}>
-          <View>
-            <Text style={[styles.appName, { color: p.textMuted }]}>{t('common.appName')}</Text>
-            <Text style={[styles.greeting, { color: p.text }]}>
-              {t(greetingKey(), { name: profile.nickname })}
-            </Text>
-          </View>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('settings.title')}
-            onPress={() => router.push('/settings')}
-            hitSlop={8}
-            style={[styles.settingsBtn, { backgroundColor: p.surfaceStrong }]}
-          >
-            <Ionicons name="settings-outline" size={22} color={p.text} />
-          </Pressable>
-        </View>
-
-        <View style={styles.heroMain}>
-          <View style={styles.heroCopy}>
-            <Text style={[styles.heroKicker, { color: p.textMuted }]}>{t('common.today')}</Text>
-            <Text style={[styles.heroTitle, { color: p.text }]}>{periodText}</Text>
-            <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
-            <Text style={[styles.heroBody, { color: p.textMuted }]}>{t(twin.coachMessageKey)}</Text>
-          </View>
-          <View style={[styles.lunaFrame, { backgroundColor: p.surface }]}>
-            <Luna expression={prediction.isPmsWindow ? 'comforting' : 'happy'} size={112} />
-          </View>
-        </View>
-
-        <View style={styles.heroStats}>
-          <HeroStat
-            label={t('common.cycleDay', { day: prediction.cycleDay })}
-            value={`${twin.hormoneTwinScore}`}
-            emphasis
+      <View style={styles.heroWrap}>
+        <LinearGradient
+          colors={p.heroGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.hero}
+        >
+          <BlobGlow
+            size={200}
+            colors={
+              p.name === 'dark'
+                ? ['rgba(225,173,102,0.22)', 'rgba(225,173,102,0)']
+                : ['rgba(182,130,53,0.26)', 'rgba(182,130,53,0)']
+            }
+            style={styles.heroBlob}
           />
-          <HeroStat label={t('home.twinScore')} value={t(wellnessTone(twin.hormoneTwinScore))} />
+
+          <View style={styles.heroTop}>
+            <View>
+              <Text style={[styles.appName, { color: p.textMuted }]}>{t('common.appName')}</Text>
+              <Text style={[styles.greeting, { color: p.text }]}>
+                {t(greetingKey(), { name: profile.nickname })}
+              </Text>
+            </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('settings.title')}
+              onPress={() => router.push('/settings')}
+              hitSlop={8}
+              style={[styles.settingsBtn, { backgroundColor: p.surfaceStrong }]}
+            >
+              <Ionicons name="settings-outline" size={22} color={p.text} />
+            </Pressable>
+          </View>
+
+          <View style={styles.heroMain}>
+            <View style={styles.heroCopy}>
+              <Text style={[styles.heroKicker, { color: p.accentInk }]}>
+                {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
+                {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
+              </Text>
+              <Text style={[styles.heroTitle, { color: p.text }]}>
+                {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
+              </Text>
+              <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
+              <Text style={[styles.heroBody, { color: p.textMuted }]}>{t(twin.coachMessageKey)}</Text>
+              <Text style={[styles.heroCaption, { color: p.textMuted }]}>{periodText}</Text>
+            </View>
+            <View style={[styles.lunaFrame, { backgroundColor: p.surface }]}>
+              <Luna expression={prediction.isPmsWindow ? 'comforting' : 'happy'} size={112} />
+            </View>
+          </View>
+        </LinearGradient>
+
+        <View style={[styles.scoreBadge, { backgroundColor: p.surfaceSolid }, shadows.hero]}>
+          <Text style={[styles.scoreBadgeKicker, { color: p.textFaint }]}>
+            {t('home.twinScore')}
+          </Text>
+          <Text style={[styles.scoreBadgeValue, { color: p.accentInk }]}>
+            {twin.hormoneTwinScore}
+          </Text>
         </View>
-      </LinearGradient>
+      </View>
 
       <View style={styles.content}>
-        <Animated.View entering={FadeInDown.duration(360)} style={styles.featuredWrap}>
+        <Animated.View entering={FadeInDown.delay(staggerDelay(0)).duration(360)}>
+          <View style={styles.signalBars}>
+            <SignalBar label={t('home.forecast.energy')} value={twin.energyScore} color={p.accent400} />
+            <SignalBar label={t('home.forecast.mood')} value={twin.moodScore} color={p.accent} />
+            <SignalBar label={t('home.forecast.focus')} value={twin.focusScore} color={p.accentInk} />
+          </View>
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(staggerDelay(1)).duration(360)}>
+          <Text style={[styles.forecastKicker, { color: p.textFaint }]}>
+            {t('home.weekForecast')}
+          </Text>
+          <WeekStrip days={week} />
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(staggerDelay(2)).duration(360)}>
           <Card variant="glass" style={styles.insightCard}>
             <View style={styles.insightHeader}>
               <View>
@@ -112,40 +140,7 @@ export function HomeScreen() {
           </Card>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(80).duration(360)}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>{t('home.twinScore')}</Text>
-            <Text style={[styles.sectionMeta, { color: p.accent }]}>{t('common.today')}</Text>
-          </View>
-          <View style={styles.snapshotGrid}>
-            <MetricTile
-              icon="flash"
-              label={t('home.forecast.energy')}
-              value={twin.energyScore}
-              color={p.accent400}
-            />
-            <MetricTile
-              icon="heart"
-              label={t('home.forecast.mood')}
-              value={twin.moodScore}
-              color={p.accent}
-            />
-            <MetricTile
-              icon="leaf"
-              label={t('home.forecast.pain')}
-              value={100 - twin.painRisk}
-              color={p.accentInk}
-            />
-            <MetricTile
-              icon="bulb"
-              label={t('home.forecast.focus')}
-              value={twin.focusScore}
-              color={p.accentInk}
-            />
-          </View>
-        </Animated.View>
-
-        <Animated.View entering={FadeInDown.delay(140).duration(360)}>
+        <Animated.View entering={FadeInDown.delay(staggerDelay(3)).duration(360)}>
           <View style={styles.quickGrid}>
             <QuickAction
               icon="add-circle"
@@ -174,13 +169,12 @@ export function HomeScreen() {
           </View>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(200).duration(360)}>
+        <Animated.View entering={FadeInDown.delay(staggerDelay(4)).duration(360)}>
           <Card style={styles.timelineCard}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>{t('home.weekForecast')}</Text>
+              <Text style={styles.sectionTitle}>{t('home.upcoming')}</Text>
               <Text style={[styles.sectionMeta, { color: p.accent }]}>{periodText}</Text>
             </View>
-            <WeekStrip days={week} />
             <View style={styles.timelineRows}>
               <TimelineRow
                 color={p.accent}
@@ -202,7 +196,7 @@ export function HomeScreen() {
         </Animated.View>
 
         {isPremium ? (
-          <Animated.View entering={FadeInDown.delay(260).duration(360)}>
+          <Animated.View entering={FadeInDown.delay(staggerDelay(5)).duration(360)}>
             <Card variant="glass" style={styles.planCard}>
               <Text style={styles.sectionTitle}>{t('home.plan.title')}</Text>
               <PlanGroup title={t('home.plan.food')} emoji="🥗" tipKeys={twin.foodTipKeys} />
@@ -211,7 +205,7 @@ export function HomeScreen() {
             </Card>
           </Animated.View>
         ) : (
-          <Animated.View entering={FadeInDown.delay(260).duration(360)}>
+          <Animated.View entering={FadeInDown.delay(staggerDelay(5)).duration(360)}>
             <PremiumBanner onPress={() => router.push('/paywall')} />
           </Animated.View>
         )}
@@ -220,52 +214,12 @@ export function HomeScreen() {
   );
 }
 
-function HeroStat({
-  label,
-  value,
-  emphasis = false,
-}: {
-  label: string;
-  value: string;
-  emphasis?: boolean;
-}) {
+function SignalBar({ label, value, color }: { label: string; value: number; color: string }) {
   const p = useTheme();
   return (
-    <View style={[styles.heroStat, { backgroundColor: p.surface }]}>
-      <Text
-        style={[
-          styles.heroStatValue,
-          { color: p.text },
-          emphasis && [typography.score, { color: p.accentInk }],
-        ]}
-      >
-        {value}
-      </Text>
-      <Text style={[styles.heroStatLabel, { color: p.textMuted }]}>{label}</Text>
-    </View>
-  );
-}
-
-function MetricTile({
-  icon,
-  label,
-  value,
-  color,
-}: {
-  icon: keyof typeof Ionicons.glyphMap;
-  label: string;
-  value: number;
-  color: string;
-}) {
-  const p = useTheme();
-  return (
-    <View style={[styles.metricTile, { backgroundColor: p.surfaceStrong }]}>
-      <View style={[styles.metricIcon, { backgroundColor: `${color}22` }]}>
-        <Ionicons name={icon} size={18} color={color} />
-      </View>
-      <Text style={[styles.metricValue, { color: p.text }]}>{value}</Text>
-      <Text style={[styles.metricLabel, { color: p.textMuted }]}>{label}</Text>
-      <ProgressBar value={value} color={color} thickness={7} />
+    <View style={styles.signalRow}>
+      <Text style={[styles.signalLabel, { color: p.textMuted }]}>{label}</Text>
+      <ProgressBar value={value} color={color} trackColor={p.track} thickness={5} />
     </View>
   );
 }
@@ -337,6 +291,9 @@ function PlanGroup({
 }
 
 const styles = StyleSheet.create({
+  heroWrap: {
+    overflow: 'visible',
+  },
   hero: {
     paddingTop: spacing(3),
     paddingHorizontal: spacing(2.5),
@@ -347,6 +304,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
     overflow: 'hidden',
     ...shadows.hero,
+  },
+  heroBlob: {
+    position: 'absolute',
+    top: -20,
+    left: -20,
   },
   heroTop: {
     flexDirection: 'row',
@@ -389,6 +351,10 @@ const styles = StyleSheet.create({
   heroBody: {
     ...typography.bodySmall,
   },
+  heroCaption: {
+    ...typography.caption,
+    marginTop: spacing(0.5),
+  },
   lunaFrame: {
     width: 128,
     height: 128,
@@ -396,30 +362,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  heroStats: {
-    flexDirection: 'row',
-    gap: spacing(1.25),
-    marginTop: spacing(3),
+  scoreBadge: {
+    position: 'absolute',
+    right: spacing(2.5),
+    bottom: -34,
+    width: 92,
+    height: 92,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  heroStat: {
-    flex: 1,
-    borderRadius: radius.card,
-    padding: spacing(1.5),
+  scoreBadgeKicker: {
+    ...typography.micro,
+    fontSize: 9,
   },
-  heroStatValue: {
-    ...typography.title,
-  },
-  heroStatLabel: {
-    ...typography.caption,
-    marginTop: spacing(0.25),
+  scoreBadgeValue: {
+    ...typography.score,
   },
   content: {
     paddingHorizontal: spacing(2.5),
-    paddingTop: spacing(0),
+    paddingTop: spacing(4.5),
     gap: spacing(2.5),
   },
-  featuredWrap: {
-    marginTop: -spacing(3),
+  signalBars: {
+    gap: spacing(1),
+    marginBottom: spacing(2.5),
+  },
+  signalRow: {
+    gap: spacing(0.5),
+  },
+  signalLabel: {
+    ...typography.caption,
+  },
+  forecastKicker: {
+    ...typography.kicker,
+    marginBottom: spacing(1),
   },
   insightCard: {
     gap: spacing(1.5),
@@ -462,33 +439,6 @@ const styles = StyleSheet.create({
     ...typography.caption,
     textAlign: 'right',
     flexShrink: 1,
-  },
-  snapshotGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing(1.5),
-  },
-  metricTile: {
-    width: '47.8%',
-    borderRadius: radius.card,
-    padding: spacing(2),
-    gap: spacing(0.75),
-    ...shadows.tiny,
-  },
-  metricIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  metricValue: {
-    ...typography.display,
-    fontSize: 30,
-    lineHeight: 34,
-  },
-  metricLabel: {
-    ...typography.caption,
   },
   quickGrid: {
     flexDirection: 'row',
