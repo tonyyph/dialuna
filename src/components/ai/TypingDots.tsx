@@ -22,8 +22,10 @@ function Dot({ delay }: { delay: number }) {
       delay,
       withRepeat(
         withSequence(
-          withTiming(1, { duration: 400, easing: Easing.inOut(Easing.quad) }),
-          withTiming(0.25, { duration: 700, easing: Easing.inOut(Easing.quad) })
+          withTiming(1, { duration: 260, easing: Easing.out(Easing.quad) }),
+          withTiming(1, { duration: 220, easing: Easing.linear }),
+          withTiming(0.25, { duration: 320, easing: Easing.in(Easing.quad) }),
+          withTiming(0.25, { duration: 400, easing: Easing.linear })
         ),
         -1
       )
