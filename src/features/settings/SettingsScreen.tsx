@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { Card } from '@/components/ui/Card';
 import { CircleButton } from '@/components/ui/CircleButton';
@@ -18,7 +19,7 @@ import {
   useSettingsStore,
   useUserStore,
 } from '@/store';
-import { radius, spacing, typography, useTheme } from '@/theme';
+import { radius, sizes, spacing, staggerDelay, typography, useTheme } from '@/theme';
 import { emailSchema, nicknameSchema } from '@/utils/validation';
 
 export function SettingsScreen() {
@@ -59,7 +60,11 @@ export function SettingsScreen() {
   const label = { ...styles.label, color: p.textMuted };
 
   return (
-    <Screen>
+    <Screen edgeToEdge>
+      <Animated.View
+        entering={FadeInDown.duration(380).springify().damping(18).stiffness(140)}
+        style={styles.content}
+      >
       <View style={styles.header}>
         <CircleButton
           icon="chevron-back"
@@ -69,6 +74,7 @@ export function SettingsScreen() {
         <Text style={[styles.title, { color: p.text }]}>{t('settings.title')}</Text>
       </View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(0)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.account')}</Text>
       <Card style={styles.card}>
         <Text style={label}>{t('settings.name')}</Text>
@@ -107,7 +113,9 @@ export function SettingsScreen() {
           </Text>
         </Pressable>
       </Card>
+      </Animated.View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(1)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.cycle')}</Text>
       <Card style={[styles.card, styles.gapLg]}>
         <Stepper
@@ -157,7 +165,9 @@ export function SettingsScreen() {
           ) : null}
         </View>
       </Card>
+      </Animated.View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(2)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.notifications')}</Text>
       <Card style={[styles.card, styles.gapMd]}>
         <NotifRow
@@ -179,7 +189,9 @@ export function SettingsScreen() {
           {t('settings.notifDeferred')}
         </Text>
       </Card>
+      </Animated.View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(3)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.appearance')}</Text>
       <Card style={[styles.card, styles.gapLg]}>
         <View>
@@ -219,7 +231,9 @@ export function SettingsScreen() {
           />
         </View>
       </Card>
+      </Animated.View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(4)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.privacy')}</Text>
       <Card style={[styles.card, styles.gapMd]}>
         <Pressable
@@ -291,7 +305,9 @@ export function SettingsScreen() {
           </View>
         ) : null}
       </Card>
+      </Animated.View>
 
+      <Animated.View entering={FadeInDown.delay(staggerDelay(5)).duration(300)}>
       <Text style={kicker}>{t('settings.sections.subscription')}</Text>
       <Card style={styles.card}>
         <View style={styles.subRow}>
@@ -332,6 +348,7 @@ export function SettingsScreen() {
           onChange={togglePremiumDev}
         />
       </Card>
+      </Animated.View>
 
       <View style={styles.footer}>
         <Text style={[styles.caption, { color: p.textFaint }]}>
@@ -339,6 +356,7 @@ export function SettingsScreen() {
           {Constants.expoConfig?.version ?? '0.1.0'}
         </Text>
       </View>
+      </Animated.View>
     </Screen>
   );
 }
@@ -371,6 +389,7 @@ function NotifRow({
 }
 
 const styles = StyleSheet.create({
+  content: { flex: 1, paddingHorizontal: sizes.screenPadding },
   header: {
     flexDirection: 'row',
     alignItems: 'center',

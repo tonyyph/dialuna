@@ -89,7 +89,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="settings" options={{ animation: 'slide_from_bottom', animationDuration: 380 }} />
+        <Stack.Screen name="settings" options={{ animation: 'fade', animationDuration: 150 }} />
         <Stack.Screen name="paywall" options={{ presentation: 'modal', animation: 'fade_from_bottom', animationDuration: 380 }} />
       </Stack>
     </>
