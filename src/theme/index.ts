@@ -5,5 +5,5 @@ export { spacing } from './spacing';
 export { typography } from './typography';
 export { radius } from './radius';
 export { shadows } from './shadows';
-export { duration, easing } from './motion';
+export { duration, easing, springs, staggerDelay } from './motion';
 export { sizes } from './sizes';

@@ -10,5 +10,16 @@ export const duration = {
 
 export const easing = {
   standard: Easing.out(Easing.cubic),
-  spring: { damping: 15, stiffness: 120, mass: 1 } satisfies WithSpringConfig,
 } as const;
+
+export const springs = {
+  /** Sheets, cards, layout settles — the default "soft" feel. */
+  soft: { damping: 16, stiffness: 120, mass: 1 } satisfies WithSpringConfig,
+  /** Press feedback, small UI. */
+  snappy: { damping: 14, stiffness: 180, mass: 1 } satisfies WithSpringConfig,
+} as const;
+
+/** Shared per-index entrance delay so stagger timing agrees across screens. */
+export function staggerDelay(index: number, base = 40): number {
+  return index * base;
+}
