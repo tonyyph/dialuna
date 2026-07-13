@@ -1,18 +1,22 @@
+import { Ionicons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 import { router } from 'expo-router';
-import { useMemo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { ReactNode, useMemo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { Card } from '@/components/ui/Card';
 import { Chip } from '@/components/ui/Chip';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { GlassSurface } from '@/components/ui/GlassSurface';
+import { Pressable } from '@/components/ui/Pressable';
 import { Screen } from '@/components/ui/Screen';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { computeInsights } from '@/services/insightsEngine';
 import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
-import { radius, spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, staggerDelay, typography, useTheme } from '@/theme';
 import { CyclePhase } from '@/types';
 
 const MIN_LOGS = 3;
@@ -58,29 +62,31 @@ export function InsightsScreen() {
         <Text style={styles.subtitle}>{t('insights.subtitle')}</Text>
       </View>
 
-      <Card variant="glass" style={styles.storyCard}>
-        <Text style={styles.storyTitle}>{t('insights.summaryCard.title')}</Text>
-        <Text style={styles.body}>{t('insights.summaryCard.text')}</Text>
-        <View style={styles.statGrid}>
-          <InsightStat
-            label={t('insights.cycleCard.avgLength')}
-            value={t('common.days', { count: insights.avgCycleLength })}
-          />
-          <InsightStat
-            label={t('insights.cycleCard.regularity')}
-            value={
-              insights.confidenceScore >= 0.8
-                ? t('insights.cycleCard.regular')
-                : t('insights.cycleCard.variable')
-            }
-          />
-        </View>
-      </Card>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(0)).duration(340)}>
+        <Card variant="glass" style={[styles.storyCard, styles.radiusA]}>
+          <Text style={styles.storyTitle}>{t('insights.summaryCard.title')}</Text>
+          <Text style={styles.body}>{t('insights.summaryCard.text')}</Text>
+          <View style={styles.statGrid}>
+            <InsightStat
+              label={t('insights.cycleCard.avgLength')}
+              value={t('common.days', { count: insights.avgCycleLength })}
+            />
+            <InsightStat
+              label={t('insights.cycleCard.regularity')}
+              value={
+                insights.confidenceScore >= 0.8
+                  ? t('insights.cycleCard.regular')
+                  : t('insights.cycleCard.variable')
+              }
+            />
+          </View>
+        </Card>
+      </Animated.View>
 
-      {isPremium ? (
-        <>
-          <SectionTitle title={t('insights.energyCard.title')} />
-          <Card style={styles.rows}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(1)).duration(340)}>
+        <SectionTitle title={t('insights.energyCard.title')} />
+        {withLock(
+          <Card style={[styles.rows, styles.radiusB]}>
             {PHASES.map((phase) => {
               const value = insights.avgEnergyByPhase[phase];
               return (
@@ -102,23 +108,31 @@ export function InsightsScreen() {
               );
             })}
             <Text style={styles.caption}>{t('insights.energyCard.caption')}</Text>
-          </Card>
+          </Card>,
+          !isPremium
+        )}
+      </Animated.View>
 
-          {insights.pmsSleepAvg !== null && insights.otherSleepAvg !== null && (
-            <>
-              <SectionTitle title={t('insights.sleepCard.title')} />
-              <Card>
-                <Text style={styles.body}>
-                  {t('insights.sleepCard.text', {
-                    pmsSleep: insights.pmsSleepAvg,
-                    otherSleep: insights.otherSleepAvg,
-                  })}
-                </Text>
-              </Card>
-            </>
+      {insights.pmsSleepAvg !== null && insights.otherSleepAvg !== null && (
+        <Animated.View entering={FadeInDown.delay(staggerDelay(2)).duration(340)}>
+          <SectionTitle title={t('insights.sleepCard.title')} />
+          {withLock(
+            <Card>
+              <Text style={styles.body}>
+                {t('insights.sleepCard.text', {
+                  pmsSleep: insights.pmsSleepAvg,
+                  otherSleep: insights.otherSleepAvg,
+                })}
+              </Text>
+            </Card>,
+            !isPremium
           )}
+        </Animated.View>
+      )}
 
-          <SectionTitle title={t('insights.pmsCard.title')} />
+      <Animated.View entering={FadeInDown.delay(staggerDelay(3)).duration(340)}>
+        <SectionTitle title={t('insights.pmsCard.title')} />
+        {withLock(
           <Card>
             <Text style={styles.body}>
               {t('insights.pmsCard.text', {
@@ -126,10 +140,15 @@ export function InsightsScreen() {
                 end: format(parseISO(insights.nextPmsEnd), 'MMM d'),
               })}
             </Text>
-          </Card>
+          </Card>,
+          !isPremium
+        )}
+      </Animated.View>
 
-          <SectionTitle title={t('insights.symptomsCard.title')} />
-          <Card variant="glass" style={styles.symptomWrap}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(4)).duration(340)}>
+        <SectionTitle title={t('insights.symptomsCard.title')} />
+        {withLock(
+          <Card variant="glass" style={[styles.symptomWrap, styles.radiusC]}>
             {insights.topSymptoms.length === 0 ? (
               <Text style={styles.muted}>—</Text>
             ) : (
@@ -142,30 +161,12 @@ export function InsightsScreen() {
                 />
               ))
             )}
-          </Card>
+          </Card>,
+          !isPremium
+        )}
+      </Animated.View>
 
-          <DisclaimerBox text={t('disclaimer.short')} />
-        </>
-      ) : (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('insights.locked.cta')}
-          onPress={() => router.push('/paywall')}
-        >
-          <Card
-            variant="glass"
-            style={[
-              styles.locked,
-              { backgroundColor: p.name === 'dark' ? p.overlay : 'rgba(251,243,236,0.9)' },
-            ]}
-          >
-            <Text style={styles.lockIcon}>🔒</Text>
-            <Text style={styles.lockTitle}>{t('insights.locked.title')}</Text>
-            <Text style={styles.body}>{t('insights.locked.body')}</Text>
-            <Text style={[styles.lockCta, { color: p.accent }]}>{t('insights.locked.cta')} →</Text>
-          </Card>
-        </Pressable>
-      )}
+      <DisclaimerBox text={t('disclaimer.short')} />
     </Screen>
   );
 }
@@ -178,6 +179,39 @@ function InsightStat({ label, value }: { label: string; value: string }) {
       <Text style={styles.insightStatLabel}>{label}</Text>
     </View>
   );
+}
+
+function LockedCard({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
+  const p = useTheme();
+  return (
+    <View style={styles.lockedWrap}>
+      {children}
+      <GlassSurface
+        intensity={30}
+        tintColor={p.name === 'dark' ? 'rgba(28,26,31,0.55)' : 'rgba(251,243,236,0.55)'}
+        style={[StyleSheet.absoluteFill, { borderRadius: radius.xl - 2 }]}
+      >
+        <View style={styles.lockOverlayContent}>
+          <Ionicons name="lock-closed" size={20} color={p.text} />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('insights.locked.cta')}
+            onPress={() => router.push('/paywall')}
+            style={[styles.unlockPill, { backgroundColor: p.primaryBtn }]}
+          >
+            <Text style={[styles.unlockPillText, { color: p.onPrimaryBtn }]}>
+              {t('insights.locked.cta')}
+            </Text>
+          </Pressable>
+        </View>
+      </GlassSurface>
+    </View>
+  );
+}
+
+function withLock(node: ReactNode, locked: boolean) {
+  return locked ? <LockedCard>{node}</LockedCard> : node;
 }
 
 const styles = StyleSheet.create({
@@ -262,19 +296,37 @@ const styles = StyleSheet.create({
   body: {
     ...typography.body,
   },
-  locked: {
-    marginTop: spacing(3),
+  radiusA: {
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    borderBottomRightRadius: 26,
+    borderBottomLeftRadius: 10,
+  },
+  radiusB: {
+    borderRadius: 14,
+  },
+  radiusC: {
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 26,
+    borderBottomLeftRadius: 26,
+  },
+  lockedWrap: {
+    position: 'relative',
+  },
+  lockOverlayContent: {
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
+    justifyContent: 'center',
     gap: spacing(1),
   },
-  lockIcon: {
-    fontSize: 28,
+  unlockPill: {
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing(2),
+    paddingVertical: spacing(1),
   },
-  lockTitle: {
-    ...typography.subtitle,
-    textAlign: 'center',
-  },
-  lockCta: {
-    ...typography.subtitle,
+  unlockPillText: {
+    ...typography.button,
+    fontSize: 13,
   },
 });
