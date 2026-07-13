@@ -50,6 +50,9 @@
     "vitest": "^4.1.9"
   },
   "scripts": {
+    "all": "watchman watch-del-all && rm -rf yarn.lock && rm -rf node_modules/",
+    "setup": "npx expo install",
+    "prebuild": "npx expo prebuild --no-install",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
