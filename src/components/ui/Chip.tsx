@@ -1,8 +1,10 @@
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 import { radius, shadows, spacing, typography, useTheme } from '@/theme';
+
+import { Pressable } from './Pressable';
 
 interface Props {
   label: string;
@@ -24,11 +26,11 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
       accessibilityLabel={label}
       accessibilityState={{ selected }}
       onPress={handlePress}
-      style={({ pressed }) => [
+      scaleTo={0.94}
+      style={[
         styles.base,
         { backgroundColor: selected ? 'transparent' : p.surface },
         selected && shadows.chip,
-        pressed && styles.pressed,
       ]}
     >
       {selected ? (
@@ -64,7 +66,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...shadows.tiny,
   },
-  pressed: { transform: [{ scale: 0.94 }], opacity: 0.92 },
   label: { ...typography.bodySmall, fontFamily: 'Manrope_600SemiBold' },
   labelSelected: { fontFamily: 'Manrope_700Bold' },
 });
