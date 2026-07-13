@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
@@ -8,7 +9,7 @@ import { ChipGroup } from '@/components/ui/ChipGroup';
 import { Screen } from '@/components/ui/Screen';
 import { OnboardingStepHeader } from '@/features/onboarding/OnboardingStepHeader';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
-import { spacing, typography, useTheme } from '@/theme';
+import { spacing, staggerDelay, typography, useTheme } from '@/theme';
 import { ONBOARDING_GOALS } from '@/types';
 
 export default function Goals() {
@@ -32,13 +33,17 @@ export default function Goals() {
         {t('onboarding.goals.subtitle')}
       </Text>
       <ChipGroup>
-        {ONBOARDING_GOALS.map((goal) => (
-          <Chip
+        {ONBOARDING_GOALS.map((goal, index) => (
+          <Animated.View
             key={goal}
-            label={t(`goals.${goal}`)}
-            selected={draft.goals.includes(goal)}
-            onPress={() => draft.toggleGoal(goal)}
-          />
+            entering={FadeInDown.delay(staggerDelay(index, 25)).duration(260)}
+          >
+            <Chip
+              label={t(`goals.${goal}`)}
+              selected={draft.goals.includes(goal)}
+              onPress={() => draft.toggleGoal(goal)}
+            />
+          </Animated.View>
         ))}
       </ChipGroup>
     </Screen>
