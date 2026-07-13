@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { radius, typography, useTheme } from '@/theme';
 
 export interface CalendarDayState {

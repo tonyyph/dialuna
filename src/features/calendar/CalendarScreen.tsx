@@ -11,6 +11,7 @@ import {
 } from 'date-fns';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { CalendarDayCell } from '@/components/cycle/CalendarDayCell';
@@ -19,7 +20,7 @@ import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
 import { useLogStore, useSettingsStore, useUserStore } from '@/store';
-import { radius, spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, staggerDelay, typography, useTheme } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
 
 interface LegendItemProps {
@@ -62,47 +63,51 @@ export function CalendarScreen() {
 
   return (
     <Screen>
-      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
-        <View>
-          <Text style={[styles.kicker, { color: p.accent400 }]}>{t('calendar.title')}</Text>
-          <Text style={[styles.title, { color: '#f4ede1' }]}>
-            {format(parseISO(today), 'EEEE, MMM d')}
-          </Text>
-          <Text style={styles.subtitle}>
-            {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
-            {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
-          </Text>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(0)).duration(340)}>
+        <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
+          <View>
+            <Text style={[styles.kicker, { color: p.accent400 }]}>{t('calendar.title')}</Text>
+            <Text style={[styles.title, { color: '#f4ede1' }]}>
+              {format(parseISO(today), 'EEEE, MMM d')}
+            </Text>
+            <Text style={styles.subtitle}>
+              {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
+              {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
+            </Text>
+          </View>
+          <View style={[styles.todayOrb, { backgroundColor: p.accent }]}>
+            <Text style={[styles.todayDay, { color: p.onPrimaryBtn }]}>
+              {format(parseISO(today), 'd')}
+            </Text>
+            <Text style={[styles.todayMonth, { color: p.onPrimaryBtn }]}>
+              {format(parseISO(today), 'MMM')}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.todayOrb, { backgroundColor: p.accent }]}>
-          <Text style={[styles.todayDay, { color: p.onPrimaryBtn }]}>
-            {format(parseISO(today), 'd')}
-          </Text>
-          <Text style={[styles.todayMonth, { color: p.onPrimaryBtn }]}>
-            {format(parseISO(today), 'MMM')}
-          </Text>
-        </View>
-      </View>
+      </Animated.View>
 
-      <Card variant="glass" style={styles.timelineCard}>
-        <TimelineItem
-          color={p.accent}
-          label={t('calendar.legend.period')}
-          value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
-        />
-        <TimelineItem
-          color={p.accent400}
-          label={t('phases.pms')}
-          value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
-        />
-        <TimelineItem
-          color={p.accent400}
-          label={t('calendar.legend.ovulation')}
-          value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
-        />
-      </Card>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(1)).duration(340)}>
+        <Card variant="glass" style={styles.timelineCard}>
+          <TimelineItem
+            color={p.accent}
+            label={t('calendar.legend.period')}
+            value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
+          />
+          <TimelineItem
+            color={p.accent400}
+            label={t('phases.pms')}
+            value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
+          />
+          <TimelineItem
+            color={p.accent400}
+            label={t('calendar.legend.ovulation')}
+            value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
+          />
+        </Card>
+      </Animated.View>
 
-      <Card style={{ backgroundColor: p.surfaceSolid }}>
-        <View style={styles.monthHeader}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(2)).duration(340)}>
+        <View style={[styles.monthHeader, { backgroundColor: p.surface }]}>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('common.back')}
@@ -154,19 +159,21 @@ export function CalendarScreen() {
             );
           })}
         </View>
-      </Card>
+      </Animated.View>
 
-      <Card variant="glass" style={styles.legend}>
-        <LegendItem color={p.accent} label={t('calendar.legend.period')} />
-        <LegendItem
-          color={p.name === 'dark' ? 'rgba(225,173,102,0.28)' : p.accent200}
-          label={t('calendar.legend.predicted')}
-        />
-        <LegendItem color={p.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
-        <LegendItem color={p.success} label={t('calendar.legend.ovulation')} />
-        <LegendItem color={p.phaseSoft.ovulation} label={t('calendar.legend.pms')} />
-        <LegendItem color={p.accent600} label={t('calendar.legend.logged')} />
-      </Card>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(3)).duration(340)}>
+        <Card variant="glass" style={styles.legend}>
+          <LegendItem color={p.accent} label={t('calendar.legend.period')} />
+          <LegendItem
+            color={p.name === 'dark' ? 'rgba(225,173,102,0.28)' : p.accent200}
+            label={t('calendar.legend.predicted')}
+          />
+          <LegendItem color={p.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
+          <LegendItem color={p.success} label={t('calendar.legend.ovulation')} />
+          <LegendItem color={p.phaseSoft.ovulation} label={t('calendar.legend.pms')} />
+          <LegendItem color={p.accent600} label={t('calendar.legend.logged')} />
+        </Card>
+      </Animated.View>
 
       <DayDetailSheet
         date={selectedDate}
@@ -256,6 +263,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: spacing(1),
+    borderRadius: radius.lg,
+    paddingHorizontal: spacing(1),
+    paddingVertical: spacing(0.5),
   },
   navBtn: {
     width: 44,

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { PhaseBadge } from '@/components/cycle/PhaseBadge';
 import { Button } from '@/components/ui/Button';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { GlassSurface } from '@/components/ui/GlassSurface';
 import { getHormoneTwinProfile } from '@/services/hormoneTwinEngine';
 import { useLogStore, useUserStore } from '@/store';
 import { radius, spacing, typography, useTheme } from '@/theme';
@@ -33,10 +34,16 @@ export function DayDetailSheet({ date, onClose }: Props) {
   return (
     <Modal visible transparent animationType="fade" onRequestClose={onClose}>
       <Pressable
-        style={[styles.backdrop, { backgroundColor: p.overlay }]}
+        style={styles.backdrop}
         onPress={onClose}
         accessibilityLabel={t('common.close')}
-      />
+      >
+        <GlassSurface
+          tintColor={p.overlay}
+          intensity={20}
+          style={StyleSheet.absoluteFill}
+        />
+      </Pressable>
       <Animated.View
         entering={SlideInDown.springify().damping(17).stiffness(150)}
         style={[
