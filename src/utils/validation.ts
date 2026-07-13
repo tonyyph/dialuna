@@ -11,3 +11,12 @@ export const profileFormSchema = z.object({
   averageCycleLength: cycleLengthSchema,
   averagePeriodLength: periodLengthSchema,
 });
+
+/** Empty string allowed (account is local-only); otherwise must be a valid email. */
+export const emailSchema = z
+  .string()
+  .trim()
+  .max(120)
+  .refine((v) => v === '' || z.string().email().safeParse(v).success, {
+    message: 'invalid email',
+  });

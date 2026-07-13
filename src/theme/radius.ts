@@ -6,5 +6,7 @@ export const radius = {
   xxl: 32,
   card: 24,
   sheet: 32,
+  button: 18,
+  dock: 31,
   pill: 999,
 } as const;

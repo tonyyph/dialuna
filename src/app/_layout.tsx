@@ -1,10 +1,10 @@
+import { CormorantGaramond_600SemiBold } from '@expo-google-fonts/cormorant-garamond';
 import {
-  DMSans_400Regular,
-  DMSans_500Medium,
-  DMSans_600SemiBold,
-  DMSans_700Bold,
-} from '@expo-google-fonts/dm-sans';
-import { Fraunces_600SemiBold, Fraunces_700Bold } from '@expo-google-fonts/fraunces';
+  Manrope_400Regular,
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+} from '@expo-google-fonts/manrope';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -12,8 +12,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 
 import { initI18n } from '@/i18n';
-import { useLogStore, usePremiumStore, useUserStore } from '@/store';
-import { colors } from '@/theme';
+import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
+import { palettes } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,7 +22,8 @@ function useStoresHydrated(): boolean {
     () =>
       useUserStore.persist.hasHydrated() &&
       useLogStore.persist.hasHydrated() &&
-      usePremiumStore.persist.hasHydrated()
+      usePremiumStore.persist.hasHydrated() &&
+      useSettingsStore.persist.hasHydrated()
   );
 
   useEffect(() => {
@@ -31,7 +32,8 @@ function useStoresHydrated(): boolean {
       if (
         useUserStore.persist.hasHydrated() &&
         useLogStore.persist.hasHydrated() &&
-        usePremiumStore.persist.hasHydrated()
+        usePremiumStore.persist.hasHydrated() &&
+        useSettingsStore.persist.hasHydrated()
       ) {
         setHydrated(true);
       }
@@ -40,6 +42,7 @@ function useStoresHydrated(): boolean {
       useUserStore.persist.onFinishHydration(check),
       useLogStore.persist.onFinishHydration(check),
       usePremiumStore.persist.onFinishHydration(check),
+      useSettingsStore.persist.onFinishHydration(check),
     ];
     check();
     return () => subs.forEach((unsub) => unsub());
@@ -51,14 +54,14 @@ function useStoresHydrated(): boolean {
 export default function RootLayout() {
   const [i18nReady, setI18nReady] = useState(false);
   const [fontsLoaded] = useFonts({
-    Fraunces_600SemiBold,
-    Fraunces_700Bold,
-    DMSans_400Regular,
-    DMSans_500Medium,
-    DMSans_600SemiBold,
-    DMSans_700Bold,
+    CormorantGaramond_600SemiBold,
+    Manrope_400Regular,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
   });
   const storesReady = useStoresHydrated();
+  const theme = useSettingsStore((s) => s.theme);
 
   useEffect(() => {
     initI18n().finally(() => setI18nReady(true));
@@ -74,20 +77,20 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
           headerShown: false,
           animation: 'fade_from_bottom',
           animationDuration: 220,
-          contentStyle: { backgroundColor: colors.background },
+          contentStyle: { backgroundColor: palettes[theme].bgGradient[0] },
         }}
       >
         <Stack.Screen name="index" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="settings" />
-        <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="settings" options={{ animation: 'slide_from_bottom', animationDuration: 380 }} />
+        <Stack.Screen name="paywall" options={{ presentation: 'modal', animation: 'fade_from_bottom', animationDuration: 380 }} />
       </Stack>
     </>
   );

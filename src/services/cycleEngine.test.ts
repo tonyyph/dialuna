@@ -95,3 +95,33 @@ describe('getDayInfo', () => {
     expect(info.cycleDay).toBeLessThanOrEqual(28);
   });
 });
+
+describe('lutealLength parameter', () => {
+  it('defaults to 14 (existing behavior unchanged)', () => {
+    const a = getCyclePrediction({ ...profile, today: '2026-06-20' });
+    const b = getCyclePrediction({ ...profile, today: '2026-06-20', lutealLength: 14 });
+    expect(b).toEqual(a);
+  });
+
+  it('shifts ovulation estimate with a short luteal phase (10)', () => {
+    const p = getCyclePrediction({ ...profile, today: '2026-06-20', lutealLength: 10 });
+    // next period 2026-07-12, minus 10 days luteal
+    expect(p.ovulationEstimate).toBe('2026-07-02');
+    expect(p.fertileWindowStart).toBe('2026-06-29');
+    expect(p.fertileWindowEnd).toBe('2026-07-05');
+  });
+
+  it('shifts phase boundaries with a long luteal phase (16)', () => {
+    // 28-day cycle, luteal 16 → ovulation cycle day 13, luteal from day 15
+    expect(getPhaseForCycleDay(10, 5, 28, 16)).toBe('follicular');
+    expect(getPhaseForCycleDay(12, 5, 28, 16)).toBe('ovulation');
+    expect(getPhaseForCycleDay(15, 5, 28, 16)).toBe('luteal');
+  });
+
+  it('keeps default phase boundaries for a 28/5 cycle', () => {
+    expect(getPhaseForCycleDay(12, 5, 28)).toBe('follicular');
+    expect(getPhaseForCycleDay(13, 5, 28)).toBe('ovulation');
+    expect(getPhaseForCycleDay(16, 5, 28)).toBe('ovulation');
+    expect(getPhaseForCycleDay(17, 5, 28)).toBe('luteal');
+  });
+});

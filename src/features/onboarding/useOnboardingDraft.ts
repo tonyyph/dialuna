@@ -1,39 +1,43 @@
 import { create } from 'zustand';
 
-import { AgeRange, Goal } from '@/types';
+import { Goal, Symptom } from '@/types';
 
 /** In-memory draft of the profile being built during onboarding (not persisted). */
 interface OnboardingDraft {
   nickname: string;
-  ageRange: AgeRange;
+  email: string;
   averageCycleLength: number;
   averagePeriodLength: number;
   lastPeriodStartDate: string | null;
-  lastPeriodDuration: number;
   goals: Goal[];
-  set: (patch: Partial<Omit<OnboardingDraft, 'set' | 'toggleGoal' | 'reset'>>) => void;
+  symptoms: Symptom[];
+  set: (
+    patch: Partial<
+      Omit<OnboardingDraft, 'set' | 'toggleGoal' | 'toggleSymptom' | 'reset'>
+    >
+  ) => void;
   toggleGoal: (goal: Goal) => void;
+  toggleSymptom: (symptom: Symptom) => void;
   reset: () => void;
 }
 
 const initial = {
   nickname: '',
-  ageRange: '25-30' as AgeRange,
+  email: '',
   averageCycleLength: 28,
   averagePeriodLength: 5,
   lastPeriodStartDate: null,
-  lastPeriodDuration: 5,
   goals: [] as Goal[],
+  symptoms: [] as Symptom[],
 };
+
+const toggle = <T,>(arr: T[], v: T) =>
+  arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
 
 export const useOnboardingDraft = create<OnboardingDraft>()((set) => ({
   ...initial,
   set: (patch) => set(patch),
-  toggleGoal: (goal) =>
-    set((state) => ({
-      goals: state.goals.includes(goal)
-        ? state.goals.filter((g) => g !== goal)
-        : [...state.goals, goal],
-    })),
+  toggleGoal: (goal) => set((s) => ({ goals: toggle(s.goals, goal) })),
+  toggleSymptom: (symptom) => set((s) => ({ symptoms: toggle(s.symptoms, symptom) })),
   reset: () => set(initial),
 }));

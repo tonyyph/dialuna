@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, radius, shadows, sizes, spacing } from '@/theme';
+import { sizes, spacing } from '@/theme';
 
 interface BottomActionProps {
   style?: StyleProp<ViewStyle>;
@@ -21,7 +21,7 @@ export function BottomAction({ children, style }: PropsWithChildren<BottomAction
         style,
       ]}
     >
-      <View style={styles.surface}>{children}</View>
+      {children}
     </Animated.View>
   );
 }
@@ -30,12 +30,6 @@ const styles = StyleSheet.create({
   wrap: {
     paddingHorizontal: sizes.screenPadding,
     paddingTop: spacing(1.25),
-    backgroundColor: colors.glass,
-    borderTopWidth: 1,
-    borderTopColor: colors.glassBorder,
-  },
-  surface: {
-    borderRadius: radius.card,
-    ...shadows.xs,
+    backgroundColor: 'transparent',
   },
 });

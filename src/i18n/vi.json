@@ -45,7 +45,9 @@
     "breastTenderness": "Căng tức ngực",
     "backPain": "Đau lưng",
     "nausea": "Buồn nôn",
-    "fatigue": "Mệt mỏi"
+    "fatigue": "Mệt mỏi",
+    "moodSwings": "Tâm trạng thất thường",
+    "insomnia": "Mất ngủ"
   },
   "moods": {
     "happy": "Vui vẻ",
@@ -70,14 +72,10 @@
     "planWorkouts": "Lên lịch tập luyện",
     "skinInsights": "Chăm sóc da & mụn",
     "pregnancyPlanning": "Chuẩn bị mang thai",
-    "betterSleep": "Ngủ ngon hơn"
-  },
-  "ageRanges": {
-    "18-24": "18–24",
-    "25-30": "25–30",
-    "31-35": "31–35",
-    "36-45": "36–45",
-    "46+": "46+"
+    "betterSleep": "Ngủ ngon hơn",
+    "avoidPregnancy": "Tránh thai",
+    "trackFertility": "Theo dõi khả năng thụ thai",
+    "generalWellness": "Sức khỏe tổng quát"
   },
   "disclaimer": {
     "short": "Thông tin AI mang tính giáo dục, không phải tư vấn y khoa. Nếu triệu chứng nghiêm trọng, hãy trao đổi với chuyên gia y tế.",
@@ -87,8 +85,8 @@
   },
   "onboarding": {
     "welcome": {
-      "title": "Hiểu chu kỳ của bạn cùng AI",
-      "subtitle": "Dialuna học từ nhật ký hằng ngày để dự báo năng lượng, tâm trạng và sức khỏe của bạn — như một Hormone Twin cá nhân.",
+      "title": "Dialuna",
+      "subtitle": "Một nơi yên tĩnh để hiểu cơ thể bạn, qua từng chu kỳ.",
       "cta": "Bắt đầu"
     },
     "disclaimerScreen": {
@@ -96,38 +94,33 @@
       "body": "Dialuna là người bạn đồng hành wellness, giúp bạn nhận ra quy luật của chu kỳ, tâm trạng và năng lượng.\n\nĐây không phải thiết bị y tế. Ứng dụng không chẩn đoán bệnh, không xác nhận mang thai và không thay thế bác sĩ. Dự đoán là ước tính và sẽ chính xác hơn khi bạn ghi nhật ký đều.",
       "cta": "Tôi đã hiểu"
     },
-    "profile": {
-      "title": "Kể cho chúng mình nghe về bạn",
-      "subtitle": "Thông tin này giúp Hormone Twin khởi động. Bạn có thể đổi bất cứ lúc nào.",
-      "nickname": "Tên hoặc biệt danh",
-      "nicknamePlaceholder": "Bạn muốn được gọi là gì?",
-      "ageRange": "Độ tuổi",
+    "cycleBasics": {
+      "title": "Thiết lập chu kỳ của bạn",
+      "subtitle": "Bạn luôn có thể điều chỉnh sau trong Cài đặt.",
       "cycleLength": "Độ dài chu kỳ trung bình",
-      "periodLength": "Số ngày hành kinh trung bình",
+      "periodLength": "Số ngày hành kinh",
+      "lastPeriod": "Ngày đầu của kỳ kinh gần nhất",
       "daysUnit": "ngày"
-    },
-    "lastPeriod": {
-      "title": "Kỳ kinh gần nhất bắt đầu khi nào?",
-      "subtitle": "Chọn ngày đầu tiên của kỳ kinh gần đây nhất.",
-      "durationLabel": "Kéo dài bao nhiêu ngày?",
-      "notSure": "Không chắc? Dùng số trung bình cũng được — bạn có thể chỉnh sau."
     },
     "goals": {
       "title": "Điều gì đưa bạn đến Dialuna?",
-      "subtitle": "Chọn tất cả những gì phù hợp."
+      "subtitle": "Chọn tất cả mục phù hợp."
     },
-    "notifications": {
-      "title": "Nhẹ nhàng đồng hành cùng bạn",
-      "subtitle": "Dialuna có thể nhắc bạn đúng lúc. Bạn luôn là người quyết định.",
-      "daily": "Nhắc insight hằng ngày",
-      "period": "Nhắc kỳ kinh sắp đến",
-      "pms": "Báo trước giai đoạn PMS",
-      "note": "Bạn có thể thay đổi trong Cài đặt bất cứ lúc nào."
+    "symptoms": {
+      "title": "Triệu chứng bạn thường gặp",
+      "subtitle": "Giúp Insights tìm ra quy luật sớm hơn."
     },
-    "paywallPreview": {
-      "title": "Dialuna Premium",
-      "subtitle": "Trải nghiệm Hormone Twin trọn vẹn",
-      "continueFree": "Tiếp tục bản miễn phí"
+    "account": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Nhật ký của bạn được giữ riêng tư, chỉ đồng bộ với tài khoản này.",
+      "name": "Tên",
+      "namePlaceholder": "Tên của bạn",
+      "email": "Email",
+      "emailPlaceholder": "ban@email.com",
+      "cta": "Tạo tài khoản",
+      "apple": "Tiếp tục với Apple",
+      "appleSoon": "Đăng nhập Apple sắp ra mắt.",
+      "emailInvalid": "Email này có vẻ chưa đúng."
     }
   },
   "home": {
@@ -158,9 +151,9 @@
     "logNow": "Ghi hôm nay",
     "weekForecast": "Dự báo 7 ngày",
     "premiumBanner": {
+      "kicker": "Dialuna Premium",
       "title": "Mở khóa Hormone Twin trọn vẹn",
-      "body": "AI coach không giới hạn, dự báo 7 ngày và báo cáo hằng tháng.",
-      "cta": "Xem Premium"
+      "body": "AI coach không giới hạn, dự báo 7 ngày và báo cáo hằng tháng."
     },
     "plan": {
       "title": "Kế hoạch hôm nay",
@@ -212,7 +205,6 @@
   },
   "ai": {
     "title": "AI Coach",
-    "subtitle": "Câu trả lời cá nhân từ dữ liệu chu kỳ của bạn",
     "placeholder": "Hỏi về cơ thể bạn hôm nay…",
     "remaining_other": "Còn {{count}} câu hỏi miễn phí hôm nay",
     "unlimited": "Không giới hạn câu hỏi",
@@ -222,12 +214,9 @@
     "emptyBody": "Mình dùng nhật ký và pha chu kỳ của bạn để trả lời. Thử một gợi ý bên dưới nhé.",
     "prompts": {
       "p1": "Sao hôm nay mình mệt thế?",
-      "p2": "Hôm nay tập HIIT được không?",
-      "p3": "Sao mình thèm đồ ngọt?",
-      "p4": "Tâm trạng mình có liên quan chu kỳ không?",
-      "p5": "Hôm nay nên ăn gì?",
-      "p6": "Làm sao giảm đau bụng kinh?",
-      "p7": "Tuần này mình nên chuẩn bị gì?"
+      "p2": "Kỳ kinh tiếp theo của mình khi nào?",
+      "p3": "Mẹo giảm đầy hơi tiền kinh nguyệt",
+      "p4": "Điểm Hormone Twin của mình nghĩa là gì?"
     },
     "answer": {
       "tired": "Cảm giác mệt của bạn là dễ hiểu, {{name}}. Bạn đang ở ngày {{cycleDay}} của chu kỳ, trong {{phase}}, và năng lượng thường chùng xuống ở giai đoạn này.",
@@ -417,68 +406,89 @@
     }
   },
   "paywall": {
-    "title": "Hormone Twin trọn vẹn của bạn",
-    "subtitle": "Đi sâu hơn cùng Dialuna Premium",
-    "benefit": {
-      "b1": "Trò chuyện AI Coach không giới hạn",
-      "b2": "Dự báo Hormone Twin nâng cao",
-      "b3": "Dự đoán tâm trạng, năng lượng & độ dễ chịu 7 ngày",
-      "b4": "Kế hoạch ăn uống & tập luyện cá nhân hóa",
-      "b5": "Báo cáo wellness AI hằng tháng",
-      "b6": "Phân tích quy luật chu kỳ"
+    "slides": {
+      "s1": {
+        "title": "Hiểu quy luật của bạn",
+        "body": "Premium cho thấy năng lượng, tâm trạng và sự tập trung của bạn thay đổi cùng nhau ra sao trong cả chu kỳ — không chỉ hôm nay."
+      },
+      "s2": {
+        "title": "Hormone Twin, sâu hơn",
+        "body": "Xem xu hướng điểm số của bạn so với những phụ nữ có chu kỳ tương tự, không chỉ một con số."
+      },
+      "s3": {
+        "title": "Không còn đoán mò kỳ PMS",
+        "body": "Premium dự báo những ngày dễ có triệu chứng trước hai chu kỳ, để bạn chủ động sắp xếp."
+      }
     },
+    "choosePlan": "Chọn gói của bạn",
+    "trialNote": "Miễn phí 7 ngày, hủy bất cứ lúc nào.",
     "plans": {
-      "monthly": "Hằng tháng",
-      "yearly": "Hằng năm",
-      "lifetime": "Trọn đời",
-      "perMonth": "/tháng",
-      "perYear": "/năm",
-      "once": "một lần"
+      "monthly": "Hàng tháng",
+      "annual": "Hàng năm",
+      "monthlyPrice": "9,99 US$/tháng",
+      "annualPrice": "59,99 US$/năm · 5 US$/tháng"
     },
-    "saveBadge": "Tiết kiệm 52%",
-    "popularBadge": "Phổ biến nhất",
-    "cta": "Bắt đầu Premium",
+    "saveBadge": "TIẾT KIỆM 40%",
+    "features": {
+      "f1": "Toàn bộ xu hướng & lịch sử Hormone Twin",
+      "f2": "Phân tích chuyên sâu quy luật triệu chứng",
+      "f3": "Trò chuyện không giới hạn với AI Coach",
+      "f4": "Dự báo PMS trước hai chu kỳ"
+    },
+    "cta": "Dùng thử 7 ngày miễn phí",
+    "success": "Bạn đã là Premium!",
     "restore": "Khôi phục giao dịch",
-    "success": "Chào mừng đến Premium ✨",
-    "mockNote": "Bản demo: không có thanh toán thật nào được xử lý.",
-    "finePrint": "Gói đăng ký tự động gia hạn cho đến khi hủy. Chỉ là hướng dẫn wellness — không phải tư vấn y khoa."
+    "terms": "Điều khoản",
+    "privacy": "Quyền riêng tư",
+    "mockNote": "Giao dịch được mô phỏng trong bản dựng này."
   },
   "settings": {
     "title": "Cài đặt",
     "sections": {
-      "profile": "Hồ sơ",
-      "cycle": "Cài đặt chu kỳ",
+      "account": "Hồ sơ & tài khoản",
+      "cycle": "Thiết lập chu kỳ",
       "notifications": "Thông báo",
-      "preferences": "Tùy chọn",
-      "privacy": "Riêng tư & dữ liệu",
-      "about": "Về ứng dụng"
+      "appearance": "Giao diện",
+      "privacy": "Quyền riêng tư & dữ liệu",
+      "subscription": "Gói đăng ký"
     },
-    "nickname": "Biệt danh",
-    "ageRange": "Độ tuổi",
+    "name": "Tên",
+    "email": "Email",
+    "signOut": "Đăng xuất",
     "cycleLength": "Độ dài chu kỳ trung bình",
-    "periodLength": "Số ngày hành kinh trung bình",
-    "lastPeriodStart": "Kỳ kinh gần nhất bắt đầu",
+    "periodLength": "Số ngày hành kinh",
+    "lutealLength": "Độ dài pha hoàng thể",
+    "lastPeriodStart": "Ngày bắt đầu kỳ kinh gần nhất",
+    "notifPeriod": "Nhắc kỳ kinh",
+    "notifOvulation": "Nhắc rụng trứng",
+    "notifDaily": "Nhắc ghi nhật ký hằng ngày",
+    "notifDeferred": "Cài đặt được lưu, tính năng lên lịch sắp ra mắt.",
+    "on": "Bật",
+    "off": "Tắt",
+    "units": "Đơn vị",
+    "unitsUS": "US",
+    "unitsMetric": "Mét",
+    "themeLabel": "Chủ đề",
+    "themeLight": "Sáng",
+    "themeDark": "Tối",
     "language": "Ngôn ngữ",
     "languageEn": "English",
     "languageVi": "Tiếng Việt",
-    "notifDaily": "Insight hằng ngày",
-    "notifPeriod": "Nhắc kỳ kinh",
-    "notifPms": "Báo trước PMS",
-    "notifDeferred": "Tính năng nhắc sẽ được kích hoạt trong bản cập nhật tới.",
-    "privacyTitle": "Dữ liệu của bạn ở lại trên thiết bị này",
-    "privacyBody": "Dialuna lưu mọi thứ bạn ghi ngay trên điện thoại. Không có gì được tải lên, bán hay chia sẻ. Không tài khoản, không theo dõi. Nếu bạn xóa ứng dụng hoặc dùng 'Xóa toàn bộ dữ liệu', thông tin sẽ biến mất vĩnh viễn.",
-    "medicalTitle": "Miễn trừ trách nhiệm y khoa",
-    "exportData": "Xuất dữ liệu",
-    "exportSoon": "Sắp ra mắt",
-    "premiumStatus": "Trạng thái Premium",
-    "premiumActive": "Premium đang hoạt động — {{plan}}",
-    "premiumInactive": "Gói miễn phí",
-    "managePremium": "Quản lý gói đăng ký",
-    "devToggle": "Dev: bật/tắt premium",
+    "privacyTitle": "Dữ liệu của bạn được xử lý thế nào",
+    "privacyBody": "Mọi dữ liệu nằm trên thiết bị này. Không có gì được tải lên.",
+    "medicalTitle": "Miễn trừ trách nhiệm y tế",
+    "exportData": "Xuất dữ liệu của tôi",
+    "exportReady": "Đã sẵn sàng — kiểm tra email của bạn.",
     "deleteData": "Xóa toàn bộ dữ liệu",
-    "deleteConfirmTitle": "Xóa tất cả?",
-    "deleteConfirmBody": "Thao tác này xóa vĩnh viễn hồ sơ, nhật ký và cài đặt khỏi thiết bị. Không thể hoàn tác.",
-    "deleteConfirmCta": "Xóa toàn bộ dữ liệu",
+    "deleteConfirmBody": "Thao tác này xóa vĩnh viễn hồ sơ và toàn bộ nhật ký.",
+    "deleteConfirmCta": "Có, xóa tất cả",
+    "planFree": "Gói miễn phí",
+    "planPremium": "Premium",
+    "planFreeSub": "Nâng cấp để có phân tích sâu hơn",
+    "planActiveSub": "{{plan}} · đang hoạt động",
+    "upgrade": "Nâng cấp",
+    "manage": "Quản lý",
+    "devToggle": "Dev: bật premium",
     "version": "Phiên bản"
   },
   "tabs": {

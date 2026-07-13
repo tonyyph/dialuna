@@ -15,7 +15,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { usePremiumStore } from '@/store';
-import { colors, radius, shadows, spacing, typography } from '@/theme';
+import { radius, shadows, spacing, typography, useTheme } from '@/theme';
 
 function greetingKey(): string {
   const hour = new Date().getHours();
@@ -32,6 +32,7 @@ function wellnessTone(score: number): string {
 
 export function HomeScreen() {
   const { t } = useTranslation();
+  const p = useTheme();
   const ctx = useCycleToday();
   const isPremium = usePremiumStore((s) => s.isPremium);
 
@@ -45,15 +46,15 @@ export function HomeScreen() {
   return (
     <Screen edgeToEdge>
       <LinearGradient
-        colors={colors.gradients.hero}
+        colors={p.heroGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.hero}
       >
         <View style={styles.heroTop}>
           <View>
-            <Text style={styles.appName}>{t('common.appName')}</Text>
-            <Text style={styles.greeting}>
+            <Text style={[styles.appName, { color: p.textMuted }]}>{t('common.appName')}</Text>
+            <Text style={[styles.greeting, { color: p.text }]}>
               {t(greetingKey(), { name: profile.nickname })}
             </Text>
           </View>
@@ -62,26 +63,30 @@ export function HomeScreen() {
             accessibilityLabel={t('settings.title')}
             onPress={() => router.push('/settings')}
             hitSlop={8}
-            style={styles.settingsBtn}
+            style={[styles.settingsBtn, { backgroundColor: p.surfaceStrong }]}
           >
-            <Ionicons name="settings-outline" size={22} color={colors.card} />
+            <Ionicons name="settings-outline" size={22} color={p.text} />
           </Pressable>
         </View>
 
         <View style={styles.heroMain}>
           <View style={styles.heroCopy}>
-            <Text style={styles.heroKicker}>{t('common.today')}</Text>
-            <Text style={styles.heroTitle}>{periodText}</Text>
+            <Text style={[styles.heroKicker, { color: p.textMuted }]}>{t('common.today')}</Text>
+            <Text style={[styles.heroTitle, { color: p.text }]}>{periodText}</Text>
             <PhaseBadge phase={prediction.phase} pms={prediction.isPmsWindow} />
-            <Text style={styles.heroBody}>{t(twin.coachMessageKey)}</Text>
+            <Text style={[styles.heroBody, { color: p.textMuted }]}>{t(twin.coachMessageKey)}</Text>
           </View>
-          <View style={styles.lunaFrame}>
+          <View style={[styles.lunaFrame, { backgroundColor: p.surface }]}>
             <Luna expression={prediction.isPmsWindow ? 'comforting' : 'happy'} size={112} />
           </View>
         </View>
 
         <View style={styles.heroStats}>
-          <HeroStat label={t('common.cycleDay', { day: prediction.cycleDay })} value={`${twin.hormoneTwinScore}`} />
+          <HeroStat
+            label={t('common.cycleDay', { day: prediction.cycleDay })}
+            value={`${twin.hormoneTwinScore}`}
+            emphasis
+          />
           <HeroStat label={t('home.twinScore')} value={t(wellnessTone(twin.hormoneTwinScore))} />
         </View>
       </LinearGradient>
@@ -91,11 +96,11 @@ export function HomeScreen() {
           <Card variant="glass" style={styles.insightCard}>
             <View style={styles.insightHeader}>
               <View>
-                <Text style={styles.sectionKicker}>{t('home.insightTitle')}</Text>
+                <Text style={[styles.sectionKicker, { color: p.accent }]}>{t('home.insightTitle')}</Text>
                 <Text style={styles.insightTitle}>{t('home.twinScoreCaption')}</Text>
               </View>
-              <View style={styles.sparkBadge}>
-                <Ionicons name="sparkles" size={18} color={colors.primary} />
+              <View style={[styles.sparkBadge, { backgroundColor: p.accent100 }]}>
+                <Ionicons name="sparkles" size={18} color={p.accent} />
               </View>
             </View>
             <Text style={styles.insightText}>{t(twin.coachMessageKey)}</Text>
@@ -110,32 +115,32 @@ export function HomeScreen() {
         <Animated.View entering={FadeInDown.delay(80).duration(360)}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{t('home.twinScore')}</Text>
-            <Text style={styles.sectionMeta}>{t('common.today')}</Text>
+            <Text style={[styles.sectionMeta, { color: p.accent }]}>{t('common.today')}</Text>
           </View>
           <View style={styles.snapshotGrid}>
             <MetricTile
               icon="flash"
               label={t('home.forecast.energy')}
               value={twin.energyScore}
-              color={colors.gold}
+              color={p.accent400}
             />
             <MetricTile
               icon="heart"
               label={t('home.forecast.mood')}
               value={twin.moodScore}
-              color={colors.primary}
+              color={p.accent}
             />
             <MetricTile
               icon="leaf"
               label={t('home.forecast.pain')}
               value={100 - twin.painRisk}
-              color={colors.aqua}
+              color={p.accentInk}
             />
             <MetricTile
               icon="bulb"
               label={t('home.forecast.focus')}
               value={twin.focusScore}
-              color={colors.iris}
+              color={p.accentInk}
             />
           </View>
         </Animated.View>
@@ -145,25 +150,25 @@ export function HomeScreen() {
             <QuickAction
               icon="add-circle"
               label={t('home.logNow')}
-              tone={colors.primary}
+              tone={p.accent}
               onPress={() => router.push('/(tabs)/log')}
             />
             <QuickAction
               icon="chatbubble-ellipses"
               label={t('home.askAi')}
-              tone={colors.iris}
+              tone={p.accentInk}
               onPress={() => router.push('/(tabs)/ai')}
             />
             <QuickAction
               icon="calendar"
               label={t('tabs.calendar')}
-              tone={colors.aqua}
+              tone={p.accentInk}
               onPress={() => router.push('/(tabs)/calendar')}
             />
             <QuickAction
               icon="analytics"
               label={t('tabs.insights')}
-              tone={colors.gold}
+              tone={p.accent400}
               onPress={() => router.push('/(tabs)/insights')}
             />
           </View>
@@ -173,22 +178,22 @@ export function HomeScreen() {
           <Card style={styles.timelineCard}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>{t('home.weekForecast')}</Text>
-              <Text style={styles.sectionMeta}>{periodText}</Text>
+              <Text style={[styles.sectionMeta, { color: p.accent }]}>{periodText}</Text>
             </View>
             <WeekStrip days={week} />
             <View style={styles.timelineRows}>
               <TimelineRow
-                color={colors.primary}
+                color={p.accent}
                 label={t('calendar.legend.period')}
                 value={prediction.nextPeriodStart}
               />
               <TimelineRow
-                color={colors.peach}
+                color={p.accent400}
                 label={t('phases.pms')}
                 value={`${prediction.pmsWindowStart} - ${prediction.pmsWindowEnd}`}
               />
               <TimelineRow
-                color={colors.gold}
+                color={p.accent400}
                 label={t('calendar.legend.ovulation')}
                 value={prediction.ovulationEstimate}
               />
@@ -215,11 +220,28 @@ export function HomeScreen() {
   );
 }
 
-function HeroStat({ label, value }: { label: string; value: string }) {
+function HeroStat({
+  label,
+  value,
+  emphasis = false,
+}: {
+  label: string;
+  value: string;
+  emphasis?: boolean;
+}) {
+  const p = useTheme();
   return (
-    <View style={styles.heroStat}>
-      <Text style={styles.heroStatValue}>{value}</Text>
-      <Text style={styles.heroStatLabel}>{label}</Text>
+    <View style={[styles.heroStat, { backgroundColor: p.surface }]}>
+      <Text
+        style={[
+          styles.heroStatValue,
+          { color: p.text },
+          emphasis && [typography.score, { color: p.accentInk }],
+        ]}
+      >
+        {value}
+      </Text>
+      <Text style={[styles.heroStatLabel, { color: p.textMuted }]}>{label}</Text>
     </View>
   );
 }
@@ -235,14 +257,15 @@ function MetricTile({
   value: number;
   color: string;
 }) {
+  const p = useTheme();
   return (
-    <View style={styles.metricTile}>
+    <View style={[styles.metricTile, { backgroundColor: p.surfaceStrong }]}>
       <View style={[styles.metricIcon, { backgroundColor: `${color}22` }]}>
         <Ionicons name={icon} size={18} color={color} />
       </View>
-      <Text style={styles.metricValue}>{value}</Text>
-      <Text style={styles.metricLabel}>{label}</Text>
-      <ProgressBar value={value} color={color} trackColor={colors.divider} thickness={7} />
+      <Text style={[styles.metricValue, { color: p.text }]}>{value}</Text>
+      <Text style={[styles.metricLabel, { color: p.textMuted }]}>{label}</Text>
+      <ProgressBar value={value} color={color} thickness={7} />
     </View>
   );
 }
@@ -258,6 +281,7 @@ function QuickAction({
   tone: string;
   onPress: () => void;
 }) {
+  const p = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -265,23 +289,25 @@ function QuickAction({
       onPress={onPress}
       style={({ pressed }) => [
         styles.quickAction,
+        { backgroundColor: p.surfaceSolid },
         pressed && styles.quickActionPressed,
       ]}
     >
       <View style={[styles.quickIcon, { backgroundColor: `${tone}24` }]}>
         <Ionicons name={icon} size={20} color={tone} />
       </View>
-      <Text style={styles.quickLabel}>{label}</Text>
+      <Text style={[styles.quickLabel, { color: p.text }]}>{label}</Text>
     </Pressable>
   );
 }
 
 function TimelineRow({ color, label, value }: { color: string; label: string; value: string }) {
+  const p = useTheme();
   return (
     <View style={styles.timelineRow}>
       <View style={[styles.timelineDot, { backgroundColor: color }]} />
-      <Text style={styles.timelineLabel}>{label}</Text>
-      <Text style={styles.timelineValue}>{value}</Text>
+      <Text style={[styles.timelineLabel, { color: p.text }]}>{label}</Text>
+      <Text style={[styles.timelineValue, { color: p.textMuted }]}>{value}</Text>
     </View>
   );
 }
@@ -315,9 +341,12 @@ const styles = StyleSheet.create({
     paddingTop: spacing(3),
     paddingHorizontal: spacing(2.5),
     paddingBottom: spacing(5),
-    borderBottomLeftRadius: radius.sheet,
-    borderBottomRightRadius: radius.sheet,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    borderBottomRightRadius: 32,
+    borderBottomLeftRadius: 12,
     overflow: 'hidden',
+    ...shadows.hero,
   },
   heroTop: {
     flexDirection: 'row',
@@ -327,22 +356,17 @@ const styles = StyleSheet.create({
   },
   appName: {
     ...typography.micro,
-    color: 'rgba(255,255,255,0.78)',
   },
   greeting: {
     ...typography.subtitle,
-    color: colors.card,
     marginTop: spacing(0.25),
   },
   settingsBtn: {
     width: 44,
     height: 44,
     borderRadius: radius.lg,
-    backgroundColor: 'rgba(255,255,255,0.18)',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
   },
   heroMain: {
     flexDirection: 'row',
@@ -355,28 +379,22 @@ const styles = StyleSheet.create({
     gap: spacing(1),
   },
   heroKicker: {
-    ...typography.caption,
-    color: 'rgba(255,255,255,0.76)',
+    ...typography.kicker,
   },
   heroTitle: {
     ...typography.display,
-    color: colors.card,
     fontSize: 34,
     lineHeight: 39,
   },
   heroBody: {
     ...typography.bodySmall,
-    color: 'rgba(255,255,255,0.86)',
   },
   lunaFrame: {
     width: 128,
     height: 128,
     borderRadius: 64,
-    backgroundColor: 'rgba(255,255,255,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
   },
   heroStats: {
     flexDirection: 'row',
@@ -385,19 +403,14 @@ const styles = StyleSheet.create({
   },
   heroStat: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.18)',
     borderRadius: radius.card,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
     padding: spacing(1.5),
   },
   heroStatValue: {
     ...typography.title,
-    color: colors.card,
   },
   heroStatLabel: {
     ...typography.caption,
-    color: 'rgba(255,255,255,0.78)',
     marginTop: spacing(0.25),
   },
   content: {
@@ -410,7 +423,7 @@ const styles = StyleSheet.create({
   },
   insightCard: {
     gap: spacing(1.5),
-    ...shadows.lg,
+    ...shadows.hero,
   },
   insightHeader: {
     flexDirection: 'row',
@@ -419,8 +432,7 @@ const styles = StyleSheet.create({
     gap: spacing(2),
   },
   sectionKicker: {
-    ...typography.caption,
-    color: colors.primary,
+    ...typography.kicker,
   },
   insightTitle: {
     ...typography.title,
@@ -430,7 +442,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: radius.lg,
-    backgroundColor: colors.softRose,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -449,7 +460,6 @@ const styles = StyleSheet.create({
   },
   sectionMeta: {
     ...typography.caption,
-    color: colors.primary,
     textAlign: 'right',
     flexShrink: 1,
   },
@@ -460,13 +470,10 @@ const styles = StyleSheet.create({
   },
   metricTile: {
     width: '47.8%',
-    backgroundColor: colors.glassStrong,
     borderRadius: radius.card,
     padding: spacing(2),
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
     gap: spacing(0.75),
-    ...shadows.xs,
+    ...shadows.tiny,
   },
   metricIcon: {
     width: 34,
@@ -492,12 +499,9 @@ const styles = StyleSheet.create({
     width: '47.8%',
     minHeight: 82,
     borderRadius: radius.card,
-    backgroundColor: colors.surface.elevated,
-    borderWidth: 1,
-    borderColor: colors.border,
     padding: spacing(1.5),
     justifyContent: 'space-between',
-    ...shadows.sm,
+    ...shadows.soft,
   },
   quickActionPressed: {
     opacity: 0.9,
@@ -533,11 +537,9 @@ const styles = StyleSheet.create({
   timelineLabel: {
     ...typography.bodySmall,
     flex: 1,
-    color: colors.textPrimary,
   },
   timelineValue: {
     ...typography.caption,
-    color: colors.textSecondary,
   },
   planCard: {
     gap: spacing(1.5),

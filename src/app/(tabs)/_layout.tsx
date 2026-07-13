@@ -1,51 +1,60 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ColorValue, StyleSheet } from 'react-native';
+import { ColorValue, StyleSheet, Text } from 'react-native';
 
-import { colors, radius, shadows, spacing, typography } from '@/theme';
+import { radius, shadows, spacing, typography, useTheme } from '@/theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
 function tabIcon(name: IconName) {
-  function TabIcon({ color, size }: { color: ColorValue; size: number }) {
-    return <Ionicons name={name} color={color} size={size} />;
+  function TabIcon({ color }: { color: ColorValue; size: number }) {
+    return <Ionicons name={name} color={color} size={19} />;
   }
   return TabIcon;
 }
 
 export default function TabsLayout() {
   const { t } = useTranslation();
+  const p = useTheme();
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textSecondary,
-        tabBarLabelStyle: styles.label,
+        tabBarActiveTintColor: p.accentInk,
+        tabBarInactiveTintColor: p.textFaint,
         tabBarItemStyle: styles.item,
-        tabBarStyle: styles.tabBar,
+        tabBarStyle: [
+          styles.tabBar,
+          { backgroundColor: p.name === 'dark' ? 'rgba(43,39,46,0.92)' : 'rgba(255,251,247,0.92)' },
+        ],
+        tabBarLabel: ({ focused, color, children }) =>
+          focused ? (
+            <Text style={[styles.label, { color }]} numberOfLines={1}>
+              {children}
+            </Text>
+          ) : null,
       }}
     >
       <Tabs.Screen
         name="home"
-        options={{ title: t('tabs.home'), tabBarIcon: tabIcon('moon') }}
-      />
-      <Tabs.Screen
-        name="calendar"
-        options={{ title: t('tabs.calendar'), tabBarIcon: tabIcon('calendar') }}
+        options={{ title: t('tabs.home'), tabBarIcon: tabIcon('ellipse-outline') }}
       />
       <Tabs.Screen
         name="log"
-        options={{ title: t('tabs.log'), tabBarIcon: tabIcon('add-circle') }}
+        options={{ title: t('tabs.log'), tabBarIcon: tabIcon('add-circle-outline') }}
+      />
+      <Tabs.Screen
+        name="calendar"
+        options={{ title: t('tabs.calendar'), tabBarIcon: tabIcon('calendar-outline') }}
+      />
+      <Tabs.Screen
+        name="insights"
+        options={{ title: t('tabs.insights'), tabBarIcon: tabIcon('stats-chart-outline') }}
       />
       <Tabs.Screen
         name="ai"
         options={{ title: t('tabs.ai'), tabBarIcon: tabIcon('sparkles') }}
-      />
-      <Tabs.Screen
-        name="insights"
-        options={{ title: t('tabs.insights'), tabBarIcon: tabIcon('stats-chart') }}
       />
     </Tabs>
   );
@@ -54,25 +63,17 @@ export default function TabsLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    left: spacing(2),
-    right: spacing(2),
-    bottom: spacing(1.25),
-    minHeight: 66,
+    left: spacing(2.25),
+    right: spacing(2.25),
+    bottom: spacing(1.75),
+    height: 62,
     paddingTop: spacing(0.75),
     paddingBottom: spacing(1),
-    paddingHorizontal: spacing(0.5),
-    backgroundColor: colors.glassStrong,
+    paddingHorizontal: spacing(0.75),
     borderTopWidth: 0,
-    borderWidth: 1,
-    borderColor: colors.glassBorder,
-    borderRadius: radius.card,
-    ...shadows.md,
+    borderRadius: radius.dock,
+    ...shadows.float,
   },
-  item: {
-    borderRadius: radius.lg,
-  },
-  label: {
-    ...typography.caption,
-    fontSize: 11,
-  },
+  item: { borderRadius: radius.dock - 8 },
+  label: { ...typography.micro, fontSize: 9.5, letterSpacing: 0.2 },
 });

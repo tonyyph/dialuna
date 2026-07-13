@@ -10,6 +10,7 @@ interface UserStore {
   setProfile: (profile: UserProfile) => void;
   updateProfile: (patch: Partial<UserProfile>) => void;
   completeOnboarding: () => void;
+  signOut: () => void;
   reset: () => void;
 }
 
@@ -24,6 +25,7 @@ export const useUserStore = create<UserStore>()(
           profile: state.profile ? { ...state.profile, ...patch } : state.profile,
         })),
       completeOnboarding: () => set({ hasOnboarded: true }),
+      signOut: () => set({ hasOnboarded: false }),
       reset: () => set({ profile: null, hasOnboarded: false }),
     }),
     {

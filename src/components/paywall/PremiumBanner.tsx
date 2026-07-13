@@ -1,8 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   onPress: () => void;
@@ -10,6 +10,8 @@ interface Props {
 
 export function PremiumBanner({ onPress }: Props) {
   const { t } = useTranslation();
+  const p = useTheme();
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -18,18 +20,16 @@ export function PremiumBanner({ onPress }: Props) {
       style={({ pressed }) => [pressed && styles.pressed]}
     >
       <LinearGradient
-        colors={[colors.lavender, colors.deepPlum]}
+        colors={p.premiumBannerGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.banner}
       >
-        <View style={styles.textCol}>
-          <Text style={styles.title}>{t('home.premiumBanner.title')}</Text>
-          <Text style={styles.body}>{t('home.premiumBanner.body')}</Text>
-        </View>
-        <View style={styles.cta}>
-          <Text style={styles.ctaText}>{t('home.premiumBanner.cta')}</Text>
-        </View>
+        <Text style={[styles.kicker, { color: p.accent400 }]}>
+          {t('home.premiumBanner.kicker')}
+        </Text>
+        <Text style={styles.title}>{t('home.premiumBanner.title')}</Text>
+        <Text style={styles.body}>{t('home.premiumBanner.body')}</Text>
       </LinearGradient>
     </Pressable>
   );
@@ -37,35 +37,24 @@ export function PremiumBanner({ onPress }: Props) {
 
 const styles = StyleSheet.create({
   banner: {
-    borderRadius: radius.card,
-    padding: spacing(2.5),
-    gap: spacing(1.5),
+    borderRadius: 22,
+    padding: spacing(2.25),
+    gap: spacing(0.5),
   },
   pressed: {
     transform: [{ scale: 0.985 }],
     opacity: 0.94,
   },
-  textCol: {
-    gap: spacing(0.5),
+  kicker: {
+    ...typography.kicker,
   },
   title: {
-    ...typography.subtitle,
-    color: colors.card,
+    ...typography.title,
+    fontSize: 18,
+    color: '#f4ede1',
   },
   body: {
     ...typography.caption,
-    color: colors.softRose,
-  },
-  cta: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.card,
-    borderRadius: radius.pill,
-    paddingHorizontal: spacing(2),
-    paddingVertical: spacing(1),
-  },
-  ctaText: {
-    ...typography.caption,
-    color: colors.deepPlum,
-    fontWeight: '700',
+    color: 'rgba(244,237,225,0.75)',
   },
 });

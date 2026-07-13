@@ -18,26 +18,19 @@ import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
-import { useLogStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { useLogStore, useSettingsStore, useUserStore } from '@/store';
+import { radius, spacing, typography, useTheme } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
 
 interface LegendItemProps {
   color: string;
   label: string;
-  dashed?: boolean;
 }
 
-function LegendItem({ color, label, dashed }: LegendItemProps) {
+function LegendItem({ color, label }: LegendItemProps) {
   return (
     <View style={styles.legendItem}>
-      <View
-        style={[
-          styles.legendDot,
-          { backgroundColor: dashed ? 'transparent' : color },
-          dashed && { borderWidth: 1.5, borderStyle: 'dashed', borderColor: color },
-        ]}
-      />
+      <View style={[styles.legendDot, { backgroundColor: color }]} />
       <Text style={styles.legendLabel}>{label}</Text>
     </View>
   );
@@ -45,8 +38,10 @@ function LegendItem({ color, label, dashed }: LegendItemProps) {
 
 export function CalendarScreen() {
   const { t } = useTranslation();
+  const p = useTheme();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
+  const lutealLength = useSettingsStore((s) => s.lutealLength);
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const today = todayISO();
@@ -62,44 +57,51 @@ export function CalendarScreen() {
     averageCycleLength: profile.averageCycleLength,
     averagePeriodLength: profile.averagePeriodLength,
     today,
+    lutealLength,
   });
 
   return (
     <Screen>
-      <View style={styles.hero}>
+      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
         <View>
-          <Text style={styles.kicker}>{t('calendar.title')}</Text>
-          <Text style={styles.title}>{format(parseISO(today), 'EEEE, MMM d')}</Text>
+          <Text style={[styles.kicker, { color: p.accent400 }]}>{t('calendar.title')}</Text>
+          <Text style={[styles.title, { color: '#f4ede1' }]}>
+            {format(parseISO(today), 'EEEE, MMM d')}
+          </Text>
           <Text style={styles.subtitle}>
             {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
             {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
           </Text>
         </View>
-        <View style={styles.todayOrb}>
-          <Text style={styles.todayDay}>{format(parseISO(today), 'd')}</Text>
-          <Text style={styles.todayMonth}>{format(parseISO(today), 'MMM')}</Text>
+        <View style={[styles.todayOrb, { backgroundColor: p.accent }]}>
+          <Text style={[styles.todayDay, { color: p.onPrimaryBtn }]}>
+            {format(parseISO(today), 'd')}
+          </Text>
+          <Text style={[styles.todayMonth, { color: p.onPrimaryBtn }]}>
+            {format(parseISO(today), 'MMM')}
+          </Text>
         </View>
       </View>
 
       <Card variant="glass" style={styles.timelineCard}>
         <TimelineItem
-          color={colors.primary}
+          color={p.accent}
           label={t('calendar.legend.period')}
           value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
         />
         <TimelineItem
-          color={colors.peach}
+          color={p.accent400}
           label={t('phases.pms')}
           value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
         />
         <TimelineItem
-          color={colors.gold}
+          color={p.accent400}
           label={t('calendar.legend.ovulation')}
           value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
         />
       </Card>
 
-      <Card style={styles.calendarCard}>
+      <Card style={{ backgroundColor: p.surfaceSolid }}>
         <View style={styles.monthHeader}>
           <Pressable
             accessibilityRole="button"
@@ -107,7 +109,7 @@ export function CalendarScreen() {
             onPress={() => setMonth((m) => addMonths(m, -1))}
             style={styles.navBtn}
           >
-            <Text style={styles.navText}>‹</Text>
+            <Text style={[styles.navText, { color: p.accent }]}>‹</Text>
           </Pressable>
           <Text style={styles.monthLabel}>{format(month, 'MMMM yyyy')}</Text>
           <Pressable
@@ -116,14 +118,14 @@ export function CalendarScreen() {
             onPress={() => setMonth((m) => addMonths(m, 1))}
             style={styles.navBtn}
           >
-            <Text style={styles.navText}>›</Text>
+            <Text style={[styles.navText, { color: p.accent }]}>›</Text>
           </Pressable>
         </View>
 
         <View style={styles.grid}>
           {days.map((day) => {
             const iso = toISODate(day);
-            const info = getDayInfo(iso, profile);
+            const info = getDayInfo(iso, profile, lutealLength);
             const log = logs[iso];
             const isPeriodLogged =
               (log && log.flow !== 'none') ||
@@ -141,6 +143,7 @@ export function CalendarScreen() {
                   isPms: info.isPms,
                   isOvulation: info.isOvulation,
                   isToday: iso === today,
+                  isSelected: iso === selectedDate,
                   hasLog: Boolean(log),
                   isHighEnergy:
                     info.phase === 'follicular' || info.phase === 'ovulation',
@@ -154,12 +157,15 @@ export function CalendarScreen() {
       </Card>
 
       <Card variant="glass" style={styles.legend}>
-        <LegendItem color={colors.primary} label={t('calendar.legend.period')} />
-        <LegendItem color={colors.primary} label={t('calendar.legend.predicted')} dashed />
-        <LegendItem color={colors.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
-        <LegendItem color={colors.mint} label={t('calendar.legend.ovulation')} />
-        <LegendItem color={colors.phaseSoft.ovulation} label={t('calendar.legend.pms')} />
-        <LegendItem color={colors.lavender} label={t('calendar.legend.logged')} />
+        <LegendItem color={p.accent} label={t('calendar.legend.period')} />
+        <LegendItem
+          color={p.name === 'dark' ? 'rgba(225,173,102,0.28)' : p.accent200}
+          label={t('calendar.legend.predicted')}
+        />
+        <LegendItem color={p.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
+        <LegendItem color={p.success} label={t('calendar.legend.ovulation')} />
+        <LegendItem color={p.phaseSoft.ovulation} label={t('calendar.legend.pms')} />
+        <LegendItem color={p.accent600} label={t('calendar.legend.logged')} />
       </Card>
 
       <DayDetailSheet
@@ -188,7 +194,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
     padding: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -197,36 +202,29 @@ const styles = StyleSheet.create({
   },
   kicker: {
     ...typography.caption,
-    color: colors.peach,
   },
   title: {
     ...typography.headline,
-    color: colors.card,
     marginTop: spacing(0.5),
   },
   subtitle: {
     ...typography.bodySmall,
-    color: 'rgba(255,255,255,0.78)',
+    color: 'rgba(244,237,225,0.78)',
     marginTop: spacing(0.5),
   },
   todayOrb: {
     width: 86,
     height: 86,
     borderRadius: radius.sheet,
-    backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
   },
   todayDay: {
     ...typography.display,
-    color: colors.card,
     lineHeight: 38,
   },
   todayMonth: {
     ...typography.caption,
-    color: colors.card,
   },
   timelineCard: {
     flexDirection: 'row',
@@ -253,9 +251,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
   },
-  calendarCard: {
-    backgroundColor: colors.surface.elevated,
-  },
   monthHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -271,7 +266,6 @@ const styles = StyleSheet.create({
   },
   navText: {
     ...typography.headline,
-    color: colors.primary,
   },
   monthLabel: {
     ...typography.subtitle,

@@ -1,210 +1,341 @@
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Switch,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Card } from '@/components/ui/Card';
-import { Chip } from '@/components/ui/Chip';
+import { CircleButton } from '@/components/ui/CircleButton';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
+import { SegmentedToggle } from '@/components/ui/SegmentedToggle';
+import { DatePickerCalendar } from '@/features/onboarding/DatePickerCalendar';
 import { Stepper } from '@/features/onboarding/Stepper';
 import i18n, { setAppLanguage } from '@/i18n';
-import { resetAllData, usePremiumStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
-import { ALL_AGE_RANGES } from '@/types';
-import { nicknameSchema } from '@/utils/validation';
+import {
+  resetAllData,
+  usePremiumStore,
+  useSettingsStore,
+  useUserStore,
+} from '@/store';
+import { radius, spacing, typography, useTheme } from '@/theme';
+import { emailSchema, nicknameSchema } from '@/utils/validation';
 
 export function SettingsScreen() {
   const { t } = useTranslation();
+  const p = useTheme();
   const profile = useUserStore((s) => s.profile);
   const updateProfile = useUserStore((s) => s.updateProfile);
+  const signOut = useUserStore((s) => s.signOut);
+  const settings = useSettingsStore();
   const isPremium = usePremiumStore((s) => s.isPremium);
   const plan = usePremiumStore((s) => s.plan);
   const togglePremiumDev = usePremiumStore((s) => s.togglePremiumDev);
 
-  const [notifDaily, setNotifDaily] = useState(true);
-  const [notifPeriod, setNotifPeriod] = useState(true);
-  const [notifPms, setNotifPms] = useState(true);
+  const [dateOpen, setDateOpen] = useState(false);
+  const [exportedFlash, setExportedFlash] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [medicalOpen, setMedicalOpen] = useState(false);
 
   if (!profile) return null;
 
   const language = i18n.language === 'vi' ? 'vi' : 'en';
+  const daysUnit = t('onboarding.cycleBasics.daysUnit');
 
-  const confirmDelete = () => {
-    Alert.alert(
-      t('settings.deleteConfirmTitle'),
-      t('settings.deleteConfirmBody'),
-      [
-        { text: t('common.cancel'), style: 'cancel' },
-        {
-          text: t('settings.deleteConfirmCta'),
-          style: 'destructive',
-          onPress: () => {
-            resetAllData();
-            router.dismissAll();
-            router.replace('/onboarding');
-          },
-        },
-      ]
-    );
+  const onSignOut = () => {
+    signOut();
+    router.dismissAll();
+    router.replace('/onboarding');
   };
+
+  const onConfirmDelete = () => {
+    resetAllData();
+    router.dismissAll();
+    router.replace('/onboarding');
+  };
+
+  const kicker = { ...styles.kicker, color: p.textFaint };
+  const label = { ...styles.label, color: p.textMuted };
 
   return (
     <Screen>
       <View style={styles.header}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('common.back')}
+        <CircleButton
+          icon="chevron-back"
+          label={t('common.back')}
           onPress={() => router.back()}
-          hitSlop={8}
-          style={styles.backBtn}
-        >
-          <Text style={styles.backText}>‹</Text>
-        </Pressable>
-        <Text style={styles.title}>{t('settings.title')}</Text>
+        />
+        <Text style={[styles.title, { color: p.text }]}>{t('settings.title')}</Text>
       </View>
 
-      <SectionTitle title={t('settings.sections.profile')} />
-      <Card variant="glass" style={styles.rows}>
-        <Text style={styles.label}>{t('settings.nickname')}</Text>
+      <Text style={kicker}>{t('settings.sections.account')}</Text>
+      <Card style={styles.card}>
+        <Text style={label}>{t('settings.name')}</Text>
         <TextInput
-          style={styles.input}
+          style={[styles.input, { color: p.text }]}
           defaultValue={profile.nickname}
-          accessibilityLabel={t('settings.nickname')}
+          accessibilityLabel={t('settings.name')}
           maxLength={30}
           onEndEditing={(e) => {
             const nickname = e.nativeEvent.text.trim();
-            if (nicknameSchema.safeParse(nickname).success) {
-              updateProfile({ nickname });
+            if (nicknameSchema.safeParse(nickname).success) updateProfile({ nickname });
+          }}
+        />
+        <Text style={label}>{t('settings.email')}</Text>
+        <TextInput
+          style={[styles.input, { color: p.text }]}
+          defaultValue={profile.email ?? ''}
+          accessibilityLabel={t('settings.email')}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          onEndEditing={(e) => {
+            const email = e.nativeEvent.text.trim();
+            if (emailSchema.safeParse(email).success) {
+              updateProfile({ email: email || undefined });
             }
           }}
         />
-        <Text style={styles.label}>{t('settings.ageRange')}</Text>
-        <View style={styles.chipRow}>
-          {ALL_AGE_RANGES.map((range) => (
-            <Chip
-              key={range}
-              label={t(`ageRanges.${range}`)}
-              selected={profile.ageRange === range}
-              onPress={() => updateProfile({ ageRange: range })}
-            />
-          ))}
-        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.signOut')}
+          onPress={onSignOut}
+          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+        >
+          <Text style={[styles.pillBtnText, { color: p.text }]}>
+            {t('settings.signOut')}
+          </Text>
+        </Pressable>
       </Card>
 
-      <SectionTitle title={t('settings.sections.cycle')} />
-      <Card variant="glass" style={styles.rows}>
+      <Text style={kicker}>{t('settings.sections.cycle')}</Text>
+      <Card style={[styles.card, styles.gapLg]}>
         <Stepper
           label={t('settings.cycleLength')}
-          unit={t('onboarding.profile.daysUnit')}
+          unit={daysUnit}
           value={profile.averageCycleLength}
-          min={20}
-          max={45}
+          min={21}
+          max={40}
           onChange={(averageCycleLength) => updateProfile({ averageCycleLength })}
         />
         <Stepper
           label={t('settings.periodLength')}
-          unit={t('onboarding.profile.daysUnit')}
+          unit={daysUnit}
           value={profile.averagePeriodLength}
           min={2}
           max={10}
           onChange={(averagePeriodLength) => updateProfile({ averagePeriodLength })}
         />
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.lastPeriodStart')}</Text>
-          <Text style={styles.value}>{profile.lastPeriodStartDate}</Text>
-        </View>
-      </Card>
-
-      <SectionTitle title={t('settings.sections.notifications')} />
-      <Card variant="glass" style={styles.rows}>
-        <ToggleRow label={t('settings.notifDaily')} value={notifDaily} onChange={setNotifDaily} />
-        <ToggleRow label={t('settings.notifPeriod')} value={notifPeriod} onChange={setNotifPeriod} />
-        <ToggleRow label={t('settings.notifPms')} value={notifPms} onChange={setNotifPms} />
-        <Text style={styles.caption}>{t('settings.notifDeferred')}</Text>
-      </Card>
-
-      <SectionTitle title={t('settings.sections.preferences')} />
-      <Card variant="glass" style={styles.rows}>
-        <Text style={styles.label}>{t('settings.language')}</Text>
-        <View style={styles.chipRow}>
-          <Chip
-            label={t('settings.languageEn')}
-            selected={language === 'en'}
-            onPress={() => setAppLanguage('en')}
-          />
-          <Chip
-            label={t('settings.languageVi')}
-            selected={language === 'vi'}
-            onPress={() => setAppLanguage('vi')}
-          />
-        </View>
-      </Card>
-
-      <SectionTitle title={t('common.premium')} />
-      <Card variant="glass" style={styles.rows}>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.premiumStatus')}</Text>
-          <Text style={styles.value}>
-            {isPremium
-              ? t('settings.premiumActive', {
-                  plan: plan ? t(`paywall.plans.${plan}`) : '',
-                })
-              : t('settings.premiumInactive')}
-          </Text>
-        </View>
-        <LinkRow
-          label={t('settings.managePremium')}
-          onPress={() => router.push('/paywall')}
+        <Stepper
+          label={t('settings.lutealLength')}
+          unit={daysUnit}
+          value={settings.lutealLength}
+          min={10}
+          max={16}
+          onChange={(lutealLength) => settings.set({ lutealLength })}
         />
-        <ToggleRow
+        <View>
+          <Text style={label}>{t('settings.lastPeriodStart')}</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('settings.lastPeriodStart')}
+            onPress={() => setDateOpen((v) => !v)}
+            style={styles.dateRow}
+          >
+            <Text style={[styles.dateValue, { color: p.text }]}>
+              {profile.lastPeriodStartDate}
+            </Text>
+          </Pressable>
+          {dateOpen ? (
+            <DatePickerCalendar
+              selected={profile.lastPeriodStartDate}
+              onSelect={(lastPeriodStartDate) => {
+                updateProfile({ lastPeriodStartDate });
+                setDateOpen(false);
+              }}
+            />
+          ) : null}
+        </View>
+      </Card>
+
+      <Text style={kicker}>{t('settings.sections.notifications')}</Text>
+      <Card style={[styles.card, styles.gapMd]}>
+        <NotifRow
+          label={t('settings.notifPeriod')}
+          value={settings.notifPeriod}
+          onChange={(notifPeriod) => settings.set({ notifPeriod })}
+        />
+        <NotifRow
+          label={t('settings.notifOvulation')}
+          value={settings.notifOvulation}
+          onChange={(notifOvulation) => settings.set({ notifOvulation })}
+        />
+        <NotifRow
+          label={t('settings.notifDaily')}
+          value={settings.notifDaily}
+          onChange={(notifDaily) => settings.set({ notifDaily })}
+        />
+        <Text style={[styles.caption, { color: p.textFaint }]}>
+          {t('settings.notifDeferred')}
+        </Text>
+      </Card>
+
+      <Text style={kicker}>{t('settings.sections.appearance')}</Text>
+      <Card style={[styles.card, styles.gapLg]}>
+        <View>
+          <Text style={label}>{t('settings.units')}</Text>
+          <SegmentedToggle
+            label={t('settings.units')}
+            options={[
+              { value: 'us', label: t('settings.unitsUS') },
+              { value: 'metric', label: t('settings.unitsMetric') },
+            ]}
+            value={settings.units}
+            onChange={(units) => settings.set({ units })}
+          />
+        </View>
+        <View>
+          <Text style={label}>{t('settings.themeLabel')}</Text>
+          <SegmentedToggle
+            label={t('settings.themeLabel')}
+            options={[
+              { value: 'light', label: t('settings.themeLight') },
+              { value: 'dark', label: t('settings.themeDark') },
+            ]}
+            value={settings.theme}
+            onChange={(theme) => settings.set({ theme })}
+          />
+        </View>
+        <View>
+          <Text style={label}>{t('settings.language')}</Text>
+          <SegmentedToggle
+            label={t('settings.language')}
+            options={[
+              { value: 'en', label: t('settings.languageEn') },
+              { value: 'vi', label: t('settings.languageVi') },
+            ]}
+            value={language}
+            onChange={(lng) => setAppLanguage(lng)}
+          />
+        </View>
+      </Card>
+
+      <Text style={kicker}>{t('settings.sections.privacy')}</Text>
+      <Card style={[styles.card, styles.gapMd]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.privacyTitle')}
+          onPress={() => setPrivacyOpen((v) => !v)}
+          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+        >
+          <Text style={[styles.pillBtnText, { color: p.text }]}>
+            {t('settings.privacyTitle')}
+          </Text>
+        </Pressable>
+        {privacyOpen ? (
+          <Text style={[styles.caption, { color: p.textMuted }]}>
+            {t('settings.privacyBody')}
+          </Text>
+        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.medicalTitle')}
+          onPress={() => setMedicalOpen((v) => !v)}
+          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+        >
+          <Text style={[styles.pillBtnText, { color: p.text }]}>
+            {t('settings.medicalTitle')}
+          </Text>
+        </Pressable>
+        {medicalOpen ? <DisclaimerBox text={t('disclaimer.full')} /> : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.exportData')}
+          onPress={() => setExportedFlash(true)}
+          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+        >
+          <Text style={[styles.pillBtnText, { color: p.text }]}>
+            {t('settings.exportData')}
+          </Text>
+        </Pressable>
+        {exportedFlash ? (
+          <Text style={[styles.caption, { color: p.accentInk }]}>
+            {t('settings.exportReady')}
+          </Text>
+        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('settings.deleteData')}
+          onPress={() => setConfirmingDelete((v) => !v)}
+          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+        >
+          <Text style={[styles.pillBtnText, { color: p.danger }]}>
+            {t('settings.deleteData')}
+          </Text>
+        </Pressable>
+        {confirmingDelete ? (
+          <View style={styles.gapSm}>
+            <Text style={[styles.caption, { color: p.textMuted }]}>
+              {t('settings.deleteConfirmBody')}
+            </Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('settings.deleteConfirmCta')}
+              onPress={onConfirmDelete}
+              style={[styles.pillBtn, { backgroundColor: p.danger }]}
+            >
+              <Text style={[styles.pillBtnText, { color: p.surfaceSolid }]}>
+                {t('settings.deleteConfirmCta')}
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+      </Card>
+
+      <Text style={kicker}>{t('settings.sections.subscription')}</Text>
+      <Card style={styles.card}>
+        <View style={styles.subRow}>
+          <View>
+            <Text style={[styles.subLabel, { color: p.text }]}>
+              {isPremium ? t('settings.planPremium') : t('settings.planFree')}
+            </Text>
+            <Text style={[styles.caption, { color: p.textMuted }]}>
+              {isPremium
+                ? t('settings.planActiveSub', {
+                    plan: plan ? t(`paywall.plans.${plan === 'yearly' ? 'annual' : 'monthly'}`) : '',
+                  })
+                : t('settings.planFreeSub')}
+            </Text>
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={isPremium ? t('settings.manage') : t('settings.upgrade')}
+            onPress={() => router.push('/paywall')}
+            style={[
+              styles.subBtn,
+              { backgroundColor: isPremium ? p.fillSubtle : p.primaryBtn },
+            ]}
+          >
+            <Text
+              style={[
+                styles.pillBtnText,
+                { color: isPremium ? p.text : p.onPrimaryBtn },
+              ]}
+            >
+              {isPremium ? t('settings.manage') : t('settings.upgrade')}
+            </Text>
+          </Pressable>
+        </View>
+        <NotifRow
           label={t('settings.devToggle')}
           value={isPremium}
           onChange={togglePremiumDev}
         />
       </Card>
 
-      <SectionTitle title={t('settings.sections.privacy')} />
-      <Card variant="glass" style={styles.rows}>
-        <LinkRow
-          label={t('settings.privacyTitle')}
-          onPress={() => setPrivacyOpen((v) => !v)}
-        />
-        {privacyOpen && <Text style={styles.bodyText}>{t('settings.privacyBody')}</Text>}
-        <LinkRow
-          label={t('settings.medicalTitle')}
-          onPress={() => setMedicalOpen((v) => !v)}
-        />
-        {medicalOpen && <DisclaimerBox text={t('disclaimer.full')} />}
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>{t('settings.exportData')}</Text>
-          <Text style={styles.caption}>{t('settings.exportSoon')}</Text>
-        </View>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('settings.deleteData')}
-          onPress={confirmDelete}
-          style={styles.deleteBtn}
-        >
-          <Text style={styles.deleteText}>{t('settings.deleteData')}</Text>
-        </Pressable>
-      </Card>
-
       <View style={styles.footer}>
-        <Text style={styles.caption}>
-          🌙 {t('common.appName')} · {t('settings.version')}{' '}
+        <Text style={[styles.caption, { color: p.textFaint }]}>
+          {t('common.appName')} · {t('settings.version')}{' '}
           {Constants.expoConfig?.version ?? '0.1.0'}
         </Text>
       </View>
@@ -212,7 +343,7 @@ export function SettingsScreen() {
   );
 }
 
-function ToggleRow({
+function NotifRow({
   label,
   value,
   onChange,
@@ -221,30 +352,21 @@ function ToggleRow({
   value: boolean;
   onChange: (value: boolean) => void;
 }) {
+  const { t } = useTranslation();
+  const p = useTheme();
   return (
-    <View style={styles.infoRow}>
-      <Text style={styles.label}>{label}</Text>
-      <Switch
-        value={value}
-        onValueChange={onChange}
-        trackColor={{ true: colors.primary, false: colors.border }}
-        accessibilityLabel={label}
+    <View style={styles.notifRow}>
+      <Text style={[styles.notifLabel, { color: p.text }]}>{label}</Text>
+      <SegmentedToggle
+        label={label}
+        options={[
+          { value: 'off', label: t('settings.off') },
+          { value: 'on', label: t('settings.on') },
+        ]}
+        value={value ? 'on' : 'off'}
+        onChange={(v) => onChange(v === 'on')}
       />
     </View>
-  );
-}
-
-function LinkRow({ label, onPress }: { label: string; onPress: () => void }) {
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      onPress={onPress}
-      style={styles.linkRow}
-    >
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.chevron}>›</Text>
-    </Pressable>
   );
 }
 
@@ -252,91 +374,49 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: spacing(1.5),
-    padding: spacing(2),
-    gap: spacing(1),
-    borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.18)',
-  },
-  backBtn: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: radius.lg,
-    backgroundColor: 'rgba(255,255,255,0.16)',
-  },
-  backText: {
-    ...typography.display,
-    color: colors.card,
-    lineHeight: 40,
-  },
-  title: {
-    ...typography.headline,
-    color: colors.card,
-  },
-  rows: {
     gap: spacing(1.5),
+    paddingTop: spacing(1),
+    paddingBottom: spacing(1),
   },
-  label: {
-    ...typography.body,
-  },
-  value: {
-    ...typography.bodySmall,
-    color: colors.primary,
-    fontWeight: '600',
-  },
-  input: {
-    ...typography.body,
-    backgroundColor: colors.glassStrong,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
+  title: { ...typography.headlineSm },
+  kicker: { ...typography.kicker, marginTop: spacing(2.5), marginBottom: spacing(1) },
+  card: { gap: spacing(1.25) },
+  gapSm: { gap: spacing(1) },
+  gapMd: { gap: spacing(1.75) },
+  gapLg: { gap: spacing(2) },
+  label: { ...typography.caption, marginBottom: spacing(0.5) },
+  input: { ...typography.body, fontSize: 15, minHeight: 24, padding: 0 },
+  caption: { ...typography.caption },
+  pillBtn: {
+    minHeight: 44,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: spacing(2),
-    minHeight: 52,
   },
-  chipRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing(1),
-  },
-  infoRow: {
+  pillBtnText: { ...typography.button, fontSize: 13 },
+  dateRow: { minHeight: 36, justifyContent: 'center' },
+  dateValue: { ...typography.serifValue },
+  notifRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing(1),
   },
-  linkRow: {
+  notifLabel: { ...typography.body, flexShrink: 1 },
+  subRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minHeight: 44,
+    gap: spacing(1),
   },
-  chevron: {
-    ...typography.title,
-    color: colors.textSecondary,
-  },
-  caption: {
-    ...typography.caption,
-  },
-  bodyText: {
-    ...typography.bodySmall,
-    lineHeight: 21,
-  },
-  deleteBtn: {
-    minHeight: 44,
+  subLabel: { ...typography.title, fontSize: 16 },
+  subBtn: {
+    minHeight: 40,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing(2),
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  deleteText: {
-    ...typography.body,
-    color: colors.error,
-    fontWeight: '600',
-  },
-  footer: {
-    alignItems: 'center',
-    gap: spacing(1),
-    marginTop: spacing(4),
-  },
+  footer: { alignItems: 'center', marginTop: spacing(4) },
 });

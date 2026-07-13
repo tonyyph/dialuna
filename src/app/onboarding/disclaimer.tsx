@@ -5,26 +5,30 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
-import { spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 export default function Disclaimer() {
   const { t } = useTranslation();
+  const p = useTheme();
   return (
     <Screen
       scroll={false}
       bottomAction={
         <Button
           label={t('onboarding.disclaimerScreen.cta')}
-          onPress={() => router.push('/onboarding/profile')}
+          onPress={() => router.push('/onboarding/cycle-basics')}
         />
       }
     >
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.emoji}>🤍</Text>
-          <Text style={styles.title}>{t('onboarding.disclaimerScreen.title')}</Text>
+          <Text style={[styles.title, { color: p.text }]}>
+            {t('onboarding.disclaimerScreen.title')}
+          </Text>
           <Card>
-            <Text style={styles.body}>{t('onboarding.disclaimerScreen.body')}</Text>
+            <Text style={[styles.body, { color: p.textMuted }]}>
+              {t('onboarding.disclaimerScreen.body')}
+            </Text>
           </Card>
         </View>
       </View>
@@ -40,10 +44,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     gap: spacing(2),
-  },
-  emoji: {
-    fontSize: 44,
-    textAlign: 'center',
   },
   title: {
     ...typography.headline,

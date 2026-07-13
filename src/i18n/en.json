@@ -46,7 +46,9 @@
     "breastTenderness": "Breast tenderness",
     "backPain": "Back pain",
     "nausea": "Nausea",
-    "fatigue": "Fatigue"
+    "fatigue": "Fatigue",
+    "moodSwings": "Mood swings",
+    "insomnia": "Insomnia"
   },
   "moods": {
     "happy": "Happy",
@@ -71,14 +73,10 @@
     "planWorkouts": "Plan workouts",
     "skinInsights": "Skin & acne insights",
     "pregnancyPlanning": "Pregnancy planning",
-    "betterSleep": "Better sleep"
-  },
-  "ageRanges": {
-    "18-24": "18–24",
-    "25-30": "25–30",
-    "31-35": "31–35",
-    "36-45": "36–45",
-    "46+": "46+"
+    "betterSleep": "Better sleep",
+    "avoidPregnancy": "Avoid pregnancy",
+    "trackFertility": "Track fertility",
+    "generalWellness": "General wellness"
   },
   "disclaimer": {
     "short": "AI insights are educational and not medical advice. If symptoms are severe, consider talking to a healthcare professional.",
@@ -88,8 +86,8 @@
   },
   "onboarding": {
     "welcome": {
-      "title": "Understand your cycle with AI",
-      "subtitle": "Dialuna learns from your daily logs to forecast your energy, mood, and wellbeing — like a personal Hormone Twin.",
+      "title": "Dialuna",
+      "subtitle": "A quiet place to know your body, cycle by cycle.",
       "cta": "Get started"
     },
     "disclaimerScreen": {
@@ -97,38 +95,33 @@
       "body": "Dialuna is a wellness companion. It helps you notice patterns in your cycle, mood, and energy.\n\nIt is not a medical device. It does not diagnose conditions, confirm pregnancy, or replace your doctor. Predictions are estimates that improve as you log.",
       "cta": "I understand"
     },
-    "profile": {
-      "title": "Tell us about you",
-      "subtitle": "This helps your Hormone Twin get started. You can change it anytime.",
-      "nickname": "Name or nickname",
-      "nicknamePlaceholder": "How should we call you?",
-      "ageRange": "Age range",
+    "cycleBasics": {
+      "title": "Let's set your baseline",
+      "subtitle": "You can always adjust these later in Settings.",
       "cycleLength": "Average cycle length",
-      "periodLength": "Average period length",
+      "periodLength": "Period length",
+      "lastPeriod": "First day of last period",
       "daysUnit": "days"
-    },
-    "lastPeriod": {
-      "title": "When did your last period start?",
-      "subtitle": "Pick the first day of your most recent period.",
-      "durationLabel": "How many days did it last?",
-      "notSure": "Not sure? Your average is fine — you can adjust later."
     },
     "goals": {
       "title": "What brings you to Dialuna?",
-      "subtitle": "Choose everything that applies."
+      "subtitle": "Choose all that apply."
     },
-    "notifications": {
-      "title": "Stay gently in sync",
-      "subtitle": "We can remind you at the right moments. You stay in control.",
-      "daily": "Daily insight reminder",
-      "period": "Period reminder",
-      "pms": "PMS heads-up",
-      "note": "You can change these anytime in Settings."
+    "symptoms": {
+      "title": "Symptoms you often notice",
+      "subtitle": "This helps Insights find patterns sooner."
     },
-    "paywallPreview": {
-      "title": "Dialuna Premium",
-      "subtitle": "Your full Hormone Twin experience",
-      "continueFree": "Continue free"
+    "account": {
+      "title": "Create your account",
+      "subtitle": "Your logs stay private, synced to this account only.",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "cta": "Create account",
+      "apple": "Continue with Apple",
+      "appleSoon": "Apple sign-in is coming soon.",
+      "emailInvalid": "That email doesn't look right."
     }
   },
   "home": {
@@ -160,9 +153,9 @@
     "logNow": "Log today",
     "weekForecast": "7-day forecast",
     "premiumBanner": {
+      "kicker": "Dialuna Premium",
       "title": "Unlock your full Hormone Twin",
-      "body": "Unlimited AI coach, 7-day forecasts, and monthly reports.",
-      "cta": "See Premium"
+      "body": "Unlimited AI coach, 7-day forecasts, and monthly reports."
     },
     "plan": {
       "title": "Today's plan",
@@ -214,7 +207,6 @@
   },
   "ai": {
     "title": "AI Coach",
-    "subtitle": "Personal answers from your cycle data",
     "placeholder": "Ask about your body today…",
     "remaining_one": "{{count}} free question left today",
     "remaining_other": "{{count}} free questions left today",
@@ -224,13 +216,10 @@
     "emptyTitle": "Ask me anything about your cycle",
     "emptyBody": "I use your logs and cycle phase to answer. Try a suggestion below.",
     "prompts": {
-      "p1": "Why am I feeling tired today?",
-      "p2": "Can I do HIIT today?",
-      "p3": "Why am I craving sweets?",
-      "p4": "Is my mood related to my cycle?",
-      "p5": "What should I eat today?",
-      "p6": "How can I reduce cramps?",
-      "p7": "What should I expect this week?"
+      "p1": "Why am I so tired today?",
+      "p2": "When's my next period?",
+      "p3": "Tips for PMS bloating",
+      "p4": "What does my Hormone Twin score mean?"
     },
     "answer": {
       "tired": "It makes sense you feel tired, {{name}}. You're on cycle day {{cycleDay}}, in your {{phase}}, and energy often dips here.",
@@ -421,68 +410,89 @@
     }
   },
   "paywall": {
-    "title": "Your full Hormone Twin",
-    "subtitle": "Go deeper with Dialuna Premium",
-    "benefit": {
-      "b1": "Unlimited AI Coach conversations",
-      "b2": "Advanced Hormone Twin forecast",
-      "b3": "7-day mood, energy & comfort prediction",
-      "b4": "Personalized food & workout plans",
-      "b5": "Monthly AI wellness report",
-      "b6": "Cycle pattern analysis"
+    "slides": {
+      "s1": {
+        "title": "Know your patterns",
+        "body": "Premium reveals how your energy, mood and focus move together across the full cycle — not just today."
+      },
+      "s2": {
+        "title": "Your Hormone Twin, deeper",
+        "body": "See your score trend against women with cycles like yours, not just a single number."
+      },
+      "s3": {
+        "title": "Never guess your PMS window",
+        "body": "Premium forecasts symptom-likely days two cycles out, so you can plan around them."
+      }
     },
+    "choosePlan": "Choose your plan",
+    "trialNote": "7 days free, cancel anytime.",
     "plans": {
       "monthly": "Monthly",
-      "yearly": "Yearly",
-      "lifetime": "Lifetime",
-      "perMonth": "/month",
-      "perYear": "/year",
-      "once": "one time"
+      "annual": "Annual",
+      "monthlyPrice": "$9.99/mo",
+      "annualPrice": "$59.99/yr · $5/mo"
     },
-    "saveBadge": "Save 52%",
-    "popularBadge": "Most popular",
-    "cta": "Start Premium",
+    "saveBadge": "SAVE 40%",
+    "features": {
+      "f1": "Full Hormone Twin trend & history",
+      "f2": "Deep symptom pattern analysis",
+      "f3": "Unlimited AI Coach conversations",
+      "f4": "Two-cycle PMS forecast"
+    },
+    "cta": "Start 7-day free trial",
+    "success": "You're Premium!",
     "restore": "Restore purchase",
-    "success": "Welcome to Premium ✨",
-    "mockNote": "Demo build: no real payment is processed.",
-    "finePrint": "Subscription renews automatically until cancelled. Wellness guidance only — not medical advice."
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "mockNote": "Purchases are mocked in this build."
   },
   "settings": {
     "title": "Settings",
     "sections": {
-      "profile": "Profile",
-      "cycle": "Cycle settings",
+      "account": "Profile & account",
+      "cycle": "Cycle setup",
       "notifications": "Notifications",
-      "preferences": "Preferences",
+      "appearance": "Appearance",
       "privacy": "Privacy & data",
-      "about": "About"
+      "subscription": "Subscription"
     },
-    "nickname": "Nickname",
-    "ageRange": "Age range",
+    "name": "Name",
+    "email": "Email",
+    "signOut": "Sign out",
     "cycleLength": "Average cycle length",
-    "periodLength": "Average period length",
-    "lastPeriodStart": "Last period start",
+    "periodLength": "Period length",
+    "lutealLength": "Luteal phase length",
+    "lastPeriodStart": "Last period start date",
+    "notifPeriod": "Period reminder",
+    "notifOvulation": "Ovulation reminder",
+    "notifDaily": "Daily log reminder",
+    "notifDeferred": "Reminders are saved but scheduling is coming soon.",
+    "on": "On",
+    "off": "Off",
+    "units": "Units",
+    "unitsUS": "US",
+    "unitsMetric": "Metric",
+    "themeLabel": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
     "language": "Language",
     "languageEn": "English",
     "languageVi": "Tiếng Việt",
-    "notifDaily": "Daily insight",
-    "notifPeriod": "Period reminder",
-    "notifPms": "PMS heads-up",
-    "notifDeferred": "Reminders will activate in a future update.",
-    "privacyTitle": "Your data stays on this device",
-    "privacyBody": "Dialuna stores everything you log locally on your phone. Nothing is uploaded, sold, or shared. There is no account and no tracking. If you delete the app or use 'Delete all data', your information is gone for good.",
+    "privacyTitle": "How your data is handled",
+    "privacyBody": "All data lives on this device. Nothing is uploaded.",
     "medicalTitle": "Medical disclaimer",
-    "exportData": "Export data",
-    "exportSoon": "Coming soon",
-    "premiumStatus": "Premium status",
-    "premiumActive": "Premium active — {{plan}}",
-    "premiumInactive": "Free plan",
-    "managePremium": "Manage subscription",
-    "devToggle": "Dev: toggle premium",
+    "exportData": "Export my data",
+    "exportReady": "Export ready — check your email.",
     "deleteData": "Delete all data",
-    "deleteConfirmTitle": "Delete everything?",
-    "deleteConfirmBody": "This permanently removes your profile, logs, and settings from this device. This cannot be undone.",
-    "deleteConfirmCta": "Delete all data",
+    "deleteConfirmBody": "This permanently deletes your profile and every log.",
+    "deleteConfirmCta": "Yes, delete everything",
+    "planFree": "Free plan",
+    "planPremium": "Premium",
+    "planFreeSub": "Upgrade for deeper insights",
+    "planActiveSub": "{{plan}} · active",
+    "upgrade": "Upgrade",
+    "manage": "Manage",
+    "devToggle": "Dev: premium override",
     "version": "Version"
   },
   "tabs": {

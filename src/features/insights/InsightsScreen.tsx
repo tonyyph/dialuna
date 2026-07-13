@@ -11,8 +11,8 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 import { computeInsights } from '@/services/insightsEngine';
-import { useLogStore, usePremiumStore, useUserStore } from '@/store';
-import { colors, radius, spacing, typography } from '@/theme';
+import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
+import { radius, spacing, typography, useTheme } from '@/theme';
 import { CyclePhase } from '@/types';
 
 const MIN_LOGS = 3;
@@ -20,13 +20,15 @@ const PHASES: CyclePhase[] = ['menstrual', 'follicular', 'ovulation', 'luteal'];
 
 export function InsightsScreen() {
   const { t } = useTranslation();
+  const p = useTheme();
   const profile = useUserStore((s) => s.profile);
   const logs = useLogStore((s) => s.logs);
   const isPremium = usePremiumStore((s) => s.isPremium);
+  const lutealLength = useSettingsStore((s) => s.lutealLength);
 
   const insights = useMemo(
-    () => (profile ? computeInsights({ profile, logs }) : null),
-    [profile, logs]
+    () => (profile ? computeInsights({ profile, logs, lutealLength }) : null),
+    [profile, logs, lutealLength]
   );
 
   if (!profile || !insights) return null;
@@ -34,9 +36,9 @@ export function InsightsScreen() {
   if (insights.logCount < MIN_LOGS) {
     return (
       <Screen>
-        <View style={styles.hero}>
-          <Text style={styles.kicker}>{t('insights.title')}</Text>
-          <Text style={styles.title}>{t('insights.title')}</Text>
+        <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
+          <Text style={[styles.kicker, { color: p.accent400 }]}>{t('insights.title')}</Text>
+          <Text style={[styles.title, { color: '#f4ede1' }]}>{t('insights.title')}</Text>
           <Text style={styles.subtitle}>{t('insights.empty.body')}</Text>
         </View>
         <EmptyState
@@ -50,9 +52,9 @@ export function InsightsScreen() {
 
   return (
     <Screen>
-      <View style={styles.hero}>
-        <Text style={styles.kicker}>{t('insights.title')}</Text>
-        <Text style={styles.title}>{t('insights.title')}</Text>
+      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
+        <Text style={[styles.kicker, { color: p.accent400 }]}>{t('insights.title')}</Text>
+        <Text style={[styles.title, { color: '#f4ede1' }]}>{t('insights.title')}</Text>
         <Text style={styles.subtitle}>{t('insights.subtitle')}</Text>
       </View>
 
@@ -84,13 +86,13 @@ export function InsightsScreen() {
               return (
                 <View key={phase} style={styles.barRow}>
                   <Text style={styles.barLabel}>{t(`phases.${phase}`)}</Text>
-                  <View style={styles.barTrack}>
+                  <View style={[styles.barTrack, { backgroundColor: p.accent100 }]}>
                     <View
                       style={[
                         styles.barFill,
                         {
                           width: `${((value ?? 0) / 10) * 100}%`,
-                          backgroundColor: colors.phase[phase],
+                          backgroundColor: p.phase[phase],
                         },
                       ]}
                     />
@@ -150,11 +152,17 @@ export function InsightsScreen() {
           accessibilityLabel={t('insights.locked.cta')}
           onPress={() => router.push('/paywall')}
         >
-          <Card variant="glass" style={styles.locked}>
+          <Card
+            variant="glass"
+            style={[
+              styles.locked,
+              { backgroundColor: p.name === 'dark' ? p.overlay : 'rgba(251,243,236,0.9)' },
+            ]}
+          >
             <Text style={styles.lockIcon}>🔒</Text>
             <Text style={styles.lockTitle}>{t('insights.locked.title')}</Text>
             <Text style={styles.body}>{t('insights.locked.body')}</Text>
-            <Text style={styles.lockCta}>{t('insights.locked.cta')} →</Text>
+            <Text style={[styles.lockCta, { color: p.accent }]}>{t('insights.locked.cta')} →</Text>
           </Card>
         </Pressable>
       )}
@@ -163,9 +171,10 @@ export function InsightsScreen() {
 }
 
 function InsightStat({ label, value }: { label: string; value: string }) {
+  const p = useTheme();
   return (
-    <View style={styles.insightStat}>
-      <Text style={styles.insightStatValue}>{value}</Text>
+    <View style={[styles.insightStat, { backgroundColor: p.accent100 }]}>
+      <Text style={[styles.insightStatValue, { color: p.accent }]}>{value}</Text>
       <Text style={styles.insightStatLabel}>{label}</Text>
     </View>
   );
@@ -177,20 +186,17 @@ const styles = StyleSheet.create({
     marginBottom: spacing(2),
     padding: spacing(2.5),
     borderRadius: radius.sheet,
-    backgroundColor: colors.deepPlum,
   },
   kicker: {
     ...typography.caption,
-    color: colors.gold,
   },
   title: {
     ...typography.headline,
-    color: colors.card,
     marginTop: spacing(0.5),
   },
   subtitle: {
     ...typography.bodySmall,
-    color: 'rgba(255,255,255,0.78)',
+    color: 'rgba(244,237,225,0.78)',
     marginTop: spacing(0.5),
   },
   storyCard: {
@@ -206,12 +212,10 @@ const styles = StyleSheet.create({
   insightStat: {
     flex: 1,
     borderRadius: radius.lg,
-    backgroundColor: colors.softRose,
     padding: spacing(1.5),
   },
   insightStatValue: {
     ...typography.subtitle,
-    color: colors.primary,
   },
   insightStatLabel: {
     ...typography.caption,
@@ -241,7 +245,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 8,
     borderRadius: radius.pill,
-    backgroundColor: colors.softRose,
     overflow: 'hidden',
   },
   barFill: {
@@ -263,7 +266,6 @@ const styles = StyleSheet.create({
     marginTop: spacing(3),
     alignItems: 'center',
     gap: spacing(1),
-    backgroundColor: colors.phaseSoft.luteal,
   },
   lockIcon: {
     fontSize: 28,
@@ -274,6 +276,5 @@ const styles = StyleSheet.create({
   },
   lockCta: {
     ...typography.subtitle,
-    color: colors.primary,
   },
 });

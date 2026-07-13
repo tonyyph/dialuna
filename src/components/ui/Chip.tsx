@@ -1,7 +1,8 @@
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, radius, spacing, typography } from '@/theme';
+import { radius, shadows, spacing, typography, useTheme } from '@/theme';
 
 interface Props {
   label: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export function Chip({ label, emoji, selected, onPress }: Props) {
+  const p = useTheme();
   const handlePress = () => {
     Haptics.selectionAsync();
     onPress();
@@ -24,11 +26,27 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
       onPress={handlePress}
       style={({ pressed }) => [
         styles.base,
-        selected && styles.selected,
+        { backgroundColor: selected ? 'transparent' : p.surface },
+        selected && shadows.chip,
         pressed && styles.pressed,
       ]}
     >
-      <Text style={[styles.label, selected && styles.labelSelected]}>
+      {selected ? (
+        <LinearGradient
+          pointerEvents="none"
+          colors={p.goldChipGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFill}
+        />
+      ) : null}
+      <Text
+        style={[
+          styles.label,
+          { color: selected ? (p.name === 'dark' ? '#201f1d' : p.accent800) : p.text },
+          selected && styles.labelSelected,
+        ]}
+      >
         {emoji ? `${emoji} ${label}` : label}
       </Text>
     </Pressable>
@@ -38,29 +56,15 @@ export function Chip({ label, emoji, selected, onPress }: Props) {
 const styles = StyleSheet.create({
   base: {
     minHeight: 44,
-    borderRadius: radius.pill,
+    borderRadius: radius.button,
     paddingHorizontal: spacing(2),
-    paddingVertical: spacing(1),
-    backgroundColor: colors.card,
-    borderWidth: 1.5,
-    borderColor: colors.border,
+    paddingVertical: spacing(1.25),
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+    ...shadows.tiny,
   },
-  selected: {
-    backgroundColor: colors.softRose,
-    borderColor: colors.primary,
-  },
-  pressed: {
-    transform: [{ scale: 0.98 }],
-    opacity: 0.9,
-  },
-  label: {
-    ...typography.bodySmall,
-    color: colors.textPrimary,
-  },
-  labelSelected: {
-    color: colors.primary,
-    fontWeight: '600',
-  },
+  pressed: { transform: [{ scale: 0.94 }], opacity: 0.92 },
+  label: { ...typography.bodySmall, fontFamily: 'Manrope_600SemiBold' },
+  labelSelected: { fontFamily: 'Manrope_700Bold' },
 });
