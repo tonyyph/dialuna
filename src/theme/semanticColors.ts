@@ -51,7 +51,7 @@ const light: SemanticColorSet = {
   brand: {
     primary: colors.iris500,
     secondary: colors.aqua500,
-    accent: colors.coral500,
+    accent: colors.iris600,
   },
   signal: {
     period: colors.coral500,
@@ -87,7 +87,7 @@ const dark: SemanticColorSet = {
   brand: {
     primary: colors.iris400,
     secondary: colors.aqua400,
-    accent: colors.coral400,
+    accent: colors.iris300,
   },
   signal: {
     period: colors.coral400,

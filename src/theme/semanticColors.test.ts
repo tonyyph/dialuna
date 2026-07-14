@@ -23,20 +23,35 @@ describe('semanticColors', () => {
     }
   });
 
-  it('reserves coral for brand.accent/signal.period only, never as a background', () => {
+  it('reserves coral exclusively for signal.period, nowhere else in the set', () => {
     const coralHexes = [colors.coral300, colors.coral400, colors.coral500].map((c) =>
       c.toLowerCase()
     );
+
     for (const mode of ['light', 'dark'] as const) {
       const set = semanticColors[mode];
-      expect(coralHexes).not.toContain(set.background.canvas.toLowerCase());
-      expect(coralHexes).not.toContain(set.background.elevated.toLowerCase());
+      const coralLeaves: string[] = [];
+
+      for (const [groupName, group] of Object.entries(set)) {
+        for (const [leafName, value] of Object.entries(group as Record<string, string>)) {
+          if (coralHexes.includes(value.toLowerCase())) {
+            coralLeaves.push(`${groupName}.${leafName}`);
+          }
+        }
+      }
+
+      expect(coralLeaves).toEqual(['signal.period']);
     }
   });
 
   it('assigns brand.primary from the iris ramp in both themes', () => {
     expect(semanticColors.light.brand.primary).toBe(colors.iris500);
     expect(semanticColors.dark.brand.primary).toBe(colors.iris400);
+  });
+
+  it('assigns brand.accent from the iris ramp in both themes, never coral', () => {
+    expect(semanticColors.light.brand.accent).toBe(colors.iris600);
+    expect(semanticColors.dark.brand.accent).toBe(colors.iris300);
   });
 
   it('uses the midnight/porcelain canvases per theme', () => {
