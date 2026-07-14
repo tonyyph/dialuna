@@ -343,11 +343,13 @@ export function SettingsScreen() {
             </Text>
           </Pressable>
         </View>
-        <NotifRow
-          label={t('settings.devToggle')}
-          value={isPremium}
-          onChange={togglePremiumDev}
-        />
+        {__DEV__ && (
+          <NotifRow
+            label={t('settings.devToggle')}
+            value={isPremium}
+            onChange={togglePremiumDev}
+          />
+        )}
       </Card>
       </Animated.View>
 
