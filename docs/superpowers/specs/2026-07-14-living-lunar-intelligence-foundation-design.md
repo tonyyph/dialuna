@@ -28,9 +28,12 @@ own brainstorm → spec → plan cycle after this one ships and is reviewed.
 
 - **Pacing:** phased, one sub-project at a time, with review checkpoints between phases — not a
   single continuous push through all 9 phases.
-- **Typography:** full sans, no serif. Cormorant Garamond is retired; Manrope (already loaded,
-  proven Android rendering) carries every role including display, using weight/size instead of a
-  second typeface for the "editorial" register the brief asks for.
+- **Typography:** full sans, no serif, as the *target end state*. Cormorant Garamond will be
+  retired and Manrope (already loaded, proven Android rendering) will carry every role including
+  display, using weight/size instead of a second typeface for the "editorial" register the brief
+  asks for. This phase only adds the new Manrope-only scale (`typographyV2.ts`) — no screen
+  switches to it and the Cormorant Garamond font load is not removed until every screen has
+  migrated (see §4.2).
 - **Open, deferred to the Phase 2 (Home/nav) spec:** whether Luna the mascot survives. The brief
   says avoid "cute mascot-heavy" styling; Luna is a real, wired-in brand element from the prior
   redesign (5 expressions, used in empty states, onboarding, AI chat avatar). Not decided here —
@@ -83,12 +86,18 @@ and are extended, not replaced, so current call sites keep compiling and behavin
   each with a one-line comment on its intended semantic use (hierarchy/phase/depth/state/focus)
   per the brief's "every gradient must have a function" rule.
 
-- **`typography.ts`** (rewritten) — Manrope-only scale: `displayXL 52/54`, `displayL 42/46`,
-  `titleXL 32/37`, `titleL 26/32`, `titleM 21/27`, `bodyL 17/25`, `bodyM 15/22`, `labelL 14/18`,
-  `labelM 12/16`, `micro 11/14`. Numbers get a tabular-figure treatment where the OS/font
-  supports it. Cormorant Garamond's `useFonts` entry is removed from `src/app/_layout.tsx` in
-  this same change — the implementation plan must grep for any remaining `CormorantGaramond`
-  reference first and confirm zero hits before removing the font load.
+- **`typographyV2.ts`** (new — not a rewrite of `typography.ts`) — Manrope-only scale:
+  `displayXL 52/54`, `displayL 42/46`, `titleXL 32/37`, `titleL 26/32`, `titleM 21/27`,
+  `bodyL 17/25`, `bodyM 15/22`, `labelL 14/18`, `labelM 12/16`, `micro 11/14`. Numbers get a
+  tabular-figure treatment (`fontVariant: ['tabular-nums']`) where supported. The existing
+  `typography.ts` (`display`, `hero`, `headline`, `headlineSm`, `title`, `score`, `serifValue`,
+  etc., all `CormorantGaramond_600SemiBold`) is confirmed in active use by nearly every screen
+  (Home, Calendar, Log, AI, Paywall, Settings, onboarding, `EmptyState`, `PremiumBanner`) and is
+  **left untouched**, exactly like the `radius`/`shadows` legacy-preservation approach in §4.3 —
+  this corrects an error in the original draft of this spec, which called for rewriting
+  `typography.ts` in place and would have broken every one of those screens' rendering. Cormorant
+  Garamond's `useFonts` entry in `src/app/_layout.tsx` stays loaded in this phase; it is only
+  removed once every screen has migrated off `typography.ts` in a later phase.
 
 - **`radius.ts`** (rewritten) — `xs:8, sm:12, md:18, lg:24, xl:32, organic:40, capsule:999`,
   replacing the current `sm/md/lg/xl/xxl/card/sheet/button/dock/pill` scale. Named per-surface
@@ -105,9 +114,10 @@ and are extended, not replaced, so current call sites keep compiling and behavin
   plus the existing `staggerDelay()` helper kept and extended. `motion.test.ts` updated to match
   the new shape (existing tests for `springs`/`staggerDelay` keep passing under the new names).
 
-- **`index.ts`** (updated barrel) — exports the new modules alongside the untouched legacy
-  exports (`palettes`, `useTheme`, `paywallColors`, old `radius`/`shadows` renamed to avoid
-  collision — see §4.3) so nothing downstream breaks.
+- **`index.ts`** (updated barrel) — exports the new modules (`colors`, `semanticColors`,
+  `gradients`, `typographyV2`, `radiusV2`, `shadowsV2`, `components`) alongside every existing
+  export unchanged (`palettes`, `useTheme`, `paywallColors`, `spacing`, `typography`, `sizes`,
+  legacy-preserved `radius`/`shadows` — see §4.3) so nothing downstream breaks.
 
 - **`components.ts`** (new, minimal) — not a full component library in this phase; just shared
   style-fragment helpers (e.g. `surfaceElevated()`, `surfaceFloating()`) that Phase 2 primitives
