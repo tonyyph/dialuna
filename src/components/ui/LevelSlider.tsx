@@ -1,7 +1,9 @@
 import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { radius, spacing, typography, useTheme } from '@/theme';
+
+import { Pressable } from './Pressable';
 
 interface Props {
   label: string;

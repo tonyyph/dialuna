@@ -10,12 +10,13 @@ import {
   startOfWeek,
 } from 'date-fns';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { CalendarDayCell } from '@/components/cycle/CalendarDayCell';
 import { Card } from '@/components/ui/Card';
+import { Pressable } from '@/components/ui/Pressable';
 import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';

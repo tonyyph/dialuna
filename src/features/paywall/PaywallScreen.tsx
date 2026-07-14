@@ -2,7 +2,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   FadeIn,
   interpolateColor,
@@ -13,12 +13,11 @@ import Animated, {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { usePremiumStore } from '@/store';
 import { paywallColors as pw, radius, spacing, typography } from '@/theme';
 
 type Plan = 'monthly' | 'yearly';
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const SLIDE_ICONS = ['moon-outline', 'trending-up-outline', 'calendar-outline'] as const;
 const SLIDE_KEYS = ['s1', 's2', 's3'] as const;
@@ -60,6 +59,7 @@ export function PaywallScreen() {
             accessibilityLabel={t('common.close')}
             hitSlop={8}
             onPress={() => router.back()}
+            scaleTo={0.94}
             style={styles.closeBtn}
           >
             <Ionicons name="close" size={16} color={pw.text} />
@@ -130,7 +130,7 @@ export function PaywallScreen() {
               accessibilityRole="button"
               accessibilityLabel={t('paywall.cta')}
               onPress={subscribe}
-              style={({ pressed }) => [styles.cta, pressed && styles.pressed]}
+              style={styles.cta}
             >
               <Text style={styles.ctaText}>{t('paywall.cta')}</Text>
             </Pressable>
@@ -177,7 +177,7 @@ function PlanRow({
   }));
 
   return (
-    <AnimatedPressable
+    <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${label} ${price}`}
       accessibilityState={{ selected }}
@@ -185,6 +185,7 @@ function PlanRow({
         Haptics.selectionAsync();
         onPress();
       }}
+      scaleTo={0.98}
       style={[styles.planRow, animatedStyle]}
     >
       <View>
@@ -196,7 +197,7 @@ function PlanRow({
           <Text style={styles.badgeText}>{badge}</Text>
         </View>
       ) : null}
-    </AnimatedPressable>
+    </Pressable>
   );
 }
 
@@ -287,7 +288,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pressed: { transform: [{ scale: 0.97 }], opacity: 0.95 },
   ctaText: { ...typography.button, fontFamily: 'Manrope_700Bold', color: pw.ctaText },
   footerRow: {
     flexDirection: 'row',

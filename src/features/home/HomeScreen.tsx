@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,7 @@ import { PremiumBanner } from '@/components/paywall/PremiumBanner';
 import { BlobGlow } from '@/components/ui/BlobGlow';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Pressable } from '@/components/ui/Pressable';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
@@ -241,11 +242,7 @@ function QuickAction({
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.quickAction,
-        { backgroundColor: p.surfaceSolid },
-        pressed && styles.quickActionPressed,
-      ]}
+      style={[styles.quickAction, { backgroundColor: p.surfaceSolid }]}
     >
       <View style={[styles.quickIcon, { backgroundColor: `${tone}24` }]}>
         <Ionicons name={icon} size={20} color={tone} />
@@ -452,10 +449,6 @@ const styles = StyleSheet.create({
     padding: spacing(1.5),
     justifyContent: 'space-between',
     ...shadows.soft,
-  },
-  quickActionPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
   },
   quickIcon: {
     width: 36,

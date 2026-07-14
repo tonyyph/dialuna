@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { BottomTabBarProps } from 'expo-router/js-tabs';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
 import Animated, {
@@ -26,22 +26,19 @@ const TAB_ICONS: Record<string, IconName> = {
 
 function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
   const p = useTheme();
+  const [dockWidth, setDockWidth] = useState(0);
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
-  const widths = useSharedValue<number[]>([]);
-  const offsets = useSharedValue<number[]>([]);
 
   useEffect(() => {
-    const w = widths.value[state.index];
-    const x = offsets.value[state.index];
-    if (w !== undefined && x !== undefined) {
-      indicatorWidth.value = withSpring(w, springs.soft);
-      indicatorX.value = withSpring(x, springs.soft);
+    const routeCount = state.routes.length;
+    const contentWidth = dockWidth - spacing(1.5);
+    if (routeCount > 0 && contentWidth > 0) {
+      const itemWidth = contentWidth / routeCount;
+      indicatorWidth.value = withSpring(itemWidth, springs.soft);
+      indicatorX.value = withSpring(spacing(0.75) + itemWidth * state.index, springs.soft);
     }
-    // widths/offsets are read (not depended on for re-runs) so a layout pass
-    // after mount doesn't retrigger this effect on every render.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.index]);
+  }, [dockWidth, indicatorWidth, indicatorX, state.index, state.routes.length]);
 
   const indicatorStyle = useAnimatedStyle(() => ({
     width: indicatorWidth.value,
@@ -54,6 +51,7 @@ function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
         p.name === 'dark' ? 'rgba(43,39,46,0.55)' : 'rgba(255,251,247,0.55)'
       }
       style={styles.dock}
+      onLayout={(e: LayoutChangeEvent) => setDockWidth(e.nativeEvent.layout.width)}
     >
       <Animated.View
         pointerEvents="none"
@@ -71,37 +69,20 @@ function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
         const focused = state.index === index;
         const icon = TAB_ICONS[route.name] ?? 'ellipse-outline';
 
-        const onLayout = (e: LayoutChangeEvent) => {
-          const { width, x } = e.nativeEvent.layout;
-          widths.value = [
-            ...widths.value.slice(0, index),
-            width,
-            ...widths.value.slice(index + 1),
-          ];
-          offsets.value = [
-            ...offsets.value.slice(0, index),
-            x,
-            ...offsets.value.slice(index + 1),
-          ];
-          if (focused) {
-            indicatorWidth.value = width;
-            indicatorX.value = x;
-          }
-        };
-
         const onPress = () => {
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
             canPreventDefault: true,
           });
-          if (!focused && !event.defaultPrevented) navigation.navigate(route.name);
+          if (!focused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
         };
 
         return (
           <Pressable
             key={route.key}
-            onLayout={onLayout}
             onPress={onPress}
             accessibilityRole="button"
             accessibilityState={{ selected: focused }}

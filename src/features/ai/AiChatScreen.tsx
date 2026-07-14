@@ -2,7 +2,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
 import {
   FlatList,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
@@ -15,6 +14,7 @@ import { MessageBubble } from '@/components/ai/MessageBubble';
 import { SuggestedPrompts } from '@/components/ai/SuggestedPrompts';
 import { TypingDots } from '@/components/ai/TypingDots';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { Pressable } from '@/components/ui/Pressable';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
@@ -91,11 +91,7 @@ export function AiChatScreen() {
             accessibilityRole="button"
             accessibilityLabel={t('common.next')}
             onPress={() => submit(input)}
-            style={({ pressed }) => [
-              styles.sendBtn,
-              { backgroundColor: p.primaryBtn },
-              pressed && styles.sendBtnPressed,
-            ]}
+            style={[styles.sendBtn, { backgroundColor: p.primaryBtn }]}
           >
             <Ionicons name="paper-plane" size={15} color={p.onPrimaryBtn} />
           </Pressable>
@@ -164,9 +160,6 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  sendBtnPressed: {
-    transform: [{ scale: 0.94 }],
   },
   disclaimer: {
     paddingHorizontal: spacing(2.5),

@@ -1,13 +1,14 @@
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { Card } from '@/components/ui/Card';
 import { CircleButton } from '@/components/ui/CircleButton';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { Pressable } from '@/components/ui/Pressable';
 import { Screen } from '@/components/ui/Screen';
 import { SegmentedToggle } from '@/components/ui/SegmentedToggle';
 import { DatePickerCalendar } from '@/features/onboarding/DatePickerCalendar';
