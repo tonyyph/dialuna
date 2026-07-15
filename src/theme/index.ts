@@ -1,6 +1,7 @@
 export { palettes, paywallColors } from './palettes';
 export type { Palette, ThemeName } from './palettes';
 export { useTheme } from './useTheme';
+export { useSemanticTheme } from './useSemanticTheme';
 export { spacing } from './spacing';
 export { typography } from './typography';
 export { radius, radiusV2 } from './radius';
