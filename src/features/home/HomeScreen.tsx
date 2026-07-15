@@ -78,7 +78,7 @@ export function HomeScreen() {
           </Text>
           {tip ? (
             <Text style={[typographyV2.bodyM, styles.tipRow, { color: theme.content.secondary }]}>
-              {tip.label} · {t(tip.key)}
+              {t(tip.label)} · {t(tip.key)}
             </Text>
           ) : null}
           <View style={styles.actionsRow}>
