@@ -12,20 +12,20 @@ import Animated, {
 
 import { GlassSurface } from '@/components/ui/GlassSurface';
 import { Pressable } from '@/components/ui/Pressable';
-import { radius, shadows, spacing, springs, typography, useTheme } from '@/theme';
+import { radiusV2, shadowsV2, spacing, springs, typographyV2, useSemanticTheme } from '@/theme';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
 const TAB_ICONS: Record<string, IconName> = {
   home: 'ellipse-outline',
-  log: 'add-circle-outline',
+  log: 'add',
   calendar: 'calendar-outline',
   insights: 'stats-chart-outline',
-  ai: 'sparkles',
+  ai: 'sparkles-outline',
 };
 
-function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
-  const p = useTheme();
+function CrescentDock({ state, descriptors, navigation }: BottomTabBarProps) {
+  const theme = useSemanticTheme();
   const [dockWidth, setDockWidth] = useState(0);
   const indicatorX = useSharedValue(0);
   const indicatorWidth = useSharedValue(0);
@@ -47,26 +47,18 @@ function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
 
   return (
     <GlassSurface
-      tintColor={
-        p.name === 'dark' ? 'rgba(43,39,46,0.55)' : 'rgba(255,251,247,0.55)'
-      }
-      style={styles.dock}
+      tintColor={theme.surface.floating}
+      style={[styles.dock, shadowsV2.floating]}
       onLayout={(e: LayoutChangeEvent) => setDockWidth(e.nativeEvent.layout.width)}
     >
       <Animated.View
         pointerEvents="none"
-        style={[
-          styles.indicator,
-          {
-            backgroundColor:
-              p.name === 'dark' ? 'rgba(225,173,102,0.22)' : 'rgba(182,130,53,0.16)',
-          },
-          indicatorStyle,
-        ]}
+        style={[styles.indicator, { backgroundColor: theme.surface.selected }, indicatorStyle]}
       />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const focused = state.index === index;
+        const isLog = route.name === 'log';
         const icon = TAB_ICONS[route.name] ?? 'ellipse-outline';
 
         const onPress = () => {
@@ -89,15 +81,24 @@ function FloatingDock({ state, descriptors, navigation }: BottomTabBarProps) {
             accessibilityLabel={options.title}
             style={styles.item}
           >
-            <View style={focused ? [styles.iconWrap, shadows.chip] : styles.iconWrap}>
+            <View
+              style={[
+                styles.iconWrap,
+                isLog
+                  ? { backgroundColor: theme.brand.primary }
+                  : focused
+                    ? { backgroundColor: theme.surface.raised }
+                    : null,
+              ]}
+            >
               <Ionicons
                 name={icon}
                 size={19}
-                color={focused ? p.accentInk : p.textFaint}
+                color={isLog ? theme.content.inverse : focused ? theme.brand.primary : theme.content.tertiary}
               />
             </View>
-            {focused ? (
-              <Text style={[styles.label, { color: p.accentInk }]} numberOfLines={1}>
+            {focused && !isLog ? (
+              <Text style={[typographyV2.micro, { color: theme.brand.primary }]} numberOfLines={1}>
                 {options.title}
               </Text>
             ) : null}
@@ -112,7 +113,7 @@ export default function TabsLayout() {
   const { t } = useTranslation();
   return (
     <Tabs
-      tabBar={(props) => <FloatingDock {...props} />}
+      tabBar={(props) => <CrescentDock {...props} />}
       screenOptions={{ headerShown: false }}
     >
       <Tabs.Screen name="home" options={{ title: t('tabs.home') }} />
@@ -131,17 +132,19 @@ const styles = StyleSheet.create({
     right: spacing(2.25),
     bottom: spacing(1.75),
     height: 62,
-    borderRadius: radius.dock,
+    borderTopLeftRadius: radiusV2.organic,
+    borderTopRightRadius: radiusV2.organic,
+    borderBottomLeftRadius: radiusV2.xl,
+    borderBottomRightRadius: radiusV2.xl,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing(0.75),
-    ...shadows.float,
   },
   indicator: {
     position: 'absolute',
     top: 8,
     height: 46,
-    borderRadius: radius.dock - 8,
+    borderRadius: radiusV2.lg,
   },
   item: {
     flex: 1,
@@ -153,13 +156,8 @@ const styles = StyleSheet.create({
   iconWrap: {
     width: 32,
     height: 32,
-    borderRadius: 16,
+    borderRadius: radiusV2.md,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  label: {
-    ...typography.micro,
-    fontSize: 9.5,
-    letterSpacing: 0.2,
   },
 });
