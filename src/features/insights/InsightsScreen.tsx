@@ -46,7 +46,7 @@ export function InsightsScreen() {
           <Text style={styles.subtitle}>{t('insights.empty.body')}</Text>
         </View>
         <EmptyState
-          lunaExpression="thinking"
+          icon="bulb-outline"
           title={t('insights.empty.title')}
           body={t('insights.empty.body')}
         />
