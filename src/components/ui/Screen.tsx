@@ -26,6 +26,12 @@ interface Props {
   keyboardAvoiding?: boolean;
   contentContainerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ViewStyle>;
+  /**
+   * Solid background override, replacing the default legacy `p.bgGradient`
+   * render (e.g. a v2 semantic canvas color). Omit to keep today's gradient
+   * — every current screen relies on that default and is unaffected.
+   */
+  backgroundColor?: string;
 }
 
 export function Screen({
@@ -36,6 +42,7 @@ export function Screen({
   keyboardAvoiding = false,
   contentContainerStyle,
   style,
+  backgroundColor,
 }: PropsWithChildren<Props>) {
   const p = useTheme();
   const insets = useSafeAreaInsets();
@@ -54,13 +61,15 @@ export function Screen({
   );
 
   const body = (
-    <View style={[styles.safe, { backgroundColor: p.bgGradient[0] }, style]}>
-      <LinearGradient
-        pointerEvents="none"
-        colors={p.bgGradient}
-        locations={[0, 0.45, 1]}
-        style={StyleSheet.absoluteFill}
-      />
+    <View style={[styles.safe, { backgroundColor: backgroundColor ?? p.bgGradient[0] }, style]}>
+      {backgroundColor ? null : (
+        <LinearGradient
+          pointerEvents="none"
+          colors={p.bgGradient}
+          locations={[0, 0.45, 1]}
+          style={StyleSheet.absoluteFill}
+        />
+      )}
       <SafeAreaView style={styles.safe} edges={['top', 'left', 'right']}>
         {scroll ? (
           <ScrollView
