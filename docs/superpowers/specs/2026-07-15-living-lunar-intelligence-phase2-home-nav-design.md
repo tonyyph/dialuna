@@ -65,7 +65,20 @@ composition only, consuming the same `useCycleToday()` data Home already reads t
   usage anywhere in Home or the tab layout); nothing to preserve beyond not introducing any.
 - Navigation route contract — `(tabs)/home`, `log`, `calendar`, `insights`, `ai` unchanged.
 
-## 4. New Shared Primitive: `useSemanticTheme`
+## 4. New Shared Primitive: `useSemanticTheme` and a `Screen` addition
+
+`Screen.tsx` (`src/components/ui/Screen.tsx`, reused by 11 screens including Home) currently
+paints the legacy `p.bgGradient` unconditionally behind every screen's content, with no way to
+opt out. Discovered during plan-writing: without a change here, Home's new v2-toned foreground
+would render on top of the old warm gradient, undermining the whole point of this phase. `Screen`
+gains one optional prop, `backgroundColor?: string` — when provided, it replaces the legacy
+gradient with a solid fill; when omitted (every current consumer), behavior is byte-identical to
+today. Home is the only caller that passes it, using `theme.background.canvas` from
+`useSemanticTheme()`. This is additive and backward-compatible, consistent with this whole
+redesign's non-destructive migration principle — it just wasn't anticipated when this spec was
+first written.
+
+`useSemanticTheme`, the actual new hook:
 
 Every future phase will need a hook to read the current v2 semantic theme, mirroring the existing
 `useTheme()` pattern exactly (confirmed `useSettingsStore`'s `theme` field is typed exactly
