@@ -12,6 +12,7 @@ import {
 import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { radius, spacing, typography, useTheme } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
@@ -25,6 +26,7 @@ interface Props {
 
 export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }: Props) {
   const p = useTheme();
+  const { t } = useTranslation();
   const [month, setMonth] = useState(() =>
     startOfMonth(selected ? parseISO(selected) : new Date())
   );
@@ -39,7 +41,7 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
       <View style={styles.header}>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Previous month"
+          accessibilityLabel={t('common.back')}
           onPress={() => setMonth((m) => addMonths(m, -1))}
           style={styles.navBtn}
         >
@@ -48,7 +50,7 @@ export function DatePickerCalendar({ selected, onSelect, maxDate = todayISO() }:
         <Text style={[styles.monthLabel, { color: p.text }]}>{format(month, 'MMMM yyyy')}</Text>
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel="Next month"
+          accessibilityLabel={t('common.next')}
           onPress={() => setMonth((m) => addMonths(m, 1))}
           style={styles.navBtn}
         >

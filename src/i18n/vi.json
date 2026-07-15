@@ -218,6 +218,13 @@
       "p3": "Mẹo giảm đầy hơi tiền kinh nguyệt",
       "p4": "Điểm Hormone Twin của mình nghĩa là gì?"
     },
+    "dynamic": {
+      "label": "Gợi ý theo nhịp hiện tại của bạn",
+      "phase": "Mình nên ưu tiên điều gì trong giai đoạn {{phase}}?",
+      "symptom": "Hôm nay điều gì có thể giúp giảm {{symptom}}?",
+      "energy": "Mình nên lên kế hoạch thế nào với mức năng lượng {{value}}?",
+      "goal": "Hôm nay mình có thể làm gì cho mục tiêu {{goal}}?"
+    },
     "answer": {
       "tired": "Cảm giác mệt của bạn là dễ hiểu, {{name}}. Bạn đang ở ngày {{cycleDay}} của chu kỳ, trong {{phase}}, và năng lượng thường chùng xuống ở giai đoạn này.",
       "workout": "Ở ngày {{cycleDay}} ({{phase}}), cơ thể bạn có nhịp tập luyện riêng.",
@@ -450,7 +457,8 @@
       "notifications": "Thông báo",
       "appearance": "Giao diện",
       "privacy": "Quyền riêng tư & dữ liệu",
-      "subscription": "Gói đăng ký"
+      "subscription": "Gói đăng ký",
+      "support": "Hỗ trợ"
     },
     "name": "Tên",
     "email": "Email",
@@ -489,7 +497,45 @@
     "upgrade": "Nâng cấp",
     "manage": "Quản lý",
     "devToggle": "Dev: bật premium",
-    "version": "Phiên bản"
+    "version": "Phiên bản",
+    "supportTitle": "Trợ giúp và hỗ trợ sản phẩm",
+    "supportBody": "Dialuna lưu dữ liệu sức khỏe trên thiết bị này. Khi cần hỗ trợ sản phẩm, hãy cung cấp phiên bản ứng dụng và không gửi ghi chú chu kỳ riêng tư hoặc nhật ký sức khỏe thô."
+  },
+  "living": {
+    "intelligenceCanvas": "Không gian trí tuệ",
+    "notice": "Điều tôi nhận thấy",
+    "why": "Vì sao điều này có thể xảy ra",
+    "help": "Điều có thể giúp ích",
+    "monitor": "Điều cần theo dõi",
+    "support": "Khi nào cần hỗ trợ chuyên môn",
+    "helpBody": "Chọn một hành động nhẹ nhàng phù hợp với năng lượng hôm nay, sau đó quan sát phản ứng của cơ thể.",
+    "monitorBody": "Tiếp tục ghi lại cường độ, thời gian, năng lượng, giấc ngủ và những thay đổi khác với mẫu hình thường ngày.",
+    "supportBody": "Hãy tìm hỗ trợ y tế chuyên môn nếu triệu chứng nghiêm trọng, đột ngột, kéo dài hoặc đáng lo ngại. Dialuna không chẩn đoán bệnh.",
+    "guidanceContext": "Gợi ý cá nhân dựa trên giai đoạn hiện tại và các tín hiệu gần đây. Hãy tiếp tục theo dõi những thay đổi bất thường.",
+    "captured": "Nhịp điệu của bạn đã được ghi lại",
+    "reviewHint": "Kiểm tra các tín hiệu trước khi chúng trở thành một phần của nhịp hôm nay.",
+    "fieldChanged": "Trường nhịp điệu đã thay đổi",
+    "editCheckIn": "Chỉnh sửa check-in",
+    "signals": "{{count}} tín hiệu",
+    "energySleep": "Năng lượng {{energy}} · Giấc ngủ {{sleep}}",
+    "moods": "{{count}} cảm xúc",
+    "confidence": "Độ tin cậy {{value}}% · {{state}}",
+    "pattern": "mẫu hình",
+    "learning": "đang học",
+    "membership": "Thành viên Dialuna"
+    ,"calibrationCycle": "Hiệu chỉnh chu kỳ"
+    ,"calibrationInterests": "Chòm sao quan tâm"
+    ,"calibrationBody": "Bản đồ tín hiệu cơ thể"
+    ,"calibrationProgress": "Bước hiệu chỉnh {{step}} trên 4"
+    ,"selectedCount": "Đã chọn {{count}}"
+    ,"bodyMapHint": "Chọn những tín hiệu quen thuộc với bạn"
+    ,"timelineHint": "Neo nhịp điệu bằng ngày đầu tiên của kỳ kinh gần nhất."
+    ,"bodyZones": {
+      "head": "Tinh thần và giấc ngủ",
+      "core": "Cảm giác vùng trung tâm",
+      "surface": "Tín hiệu bề mặt",
+      "movement": "Năng lượng và vận động"
+    }
   },
   "tabs": {
     "home": "Trang chủ",

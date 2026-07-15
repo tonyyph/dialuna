@@ -9,11 +9,11 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { BottomAction } from '@/components/ui/BottomAction';
-import { sizes, spacing, useTheme } from '@/theme';
+import { duration, sizes, spacing, useTheme } from '@/theme';
 
 interface Props {
   /** Wrap content in a ScrollView (default true). */
@@ -38,6 +38,7 @@ export function Screen({
   style,
 }: PropsWithChildren<Props>) {
   const p = useTheme();
+  const reduceMotion = useReducedMotion();
   const insets = useSafeAreaInsets();
   const bottomInset = bottomAction
     ? sizes.bottomActionMinHeight + Math.max(insets.bottom, spacing(1.5))
@@ -46,7 +47,7 @@ export function Screen({
     children
   ) : (
     <Animated.View
-      entering={FadeInDown.duration(360)}
+      entering={reduceMotion ? undefined : FadeIn.duration(duration.standard)}
       style={[styles.padded, !scroll && styles.flex]}
     >
       {children}
@@ -56,7 +57,6 @@ export function Screen({
   const body = (
     <View style={[styles.safe, { backgroundColor: p.bgGradient[0] }, style]}>
       <LinearGradient
-        pointerEvents="none"
         colors={p.bgGradient}
         locations={[0, 0.45, 1]}
         style={StyleSheet.absoluteFill}

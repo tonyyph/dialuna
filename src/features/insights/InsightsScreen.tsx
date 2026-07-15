@@ -1,21 +1,16 @@
+import { Ionicons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 import { router } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Card } from '@/components/ui/Card';
-import { Chip } from '@/components/ui/Chip';
-import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
-import { EmptyState } from '@/components/ui/EmptyState';
 import { Screen } from '@/components/ui/Screen';
-import { SectionTitle } from '@/components/ui/SectionTitle';
 import { computeInsights } from '@/services/insightsEngine';
 import { useLogStore, usePremiumStore, useSettingsStore, useUserStore } from '@/store';
 import { radius, spacing, typography, useTheme } from '@/theme';
 import { CyclePhase } from '@/types';
 
-const MIN_LOGS = 3;
 const PHASES: CyclePhase[] = ['menstrual', 'follicular', 'ovulation', 'luteal'];
 
 export function InsightsScreen() {
@@ -25,256 +20,44 @@ export function InsightsScreen() {
   const logs = useLogStore((s) => s.logs);
   const isPremium = usePremiumStore((s) => s.isPremium);
   const lutealLength = useSettingsStore((s) => s.lutealLength);
-
-  const insights = useMemo(
-    () => (profile ? computeInsights({ profile, logs, lutealLength }) : null),
-    [profile, logs, lutealLength]
-  );
-
+  const insights = useMemo(() => profile ? computeInsights({ profile, logs, lutealLength }) : null, [profile, logs, lutealLength]);
   if (!profile || !insights) return null;
-
-  if (insights.logCount < MIN_LOGS) {
-    return (
-      <Screen>
-        <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
-          <Text style={[styles.kicker, { color: p.accent400 }]}>{t('insights.title')}</Text>
-          <Text style={[styles.title, { color: '#f4ede1' }]}>{t('insights.title')}</Text>
-          <Text style={styles.subtitle}>{t('insights.empty.body')}</Text>
-        </View>
-        <EmptyState
-          lunaExpression="thinking"
-          title={t('insights.empty.title')}
-          body={t('insights.empty.body')}
-        />
-      </Screen>
-    );
-  }
 
   return (
     <Screen>
-      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
-        <Text style={[styles.kicker, { color: p.accent400 }]}>{t('insights.title')}</Text>
-        <Text style={[styles.title, { color: '#f4ede1' }]}>{t('insights.title')}</Text>
-        <Text style={styles.subtitle}>{t('insights.subtitle')}</Text>
+      <View style={styles.header}>
+        <Text style={[styles.eyebrow, { color: p.textMuted }]}>{t('insights.title')}</Text>
+        <Text style={[styles.title, { color: p.text }]}>{insights.logCount < 3 ? t('insights.empty.title') : t('insights.subtitle')}</Text>
       </View>
 
-      <Card variant="glass" style={styles.storyCard}>
-        <Text style={styles.storyTitle}>{t('insights.summaryCard.title')}</Text>
-        <Text style={styles.body}>{t('insights.summaryCard.text')}</Text>
-        <View style={styles.statGrid}>
-          <InsightStat
-            label={t('insights.cycleCard.avgLength')}
-            value={t('common.days', { count: insights.avgCycleLength })}
-          />
-          <InsightStat
-            label={t('insights.cycleCard.regularity')}
-            value={
-              insights.confidenceScore >= 0.8
-                ? t('insights.cycleCard.regular')
-                : t('insights.cycleCard.variable')
-            }
-          />
+      {insights.logCount < 3 ? (
+        <View style={styles.learning}>
+          <View style={styles.constellation}>{Array.from({ length: 7 }, (_, i) => <View key={i} style={[styles.star, { backgroundColor: p.accent, opacity: 0.2 + i * 0.1, left: `${10 + i * 12}%`, top: 45 + (i % 3) * 34 }]} />)}</View>
+          <Text style={[styles.storyTitle, { color: p.text }]}>{t('insights.empty.body')}</Text>
+          <Pressable onPress={() => router.push('/(tabs)/log')} style={[styles.action, { backgroundColor: p.primaryBtn }]}><Text style={[styles.actionText, { color: p.onPrimaryBtn }]}>{t('home.logNow')}</Text></Pressable>
         </View>
-      </Card>
+      ) : <>
+        <SignalStory eyebrow={t('insights.summaryCard.title')} conclusion={insights.confidenceScore >= 0.8 ? t('insights.cycleCard.regular') : t('insights.cycleCard.variable')} reason={t('insights.summaryCard.text')} confidence={Math.round(insights.confidenceScore * 100)}>
+          <View style={styles.ribbon}>{PHASES.map((phase) => <View key={phase} style={[styles.ribbonPart, { backgroundColor: p.phase[phase], flex: Math.max(1, insights.avgEnergyByPhase[phase] ?? 4) }]} />)}</View>
+        </SignalStory>
 
-      {isPremium ? (
-        <>
-          <SectionTitle title={t('insights.energyCard.title')} />
-          <Card style={styles.rows}>
-            {PHASES.map((phase) => {
-              const value = insights.avgEnergyByPhase[phase];
-              return (
-                <View key={phase} style={styles.barRow}>
-                  <Text style={styles.barLabel}>{t(`phases.${phase}`)}</Text>
-                  <View style={[styles.barTrack, { backgroundColor: p.accent100 }]}>
-                    <View
-                      style={[
-                        styles.barFill,
-                        {
-                          width: `${((value ?? 0) / 10) * 100}%`,
-                          backgroundColor: p.phase[phase],
-                        },
-                      ]}
-                    />
-                  </View>
-                  <Text style={styles.barValue}>{value ?? '–'}</Text>
-                </View>
-              );
-            })}
-            <Text style={styles.caption}>{t('insights.energyCard.caption')}</Text>
-          </Card>
+        <SignalStory eyebrow={t('insights.energyCard.title')} conclusion={t('insights.energyCard.caption')} reason={t('insights.cycleCard.avgLength') + ` · ${t('common.days', { count: insights.avgCycleLength })}`} confidence={Math.round(insights.confidenceScore * 100)}>
+          <View style={styles.curve}>{PHASES.map((phase) => { const value = insights.avgEnergyByPhase[phase] ?? 0; return <View key={phase} style={styles.curveColumn}><View style={[styles.curveSignal, { height: 24 + value * 7, backgroundColor: p.phase[phase] }]} /><Text style={[styles.curveLabel, { color: p.textMuted }]}>{t(`phases.${phase}`).slice(0, 3)}</Text></View>; })}</View>
+        </SignalStory>
 
-          {insights.pmsSleepAvg !== null && insights.otherSleepAvg !== null && (
-            <>
-              <SectionTitle title={t('insights.sleepCard.title')} />
-              <Card>
-                <Text style={styles.body}>
-                  {t('insights.sleepCard.text', {
-                    pmsSleep: insights.pmsSleepAvg,
-                    otherSleep: insights.otherSleepAvg,
-                  })}
-                </Text>
-              </Card>
-            </>
-          )}
-
-          <SectionTitle title={t('insights.pmsCard.title')} />
-          <Card>
-            <Text style={styles.body}>
-              {t('insights.pmsCard.text', {
-                start: format(parseISO(insights.nextPmsStart), 'MMM d'),
-                end: format(parseISO(insights.nextPmsEnd), 'MMM d'),
-              })}
-            </Text>
-          </Card>
-
-          <SectionTitle title={t('insights.symptomsCard.title')} />
-          <Card variant="glass" style={styles.symptomWrap}>
-            {insights.topSymptoms.length === 0 ? (
-              <Text style={styles.muted}>—</Text>
-            ) : (
-              insights.topSymptoms.map(({ symptom, count }) => (
-                <Chip
-                  key={symptom}
-                  label={`${t(`symptoms.${symptom}`)} · ${t('insights.symptomsCard.timesLogged', { count })}`}
-                  selected={false}
-                  onPress={() => {}}
-                />
-              ))
-            )}
-          </Card>
-
-          <DisclaimerBox text={t('disclaimer.short')} />
-        </>
-      ) : (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('insights.locked.cta')}
-          onPress={() => router.push('/paywall')}
-        >
-          <Card
-            variant="glass"
-            style={[
-              styles.locked,
-              { backgroundColor: p.name === 'dark' ? p.overlay : 'rgba(251,243,236,0.9)' },
-            ]}
-          >
-            <Text style={styles.lockIcon}>🔒</Text>
-            <Text style={styles.lockTitle}>{t('insights.locked.title')}</Text>
-            <Text style={styles.body}>{t('insights.locked.body')}</Text>
-            <Text style={[styles.lockCta, { color: p.accent }]}>{t('insights.locked.cta')} →</Text>
-          </Card>
-        </Pressable>
-      )}
+        {isPremium ? <SignalStory eyebrow={t('insights.pmsCard.title')} conclusion={`${format(parseISO(insights.nextPmsStart), 'MMM d')} – ${format(parseISO(insights.nextPmsEnd), 'MMM d')}`} reason={t('insights.pmsCard.text', { start: format(parseISO(insights.nextPmsStart), 'MMM d'), end: format(parseISO(insights.nextPmsEnd), 'MMM d') })} confidence={Math.round(insights.confidenceScore * 100)}><View style={[styles.comparison, { backgroundColor: p.surface }]}><Ionicons name="git-compare-outline" size={28} color={p.accentInk} /></View></SignalStory> : <Pressable onPress={() => router.push('/paywall')} style={[styles.preview, { borderColor: p.accent }]}><View><Text style={[styles.eyebrow, { color: p.accentInk }]}>{t('insights.locked.title')}</Text><Text style={[styles.previewText, { color: p.text }]}>{t('insights.locked.body')}</Text></View><Ionicons name="arrow-forward" size={20} color={p.accentInk} /></Pressable>}
+      </>}
     </Screen>
   );
 }
 
-function InsightStat({ label, value }: { label: string; value: string }) {
-  const p = useTheme();
-  return (
-    <View style={[styles.insightStat, { backgroundColor: p.accent100 }]}>
-      <Text style={[styles.insightStatValue, { color: p.accent }]}>{value}</Text>
-      <Text style={styles.insightStatLabel}>{label}</Text>
-    </View>
-  );
-}
+function SignalStory({ eyebrow, conclusion, reason, confidence, children }: { eyebrow: string; conclusion: string; reason: string; confidence: number; children: React.ReactNode }) { const p = useTheme(); const { t } = useTranslation(); return <View style={[styles.story, { borderTopColor: p.track }]}><Text style={[styles.eyebrow, { color: p.textMuted }]}>{eyebrow}</Text><Text style={[styles.storyTitle, { color: p.text }]}>{conclusion}</Text>{children}<Text style={[styles.reason, { color: p.textMuted }]}>{reason}</Text><View style={styles.source}><Ionicons name="analytics-outline" size={14} color={p.accentInk} /><Text style={[styles.sourceText, { color: p.textMuted }]}>{t('living.confidence', { value: confidence, state: t(confidence > 70 ? 'living.pattern' : 'living.learning') })}</Text></View></View>; }
 
 const styles = StyleSheet.create({
-  hero: {
-    marginTop: spacing(1.5),
-    marginBottom: spacing(2),
-    padding: spacing(2.5),
-    borderRadius: radius.sheet,
-  },
-  kicker: {
-    ...typography.caption,
-  },
-  title: {
-    ...typography.headline,
-    marginTop: spacing(0.5),
-  },
-  subtitle: {
-    ...typography.bodySmall,
-    color: 'rgba(244,237,225,0.78)',
-    marginTop: spacing(0.5),
-  },
-  storyCard: {
-    gap: spacing(2),
-  },
-  storyTitle: {
-    ...typography.title,
-  },
-  statGrid: {
-    flexDirection: 'row',
-    gap: spacing(1.5),
-  },
-  insightStat: {
-    flex: 1,
-    borderRadius: radius.lg,
-    padding: spacing(1.5),
-  },
-  insightStatValue: {
-    ...typography.subtitle,
-  },
-  insightStatLabel: {
-    ...typography.caption,
-    marginTop: spacing(0.5),
-  },
-  rows: {
-    gap: spacing(1.5),
-  },
-  symptomWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing(1),
-  },
-  muted: {
-    ...typography.bodySmall,
-  },
-  barRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing(1),
-  },
-  barLabel: {
-    ...typography.caption,
-    width: 110,
-  },
-  barTrack: {
-    flex: 1,
-    height: 8,
-    borderRadius: radius.pill,
-    overflow: 'hidden',
-  },
-  barFill: {
-    height: '100%',
-    borderRadius: radius.pill,
-  },
-  barValue: {
-    ...typography.caption,
-    width: 28,
-    textAlign: 'right',
-  },
-  caption: {
-    ...typography.caption,
-  },
-  body: {
-    ...typography.body,
-  },
-  locked: {
-    marginTop: spacing(3),
-    alignItems: 'center',
-    gap: spacing(1),
-  },
-  lockIcon: {
-    fontSize: 28,
-  },
-  lockTitle: {
-    ...typography.subtitle,
-    textAlign: 'center',
-  },
-  lockCta: {
-    ...typography.subtitle,
-  },
+  header: { paddingTop: spacing(1), paddingBottom: spacing(3), gap: spacing(1) }, eyebrow: { ...typography.labelM, textTransform: 'uppercase', letterSpacing: 1 }, title: { ...typography.titleXL },
+  learning: { flex: 1, minHeight: 480, justifyContent: 'center', gap: spacing(2) }, constellation: { height: 180, position: 'relative' }, star: { position: 'absolute', width: 10, height: 10, borderRadius: 5 },
+  action: { minHeight: 52, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-start', paddingHorizontal: spacing(3) }, actionText: { ...typography.labelL },
+  story: { gap: spacing(1.5), paddingVertical: spacing(3), borderTopWidth: 1 }, storyTitle: { ...typography.titleL }, reason: { ...typography.bodyM },
+  ribbon: { height: 54, flexDirection: 'row', gap: 3, alignItems: 'stretch', marginVertical: spacing(1) }, ribbonPart: { borderRadius: radius.xs }, curve: { height: 130, flexDirection: 'row', alignItems: 'flex-end', gap: spacing(1.5) }, curveColumn: { flex: 1, alignItems: 'center', gap: spacing(0.75) }, curveSignal: { width: '100%', borderTopLeftRadius: radius.organic, borderTopRightRadius: radius.organic }, curveLabel: { ...typography.micro, textTransform: 'none' },
+  source: { flexDirection: 'row', alignItems: 'center', gap: spacing(0.75) }, sourceText: { ...typography.micro, textTransform: 'none' }, comparison: { height: 90, borderRadius: radius.lg, alignItems: 'center', justifyContent: 'center' }, preview: { minHeight: 112, borderWidth: 1, borderRadius: radius.lg, padding: spacing(2), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: spacing(2) }, previewText: { ...typography.bodyL, marginTop: spacing(0.75), maxWidth: 280 },
 });

@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { radius, spacing, typography, useTheme } from '@/theme';
@@ -13,7 +14,7 @@ export function DisclaimerBox({ text }: Props) {
       style={[styles.box, { backgroundColor: p.surface }]}
       accessibilityRole="text"
     >
-      <Text style={styles.icon}>🌿</Text>
+      <Ionicons name="shield-checkmark-outline" size={18} color={p.accentInk} />
       <Text style={[styles.text, { color: p.textMuted }]}>{text}</Text>
     </View>
   );
@@ -26,10 +27,6 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     padding: spacing(1.5),
     alignItems: 'flex-start',
-  },
-  icon: {
-    fontSize: 14,
-    marginTop: 1,
   },
   text: {
     ...typography.caption,

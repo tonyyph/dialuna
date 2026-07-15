@@ -36,6 +36,7 @@ export function AiChatScreen() {
   return (
     <Screen scroll={false} edgeToEdge keyboardAvoiding>
       <View style={styles.header}>
+        <Text style={[styles.kicker, { color: p.accentInk }]}>{t('living.intelligenceCanvas')}</Text>
         <Text style={[styles.title, { color: p.text }]}>{t('ai.title')}</Text>
         <Text style={[styles.counter, { color: p.textFaint }]}>
           {isPremium
@@ -45,7 +46,8 @@ export function AiChatScreen() {
       </View>
 
       {messages.length === 0 ? (
-        <View style={[styles.emptyPanel, { backgroundColor: p.surface }]}>
+        <View style={styles.emptyPanel}>
+          <View style={[styles.breathing, { borderColor: p.accent }]}><View style={[styles.breathingCore, { backgroundColor: p.accent }]} /></View>
           <Text style={[styles.emptyTitle, { color: p.text }]}>
             {t('ai.emptyTitle')}
           </Text>
@@ -112,6 +114,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing(1),
     paddingBottom: spacing(1.5),
   },
+  kicker: { ...typography.micro, marginBottom: spacing(0.75) },
   title: {
     ...typography.headline,
   },
@@ -122,10 +125,11 @@ const styles = StyleSheet.create({
   emptyPanel: {
     flex: 1,
     marginHorizontal: spacing(2.5),
-    borderRadius: radius.md,
     padding: spacing(3),
     justifyContent: 'center',
   },
+  breathing: { width: 130, height: 130, borderRadius: 65, borderWidth: 1, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', marginBottom: spacing(3) },
+  breathingCore: { width: 48, height: 48, borderRadius: 24, opacity: 0.22 },
   emptyTitle: {
     ...typography.title,
     textAlign: 'center',

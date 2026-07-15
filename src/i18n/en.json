@@ -221,6 +221,13 @@
       "p3": "Tips for PMS bloating",
       "p4": "What does my Hormone Twin score mean?"
     },
+    "dynamic": {
+      "label": "Suggestions for your current rhythm",
+      "phase": "What should I prioritize during {{phase}}?",
+      "symptom": "What may help with {{symptom}} today?",
+      "energy": "How should I plan around energy level {{value}}?",
+      "goal": "What can I do today for {{goal}}?"
+    },
     "answer": {
       "tired": "It makes sense you feel tired, {{name}}. You're on cycle day {{cycleDay}}, in your {{phase}}, and energy often dips here.",
       "workout": "On cycle day {{cycleDay}} ({{phase}}), your body has its own pace for training.",
@@ -454,7 +461,8 @@
       "notifications": "Notifications",
       "appearance": "Appearance",
       "privacy": "Privacy & data",
-      "subscription": "Subscription"
+      "subscription": "Subscription",
+      "support": "Support"
     },
     "name": "Name",
     "email": "Email",
@@ -493,7 +501,45 @@
     "upgrade": "Upgrade",
     "manage": "Manage",
     "devToggle": "Dev: premium override",
-    "version": "Version"
+    "version": "Version",
+    "supportTitle": "Help and product support",
+    "supportBody": "Dialuna keeps your health data on this device. For product help, include your app version and never send private cycle notes or raw health logs."
+  },
+  "living": {
+    "intelligenceCanvas": "Intelligence canvas",
+    "notice": "What I notice",
+    "why": "Why it may be happening",
+    "help": "What may help",
+    "monitor": "What to monitor",
+    "support": "When to seek professional support",
+    "helpBody": "Choose one gentle action that matches your energy today, then reassess how your body responds.",
+    "monitorBody": "Keep logging changes in intensity, duration, energy, sleep, and anything that feels different from your usual pattern.",
+    "supportBody": "Seek qualified medical support for severe, sudden, persistent, or concerning symptoms. Dialuna does not diagnose conditions.",
+    "guidanceContext": "Personal guidance based on your current phase and recent signals. Keep monitoring changes that feel unusual.",
+    "captured": "Your rhythm, captured",
+    "reviewHint": "Review your signals before they become part of today's field.",
+    "fieldChanged": "Your field has changed",
+    "editCheckIn": "Edit check-in",
+    "signals": "{{count}} signals",
+    "energySleep": "Energy {{energy}} · Sleep {{sleep}}",
+    "moods": "{{count}} moods",
+    "confidence": "{{value}}% confidence · {{state}}",
+    "pattern": "pattern",
+    "learning": "learning",
+    "membership": "Dialuna membership"
+    ,"calibrationCycle": "Cycle calibration"
+    ,"calibrationInterests": "Interest constellation"
+    ,"calibrationBody": "Body signal map"
+    ,"calibrationProgress": "Calibration step {{step}} of 4"
+    ,"selectedCount": "{{count}} selected"
+    ,"bodyMapHint": "Select the signals that feel familiar"
+    ,"timelineHint": "Anchor your rhythm with the first day of your latest period."
+    ,"bodyZones": {
+      "head": "Mind and sleep",
+      "core": "Core sensations",
+      "surface": "Surface signals",
+      "movement": "Energy and movement"
+    }
   },
   "tabs": {
     "home": "Home",

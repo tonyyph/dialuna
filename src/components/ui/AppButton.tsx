@@ -2,6 +2,7 @@ import * as Haptics from 'expo-haptics';
 import { PropsWithChildren } from 'react';
 import {
   ActivityIndicator,
+  Platform,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -85,8 +86,7 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.48,
-    shadowOpacity: 0,
-    elevation: 0,
+    ...Platform.select({ web: { boxShadow: 'none' }, default: { shadowOpacity: 0, elevation: 0 } }),
   },
   pressed: {
     transform: [{ scale: 0.96 }],

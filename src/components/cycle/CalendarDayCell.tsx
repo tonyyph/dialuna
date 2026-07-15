@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { format, parseISO } from 'date-fns';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -31,9 +32,7 @@ export function CalendarDayCell({ date, state, onPress }: Props) {
       : state.isPms
         ? p.phaseSoft.ovulation
         : state.isPredictedPeriod
-          ? p.name === 'dark'
-            ? 'rgba(225,173,102,0.28)'
-            : p.accent200
+          ? p.phaseSoft.menstrual
           : 'transparent';
 
   return (
@@ -65,9 +64,7 @@ export function CalendarDayCell({ date, state, onPress }: Props) {
         {state.isOvulation && (
           <View style={[styles.ovulationDot, { backgroundColor: p.success }]} />
         )}
-        {state.isHighEnergy && !state.isPeriodLogged && (
-          <Text style={styles.energy}>⚡</Text>
-        )}
+        {state.isHighEnergy && !state.isPeriodLogged ? <View style={styles.energy}><Ionicons name="flash" size={9} color={p.accentInk} /></View> : null}
       </View>
       <View
         style={[

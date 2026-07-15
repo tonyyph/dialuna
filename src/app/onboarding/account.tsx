@@ -1,10 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert, StyleSheet, Text, TextInput } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
 import { Screen } from '@/components/ui/Screen';
 import { OnboardingStepHeader } from '@/features/onboarding/OnboardingStepHeader';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
@@ -56,13 +56,14 @@ export default function Account() {
       <Text style={[styles.subtitle, { color: p.textMuted }]}>
         {t('onboarding.account.subtitle')}
       </Text>
+      <View style={[styles.privateRow, { borderColor: p.track }]}><Ionicons name="lock-closed-outline" size={19} color={p.accentInk} /><Text style={[styles.privateText, { color: p.textMuted }]}>{t('settings.privacyBody')}</Text></View>
 
-      <Card style={styles.card}>
+      <View style={styles.card}>
         <Text style={[styles.label, { color: p.textMuted }]}>
           {t('onboarding.account.name')}
         </Text>
         <TextInput
-          style={[styles.input, { color: p.text }]}
+          style={[styles.input, { color: p.text, borderBottomColor: p.track }]}
           value={draft.nickname}
           onChangeText={(nickname) => draft.set({ nickname })}
           placeholder={t('onboarding.account.namePlaceholder')}
@@ -70,13 +71,13 @@ export default function Account() {
           accessibilityLabel={t('onboarding.account.name')}
           maxLength={30}
         />
-      </Card>
-      <Card style={styles.card}>
+      </View>
+      <View style={styles.card}>
         <Text style={[styles.label, { color: p.textMuted }]}>
           {t('onboarding.account.email')}
         </Text>
         <TextInput
-          style={[styles.input, { color: p.text }]}
+          style={[styles.input, { color: p.text, borderBottomColor: p.track }]}
           value={draft.email}
           onChangeText={(email) => draft.set({ email })}
           placeholder={t('onboarding.account.emailPlaceholder')}
@@ -86,7 +87,7 @@ export default function Account() {
           autoComplete="email"
           keyboardType="email-address"
         />
-      </Card>
+      </View>
       {touched && !emailValid ? (
         <Text style={[styles.error, { color: p.danger }]}>
           {t('onboarding.account.emailInvalid')}
@@ -99,11 +100,11 @@ export default function Account() {
         onPress={finish}
         style={styles.cta}
       />
-      <Button
+      {__DEV__ ? <Button
         label={t('onboarding.account.apple')}
         variant="secondary"
         onPress={() => Alert.alert(t('onboarding.account.appleSoon'))}
-      />
+      /> : null}
     </Screen>
   );
 }
@@ -111,9 +112,10 @@ export default function Account() {
 const styles = StyleSheet.create({
   title: { ...typography.headline, marginTop: spacing(1) },
   subtitle: { ...typography.bodySmall, marginTop: spacing(0.5), marginBottom: spacing(2.75) },
-  card: { marginBottom: spacing(1.75) },
+  privateRow: { minHeight: 64, borderTopWidth: 1, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'center', gap: spacing(1.25), marginBottom: spacing(3) }, privateText: { ...typography.bodySmall, flex: 1 },
+  card: { marginBottom: spacing(2.25) },
   label: { ...typography.caption, marginBottom: spacing(0.75) },
-  input: { ...typography.body, fontSize: 15, minHeight: 24, padding: 0 },
+  input: { ...typography.body, minHeight: 52, paddingVertical: spacing(1), borderBottomWidth: 1 },
   error: { ...typography.caption, marginBottom: spacing(1) },
   cta: { marginTop: spacing(1.5), marginBottom: spacing(1.25) },
 });

@@ -1,15 +1,16 @@
 import type { CyclePhase } from '@/types';
+import { gradients } from './gradients';
+import { rawColors as r } from './rawColors';
+import { semanticColors } from './semanticColors';
 
 export type ThemeName = 'light' | 'dark';
 
 export interface Palette {
   name: ThemeName;
-  /** Full-screen warm background gradient (top → bottom). */
+  /** Full-screen canvas gradient (top → bottom). */
   bgGradient: readonly [string, string, string];
   /** Today hero panel gradient. */
   heroGradient: readonly [string, string, string];
-  /** Selected chip fill gradient (gold). */
-  goldChipGradient: readonly [string, string];
   /** Premium banner dark gradient. */
   premiumBannerGradient: readonly [string, string];
   text: string;
@@ -45,108 +46,68 @@ export interface Palette {
   success: string;
   phase: Record<CyclePhase, string>;
   phaseSoft: Record<CyclePhase, string>;
-  shadowColor: string;
 }
 
 const ramp = {
-  accent100: '#fff3e4',
-  accent200: '#ffe3bf',
-  accent300: '#facb8d',
-  accent400: '#e1ad66',
-  accent500: '#c28d41',
-  accent600: '#a06f24',
-  accent700: '#7d5411',
-  accent800: '#5a3b0a',
-  accent900: '#3a270d',
+  accent100: '#F1EEFF', accent200: '#E1DBFF', accent300: r.violet300,
+  accent400: r.violet400, accent500: r.violet500, accent600: r.violet600,
+  accent700: r.violet700, accent800: '#3D268D', accent900: '#281A62',
 } as const;
 
 const light: Palette = {
   name: 'light',
-  bgGradient: ['#fbf3ec', '#f7ecee', '#f1e9f0'],
-  heroGradient: ['#fff3e4', '#fbf3ec', '#f6ecf1'],
-  goldChipGradient: ['#facb8d', '#ffe3bf'],
-  premiumBannerGradient: ['#2c2620', '#3a2f22'],
-  text: '#201f1d',
-  textMuted: 'rgba(32,31,29,0.65)',
-  textFaint: 'rgba(32,31,29,0.5)',
-  surface: 'rgba(255,255,255,0.55)',
-  surfaceStrong: 'rgba(255,255,255,0.7)',
-  surfaceSolid: '#fffdfb',
-  fillSubtle: 'rgba(0,0,0,0.05)',
-  track: 'rgba(0,0,0,0.06)',
-  overlay: 'rgba(32,24,16,0.45)',
-  accent: '#b68235',
-  accentInk: '#7d5411',
+  bgGradient: gradients.lightCanvas, heroGradient: ['#ECE8FF', '#F6F4FD', '#E8F7F4'],
+  premiumBannerGradient: gradients.membership,
+  text: semanticColors.light.primary, textMuted: semanticColors.light.secondary, textFaint: semanticColors.light.tertiary,
+  surface: semanticColors.light.embedded, surfaceStrong: semanticColors.light.raised,
+  surfaceSolid: semanticColors.light.elevated, fillSubtle: '#ECEAF1', track: '#E4E1EA',
+  overlay: '#07081299', accent: semanticColors.light.brand, accentInk: r.violet700,
   ...ramp,
-  primaryBtn: '#2d2b2b',
-  onPrimaryBtn: '#fbf3ec',
-  danger: '#b3453c',
-  success: '#7d5411',
+  primaryBtn: r.violet600, onPrimaryBtn: r.textOnDark, danger: r.danger, success: r.success,
   phase: {
-    menstrual: '#e1ad66',
-    follicular: '#c28d41',
-    ovulation: '#b68235',
-    luteal: '#7d5411',
+    menstrual: r.coral500, follicular: r.aqua500, ovulation: r.violet500, luteal: r.violet700,
   },
   phaseSoft: {
-    menstrual: '#fff3e4',
-    follicular: '#ffe3bf',
-    ovulation: '#facb8d',
-    luteal: '#f0e4d3',
+    menstrual: '#FFE9E4', follicular: '#DDF7F3', ovulation: '#ECE8FF', luteal: '#E4DFF6',
   },
-  shadowColor: '#5a3c14',
 };
 
 const dark: Palette = {
   name: 'dark',
-  bgGradient: ['#211d24', '#1f1b21', '#1c1a1f'],
-  heroGradient: ['#2c2530', '#241f27', '#221d24'],
-  goldChipGradient: ['#c28d41', '#a06f24'],
-  premiumBannerGradient: ['#2c2620', '#3a2f22'],
-  text: '#f3f2f2',
-  textMuted: 'rgba(243,242,242,0.65)',
-  textFaint: 'rgba(243,242,242,0.5)',
-  surface: 'rgba(255,255,255,0.07)',
-  surfaceStrong: 'rgba(255,255,255,0.12)',
-  surfaceSolid: '#2b272e',
-  fillSubtle: 'rgba(255,255,255,0.08)',
-  track: 'rgba(255,255,255,0.1)',
-  overlay: 'rgba(0,0,0,0.6)',
-  accent: '#e1ad66',
-  accentInk: '#facb8d',
+  bgGradient: gradients.darkCanvas, heroGradient: [r.night850, '#15142A', '#101D25'],
+  premiumBannerGradient: gradients.membership,
+  text: semanticColors.dark.primary, textMuted: semanticColors.dark.secondary, textFaint: semanticColors.dark.tertiary,
+  surface: semanticColors.dark.embedded, surfaceStrong: semanticColors.dark.raised,
+  surfaceSolid: semanticColors.dark.elevated, fillSubtle: '#171C2C', track: '#252B3D',
+  overlay: '#000000A6', accent: semanticColors.dark.brand, accentInk: r.violet300,
   ...ramp,
-  primaryBtn: '#f3f2f2',
-  onPrimaryBtn: '#201f1d',
-  danger: '#e08079',
-  success: '#facb8d',
+  primaryBtn: r.violet400, onPrimaryBtn: r.night950, danger: r.danger, success: r.success,
   phase: {
-    menstrual: '#e1ad66',
-    follicular: '#c28d41',
-    ovulation: '#facb8d',
-    luteal: '#a06f24',
+    menstrual: r.coral400, follicular: r.aqua400, ovulation: r.violet300, luteal: r.violet500,
   },
   phaseSoft: {
-    menstrual: 'rgba(225,173,102,0.2)',
-    follicular: 'rgba(194,141,65,0.2)',
-    ovulation: 'rgba(250,203,141,0.22)',
-    luteal: 'rgba(160,111,36,0.2)',
+    menstrual: '#3C2028', follicular: '#163637', ovulation: '#2B2546', luteal: '#231E3B',
   },
-  shadowColor: '#000000',
 };
 
 export const palettes: Record<ThemeName, Palette> = { light, dark };
 
 /** The paywall is always dark, independent of app theme. */
 export const paywallColors = {
-  bg: '#1f1c18',
-  text: '#f4ede1',
-  textDim: 'rgba(244,237,225,0.65)',
-  textFaint: 'rgba(244,237,225,0.55)',
-  segment: 'rgba(244,237,225,0.25)',
-  border: 'rgba(244,237,225,0.2)',
+  bg: r.night950,
+  text: r.textOnDark,
+  textDim: r.textMutedDark,
+  textFaint: r.textFaintDark,
+  segment: r.night700,
+  border: r.night700,
   closeFill: 'rgba(255,255,255,0.1)',
-  accent: '#b68235',
-  accentTint: 'rgba(182,130,53,0.14)',
-  badge: '#5a3b0a',
-  ctaText: '#1a1712',
+  accent: r.violet400,
+  accentTint: '#282442',
+  badge: r.violet700,
+  ctaText: r.night950,
+  gradient: gradients.membership,
+  intelligence: r.aqua400,
+  biological: r.coral400,
+  orbit: '#A38CFF66',
+  core: '#A38CFF33',
 } as const;

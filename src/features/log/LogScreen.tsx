@@ -1,61 +1,19 @@
+import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import Animated, { FadeIn, useReducedMotion } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '@/components/ui/Button';
-import { Card } from '@/components/ui/Card';
-import { Chip } from '@/components/ui/Chip';
-import { LevelSlider } from '@/components/ui/LevelSlider';
 import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
 import { useLogStore } from '@/store';
-import { radius, spacing, typography, useTheme } from '@/theme';
-import {
-  ALL_FLOW_LEVELS,
-  ALL_MOODS,
-  ALL_SYMPTOMS,
-  ALL_WORKOUTS,
-  DailyLog,
-  FlowLevel,
-  Mood,
-  Symptom,
-  WorkoutType,
-} from '@/types';
+import { duration, radius, spacing, typography, useTheme } from '@/theme';
+import { ALL_FLOW_LEVELS, ALL_MOODS, ALL_SYMPTOMS, ALL_WORKOUTS, DailyLog, FlowLevel, Mood, Symptom, WorkoutType } from '@/types';
 import { todayISO } from '@/utils/date';
 
-const SYMPTOM_EMOJI: Record<Symptom, string> = {
-  cramps: '🌀',
-  headache: '🤕',
-  bloating: '🎈',
-  acne: '🫥',
-  breastTenderness: '🌡️',
-  backPain: '🦴',
-  nausea: '🤢',
-  fatigue: '🥱',
-  moodSwings: '🎭',
-  insomnia: '🌃',
-};
-
-const MOOD_EMOJI: Record<Mood, string> = {
-  happy: '😊',
-  calm: '😌',
-  anxious: '😟',
-  sad: '😢',
-  angry: '😠',
-  sensitive: '🥺',
-};
-
-const WORKOUT_EMOJI: Record<WorkoutType, string> = {
-  none: '🛋️',
-  walking: '🚶‍♀️',
-  yoga: '🧘‍♀️',
-  strength: '🏋️‍♀️',
-  cardio: '🏃‍♀️',
-  hiit: '🔥',
-};
+const STEPS = ['mood', 'recovery', 'body', 'symptoms', 'note', 'review'] as const;
 
 export function LogScreen() {
   const { t } = useTranslation();
@@ -64,245 +22,70 @@ export function LogScreen() {
   const existing = useLogStore((s) => s.logs[today]);
   const saveLog = useLogStore((s) => s.saveLog);
   const ctx = useCycleToday();
-
+  const [step, setStep] = useState(0);
   const [flow, setFlow] = useState<FlowLevel>(existing?.flow ?? 'none');
   const [symptoms, setSymptoms] = useState<Symptom[]>(existing?.symptoms ?? []);
   const [moods, setMoods] = useState<Mood[]>(existing?.moods ?? []);
-  const [energyLevel, setEnergyLevel] = useState(existing?.energyLevel ?? 5);
-  const [sleepQuality, setSleepQuality] = useState(existing?.sleepQuality ?? 5);
-  const [stressLevel, setStressLevel] = useState(existing?.stressLevel ?? 5);
-  const [workoutType, setWorkoutType] = useState<WorkoutType>(
-    existing?.workoutType ?? 'none'
-  );
+  const [energy, setEnergy] = useState(existing?.energyLevel ?? 5);
+  const [sleep, setSleep] = useState(existing?.sleepQuality ?? 5);
+  const [stress, setStress] = useState(existing?.stressLevel ?? 5);
+  const [workout, setWorkout] = useState<WorkoutType>(existing?.workoutType ?? 'none');
   const [note, setNote] = useState(existing?.note ?? '');
-  const [reflection, setReflection] = useState<string | null>(null);
+  const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const toggle = <T,>(items: T[], item: T) => items.includes(item) ? items.filter((x) => x !== item) : [...items, item];
 
-  const toggle = <T,>(list: T[], item: T): T[] =>
-    list.includes(item) ? list.filter((x) => x !== item) : [...list, item];
-
-  const onSave = () => {
+  const save = () => {
     const now = new Date().toISOString();
-    const log: DailyLog = {
-      date: today,
-      flow,
-      symptoms,
-      moods,
-      energyLevel,
-      sleepQuality,
-      stressLevel,
-      workoutType,
-      note: note.trim(),
-      createdAt: existing?.createdAt ?? now,
-      updatedAt: now,
-    };
+    const log: DailyLog = { date: today, flow, symptoms, moods, energyLevel: energy, sleepQuality: sleep, stressLevel: stress, workoutType: workout, note: note.trim(), createdAt: existing?.createdAt ?? now, updatedAt: now };
     saveLog(log);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    if (ctx) {
-      setReflection(
-        generateLogReflection({
-          log,
-          prediction: ctx.prediction,
-          nickname: ctx.profile.nickname,
-          t,
-        })
-      );
-    }
+    void Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if (ctx) setSavedMessage(generateLogReflection({ log, prediction: ctx.prediction, nickname: ctx.profile.nickname, t }));
   };
 
   return (
-    <Screen
-      keyboardAvoiding
-      bottomAction={<Button label={t('log.save')} onPress={onSave} />}
-    >
-      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
-        <Text style={[styles.kicker, { color: p.accent400 }]}>{t('common.today')}</Text>
-        <Text style={[styles.title, { color: '#f4ede1' }]}>{t('log.title')}</Text>
-        <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
+    <Screen keyboardAvoiding>
+      <View style={styles.top}>
+        <View>
+          <Text style={[styles.eyebrow, { color: p.textMuted }]}>{t('common.today')} · {step + 1}/{STEPS.length}</Text>
+          <Text style={[styles.title, { color: p.text }]}>{t('log.title')}</Text>
+        </View>
+        <View style={[styles.progress, { backgroundColor: p.track }]}><View style={[styles.progressFill, { backgroundColor: p.accent, width: `${((step + 1) / STEPS.length) * 100}%` }]} /></View>
       </View>
 
-      <Card variant="glass" style={styles.checkCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.flow')}</Text>
-          <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`flow.${flow}`)}</Text>
-        </View>
-        <View style={styles.chips}>
-          {ALL_FLOW_LEVELS.map((level) => (
-            <Chip
-              key={level}
-              label={t(`flow.${level}`)}
-              selected={flow === level}
-              onPress={() => setFlow(level)}
-            />
-          ))}
-        </View>
-      </Card>
+      <View style={styles.stage}>
+        {savedMessage ? <SavedState message={savedMessage} onEdit={() => setSavedMessage(null)} /> : (
+          <>
+            {step === 0 && <ChoiceStage title={t('log.mood')} subtitle={t('log.subtitle')} items={ALL_MOODS} selected={moods} label={(v) => t(`moods.${v}`)} onPress={(v) => setMoods((x) => toggle(x, v))} />}
+            {step === 1 && <View><StageTitle title={t('log.energy')} subtitle={t('log.sleep')} /><Continuum label={t('log.energy')} value={energy} onChange={setEnergy} /><Continuum label={t('log.sleep')} value={sleep} onChange={setSleep} /><Continuum label={t('log.stress')} value={stress} onChange={setStress} /></View>}
+            {step === 2 && <><ChoiceStage title={t('log.flow')} subtitle={t('log.workout')} items={ALL_FLOW_LEVELS} selected={[flow]} label={(v) => t(`flow.${v}`)} onPress={setFlow} /><View style={styles.secondaryChoices}>{ALL_WORKOUTS.map((v) => <SignalChoice key={v} label={t(`workouts.${v}`)} selected={workout === v} onPress={() => setWorkout(v)} />)}</View></>}
+            {step === 3 && <ChoiceStage title={t('log.symptoms')} subtitle={t('log.subtitle')} items={ALL_SYMPTOMS} selected={symptoms} label={(v) => t(`symptoms.${v}`)} onPress={(v) => setSymptoms((x) => toggle(x, v))} />}
+            {step === 4 && <View><StageTitle title={t('log.note')} subtitle={t('log.notePlaceholder')} /><TextInput multiline value={note} onChangeText={setNote} placeholder={t('log.notePlaceholder')} placeholderTextColor={p.textFaint} accessibilityLabel={t('log.note')} style={[styles.note, { color: p.text, borderColor: p.track }]} /></View>}
+            {step === 5 && <ReviewRow mood={moods.length} symptoms={symptoms.length} energy={energy} sleep={sleep} flow={t(`flow.${flow}`)} />}
+          </>
+        )}
+      </View>
 
-      <Card style={styles.checkCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.mood')}</Text>
-          <Text style={[styles.cardMeta, { color: p.accent }]}>{moods.length}</Text>
-        </View>
-        <View style={styles.chips}>
-          {ALL_MOODS.map((mood) => (
-            <Chip
-              key={mood}
-              label={t(`moods.${mood}`)}
-              emoji={MOOD_EMOJI[mood]}
-              selected={moods.includes(mood)}
-              onPress={() => setMoods((m) => toggle(m, mood))}
-            />
-          ))}
-        </View>
-
-        <View style={styles.divider} />
-
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.symptoms')}</Text>
-          <Text style={[styles.cardMeta, { color: p.accent }]}>{symptoms.length}</Text>
-        </View>
-        <View style={styles.chips}>
-          {ALL_SYMPTOMS.map((symptom) => (
-            <Chip
-              key={symptom}
-              label={t(`symptoms.${symptom}`)}
-              emoji={SYMPTOM_EMOJI[symptom]}
-              selected={symptoms.includes(symptom)}
-              onPress={() => setSymptoms((s) => toggle(s, symptom))}
-            />
-          ))}
-        </View>
-      </Card>
-
-      <Card variant="glass" style={styles.sliders}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('home.twinScore')}</Text>
-          <Text style={[styles.cardMeta, { color: p.accent }]}>{t('common.today')}</Text>
-        </View>
-        <LevelSlider
-          label={t('log.energy')}
-          value={energyLevel}
-          onChange={setEnergyLevel}
-        />
-        <LevelSlider
-          label={t('log.sleep')}
-          value={sleepQuality}
-          onChange={setSleepQuality}
-        />
-        <LevelSlider
-          label={t('log.stress')}
-          value={stressLevel}
-          onChange={setStressLevel}
-        />
-      </Card>
-
-      <Card style={styles.checkCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>{t('log.workout')}</Text>
-          <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`workouts.${workoutType}`)}</Text>
-        </View>
-        <View style={styles.chips}>
-          {ALL_WORKOUTS.map((workout) => (
-            <Chip
-              key={workout}
-              label={t(`workouts.${workout}`)}
-              emoji={WORKOUT_EMOJI[workout]}
-              selected={workoutType === workout}
-              onPress={() => setWorkoutType(workout)}
-            />
-          ))}
-        </View>
-
-        <Text style={styles.noteLabel}>{t('log.note')}</Text>
-        <TextInput
-          style={[styles.noteInput, { backgroundColor: p.surfaceStrong, color: p.text }]}
-          value={note}
-          onChangeText={setNote}
-          placeholder={t('log.notePlaceholder')}
-          placeholderTextColor={p.textMuted}
-          accessibilityLabel={t('log.note')}
-          multiline
-        />
-      </Card>
-
-      {reflection && (
-        <Animated.View entering={FadeInDown.duration(400)}>
-          <Card variant="glass" style={styles.reflection}>
-            <Text style={styles.reflectionTitle}>
-              🌙 {t('log.reflectionTitle')}
-            </Text>
-            <Text style={styles.reflectionText}>{reflection}</Text>
-          </Card>
-        </Animated.View>
-      )}
+      {!savedMessage && <View style={styles.footer}>
+        <Pressable disabled={step === 0} onPress={() => setStep((v) => Math.max(0, v - 1))} accessibilityRole="button" accessibilityLabel={t('common.back')} style={styles.back}><Ionicons name="arrow-back" size={22} color={step === 0 ? p.textFaint : p.text} /></Pressable>
+        <Pressable onPress={() => step === STEPS.length - 1 ? save() : setStep((v) => v + 1)} accessibilityRole="button" accessibilityLabel={step === STEPS.length - 1 ? t('log.save') : t('common.continue')} style={[styles.next, { backgroundColor: p.primaryBtn }]}><Text style={[styles.nextText, { color: p.onPrimaryBtn }]}>{step === STEPS.length - 1 ? t('log.save') : t('common.continue')}</Text><Ionicons name="arrow-forward" size={18} color={p.onPrimaryBtn} /></Pressable>
+      </View>}
     </Screen>
   );
 }
 
+function StageTitle({ title, subtitle }: { title: string; subtitle: string }) { const p = useTheme(); return <View style={styles.stageHead}><Text style={[styles.stageTitle, { color: p.text }]}>{title}</Text><Text style={[styles.stageSubtitle, { color: p.textMuted }]}>{subtitle}</Text></View>; }
+function SignalChoice({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) { const p = useTheme(); return <Pressable accessibilityRole="button" accessibilityState={{ selected }} onPress={() => { void Haptics.selectionAsync(); onPress(); }} style={[styles.choice, { backgroundColor: selected ? p.accent100 : p.surface, borderColor: selected ? p.accent : p.track }]}><View style={[styles.choiceSignal, { backgroundColor: selected ? p.accent : p.track }]} /><Text style={[styles.choiceLabel, { color: p.text }]}>{label}</Text></Pressable>; }
+function ChoiceStage<T extends string>({ title, subtitle, items, selected, label, onPress }: { title: string; subtitle: string; items: readonly T[]; selected: T[]; label: (v: T) => string; onPress: (v: T) => void }) { return <View><StageTitle title={title} subtitle={subtitle} /><View style={styles.choices}>{items.map((v) => <SignalChoice key={v} label={label(v)} selected={selected.includes(v)} onPress={() => onPress(v)} />)}</View></View>; }
+function Continuum({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) { const p = useTheme(); return <View style={styles.continuum}><View style={styles.continuumHead}><Text style={[styles.choiceLabel, { color: p.text }]}>{label}</Text><Text style={[styles.value, { color: p.accentInk }]}>{value}</Text></View><View style={styles.dots}>{Array.from({ length: 10 }, (_, i) => i + 1).map((v) => <Pressable key={v} accessibilityRole="button" accessibilityLabel={`${label} ${v}`} onPress={() => onChange(v)} style={[styles.dot, { backgroundColor: v <= value ? p.accent : p.track, transform: [{ scale: v === value ? 1.35 : 1 }] }]} />)}</View></View>; }
+function ReviewRow({ mood, symptoms, energy, sleep, flow }: { mood: number; symptoms: number; energy: number; sleep: number; flow: string }) { const p = useTheme(); const { t } = useTranslation(); const rows = [[flow, 'water-outline'], [t('living.moods', { count: mood }), 'happy-outline'], [t('living.signals', { count: symptoms }), 'body-outline'], [t('living.energySleep', { energy, sleep }), 'pulse-outline']] as const; return <View><StageTitle title={t('living.captured')} subtitle={t('living.reviewHint')} />{rows.map(([label, icon]) => <View key={label} style={[styles.reviewRow, { borderBottomColor: p.track }]}><Ionicons name={icon} size={20} color={p.accentInk} /><Text style={[styles.reviewText, { color: p.text }]}>{label}</Text></View>)}</View>; }
+function SavedState({ message, onEdit }: { message: string; onEdit: () => void }) { const p = useTheme(); const { t } = useTranslation(); const reduceMotion = useReducedMotion(); return <Animated.View entering={FadeIn.duration(reduceMotion ? duration.instant : duration.expressive)} style={styles.saved}><View style={[styles.savedMark, { backgroundColor: p.accent100 }]}><Ionicons name="checkmark" size={30} color={p.accentInk} /></View><Text style={[styles.stageTitle, { color: p.text }]}>{t('living.fieldChanged')}</Text><Text style={[styles.stageSubtitle, { color: p.textMuted }]}>{message}</Text><Pressable onPress={onEdit}><Text style={[styles.nextText, { color: p.accentInk }]}>{t('living.editCheckIn')}</Text></Pressable></Animated.View>; }
+
 const styles = StyleSheet.create({
-  hero: {
-    marginTop: spacing(1.5),
-    marginBottom: spacing(2),
-    padding: spacing(2.5),
-    borderRadius: radius.sheet,
-  },
-  kicker: {
-    ...typography.caption,
-  },
-  title: {
-    ...typography.headline,
-    marginTop: spacing(0.5),
-  },
-  subtitle: {
-    ...typography.bodySmall,
-    color: 'rgba(244,237,225,0.78)',
-    marginTop: spacing(0.5),
-  },
-  checkCard: {
-    gap: spacing(1.5),
-    marginBottom: spacing(2),
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: spacing(2),
-  },
-  cardTitle: {
-    ...typography.title,
-  },
-  cardMeta: {
-    ...typography.caption,
-  },
-  chips: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing(1),
-  },
-  divider: {
-    height: 1,
-  },
-  sliders: {
-    gap: spacing(2.5),
-    marginBottom: spacing(2),
-  },
-  noteLabel: {
-    ...typography.subtitle,
-  },
-  noteInput: {
-    ...typography.body,
-    borderRadius: radius.lg,
-    padding: spacing(2),
-    minHeight: 96,
-    textAlignVertical: 'top',
-  },
-  reflection: {
-    marginTop: spacing(2),
-    gap: spacing(1),
-  },
-  reflectionTitle: {
-    ...typography.subtitle,
-  },
-  reflectionText: {
-    ...typography.body,
-  },
+  top: { paddingTop: spacing(1), gap: spacing(2) }, eyebrow: { ...typography.labelM, textTransform: 'uppercase', letterSpacing: 1 }, title: { ...typography.titleXL },
+  progress: { height: 3, borderRadius: 2, overflow: 'hidden' }, progressFill: { height: '100%' }, stage: { flex: 1, paddingTop: spacing(4) }, stageHead: { marginBottom: spacing(3), gap: spacing(1) }, stageTitle: { ...typography.titleL }, stageSubtitle: { ...typography.bodyM, maxWidth: 330 },
+  choices: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing(1) }, secondaryChoices: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing(1), marginTop: spacing(2) }, choice: { minHeight: 48, borderWidth: 1, borderRadius: radius.md, paddingHorizontal: spacing(1.5), flexDirection: 'row', alignItems: 'center', gap: spacing(1) }, choiceSignal: { width: 8, height: 8, borderRadius: 4 }, choiceLabel: { ...typography.labelL },
+  continuum: { gap: spacing(1.5), marginBottom: spacing(3) }, continuumHead: { flexDirection: 'row', justifyContent: 'space-between' }, value: { ...typography.titleM }, dots: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 32 }, dot: { width: 14, height: 14, borderRadius: 7 },
+  note: { ...typography.bodyL, minHeight: 180, borderTopWidth: 1, borderBottomWidth: 1, paddingVertical: spacing(2), textAlignVertical: 'top' },
+  reviewRow: { minHeight: 64, flexDirection: 'row', alignItems: 'center', gap: spacing(2), borderBottomWidth: 1 }, reviewText: { ...typography.bodyL }, saved: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: spacing(2) }, savedMark: { width: 72, height: 72, borderRadius: 36, alignItems: 'center', justifyContent: 'center' },
+  footer: { flexDirection: 'row', alignItems: 'center', gap: spacing(1.5), paddingBottom: spacing(1.5) }, back: { width: 52, height: 52, alignItems: 'center', justifyContent: 'center' }, next: { flex: 1, minHeight: 52, borderRadius: radius.md, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing(1) }, nextText: { ...typography.labelL },
 });

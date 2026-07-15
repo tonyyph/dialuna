@@ -12,14 +12,12 @@ export default function Welcome() {
   const p = useTheme();
   return (
     <LinearGradient colors={p.bgGradient} style={styles.fill}>
-      <View pointerEvents="none" style={styles.blobOuter} />
-      <View pointerEvents="none" style={styles.blobInner} />
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
-          <View style={[styles.mark, { backgroundColor: p.primaryBtn }]}>
-            <View
-              style={[styles.markMoon, { backgroundColor: p.bgGradient[0] }]}
-            />
+          <View style={styles.field}>
+            <View style={[styles.orbitOuter, { borderColor: p.track }]} />
+            <View style={[styles.orbitInner, { borderColor: p.accent }]} />
+            <View style={[styles.fieldCore, { backgroundColor: p.accent }]} />
           </View>
           <Text style={[styles.wordmark, { color: p.text }]}>
             {t("onboarding.welcome.title")}
@@ -40,45 +38,12 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
   fill: { flex: 1 },
-  blobOuter: {
-    position: "absolute",
-    top: "6%",
-    left: "-18%",
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    backgroundColor: "rgba(182,130,53,0.10)"
-  },
-  blobInner: {
-    position: "absolute",
-    top: "10%",
-    left: "-10%",
-    width: 170,
-    height: 170,
-    borderRadius: 85,
-    backgroundColor: "rgba(182,130,53,0.14)"
-  },
   safe: { flex: 1, paddingHorizontal: spacing(4), paddingBottom: spacing(3) },
   hero: { flex: 1, alignItems: "center", justifyContent: "center" },
-  mark: {
-    width: 72,
-    height: 72,
-    borderRadius: 28,
-    marginBottom: spacing(3.75),
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.18,
-    shadowRadius: 32,
-    elevation: 8
-  },
-  markMoon: {
-    position: "absolute",
-    top: 8,
-    right: 10,
-    width: 48,
-    height: 48,
-    borderRadius: 24
-  },
+  field: { width: 260, height: 200, alignItems: "center", justifyContent: "center", marginBottom: spacing(3) },
+  orbitOuter: { position: "absolute", width: 250, height: 130, borderRadius: 130, borderWidth: 1, transform: [{ rotate: "-14deg" }] },
+  orbitInner: { position: "absolute", width: 150, height: 150, borderRadius: 75, borderWidth: 2, borderRightColor: "transparent" },
+  fieldCore: { width: 58, height: 58, borderRadius: 29, opacity: 0.24 },
   wordmark: { ...typography.display, marginBottom: spacing(1.25) },
   subtitle: {
     ...typography.body,

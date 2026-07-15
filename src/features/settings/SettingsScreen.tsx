@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { Card } from '@/components/ui/Card';
 import { CircleButton } from '@/components/ui/CircleButton';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
 import { Screen } from '@/components/ui/Screen';
@@ -37,6 +36,7 @@ export function SettingsScreen() {
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [medicalOpen, setMedicalOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   if (!profile) return null;
 
@@ -70,7 +70,7 @@ export function SettingsScreen() {
       </View>
 
       <Text style={kicker}>{t('settings.sections.account')}</Text>
-      <Card style={styles.card}>
+      <View style={[styles.card, { borderTopColor: p.track }]}>
         <Text style={label}>{t('settings.name')}</Text>
         <TextInput
           style={[styles.input, { color: p.text }]}
@@ -100,16 +100,16 @@ export function SettingsScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('settings.signOut')}
           onPress={onSignOut}
-          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+          style={[styles.pillBtn, { borderBottomColor: p.track }]}
         >
           <Text style={[styles.pillBtnText, { color: p.text }]}>
             {t('settings.signOut')}
           </Text>
         </Pressable>
-      </Card>
+      </View>
 
       <Text style={kicker}>{t('settings.sections.cycle')}</Text>
-      <Card style={[styles.card, styles.gapLg]}>
+      <View style={[styles.card, styles.gapLg, { borderTopColor: p.track }]}>
         <Stepper
           label={t('settings.cycleLength')}
           unit={daysUnit}
@@ -156,10 +156,10 @@ export function SettingsScreen() {
             />
           ) : null}
         </View>
-      </Card>
+      </View>
 
       <Text style={kicker}>{t('settings.sections.notifications')}</Text>
-      <Card style={[styles.card, styles.gapMd]}>
+      <View style={[styles.card, styles.gapMd, { borderTopColor: p.track }]}>
         <NotifRow
           label={t('settings.notifPeriod')}
           value={settings.notifPeriod}
@@ -178,10 +178,10 @@ export function SettingsScreen() {
         <Text style={[styles.caption, { color: p.textFaint }]}>
           {t('settings.notifDeferred')}
         </Text>
-      </Card>
+      </View>
 
       <Text style={kicker}>{t('settings.sections.appearance')}</Text>
-      <Card style={[styles.card, styles.gapLg]}>
+      <View style={[styles.card, styles.gapLg, { borderTopColor: p.track }]}>
         <View>
           <Text style={label}>{t('settings.units')}</Text>
           <SegmentedToggle
@@ -218,15 +218,15 @@ export function SettingsScreen() {
             onChange={(lng) => setAppLanguage(lng)}
           />
         </View>
-      </Card>
+      </View>
 
       <Text style={kicker}>{t('settings.sections.privacy')}</Text>
-      <Card style={[styles.card, styles.gapMd]}>
+      <View style={[styles.card, styles.gapMd, { borderTopColor: p.track }]}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={t('settings.privacyTitle')}
           onPress={() => setPrivacyOpen((v) => !v)}
-          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+          style={[styles.pillBtn, { borderBottomColor: p.track }]}
         >
           <Text style={[styles.pillBtnText, { color: p.text }]}>
             {t('settings.privacyTitle')}
@@ -241,7 +241,7 @@ export function SettingsScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('settings.medicalTitle')}
           onPress={() => setMedicalOpen((v) => !v)}
-          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+          style={[styles.pillBtn, { borderBottomColor: p.track }]}
         >
           <Text style={[styles.pillBtnText, { color: p.text }]}>
             {t('settings.medicalTitle')}
@@ -252,7 +252,7 @@ export function SettingsScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('settings.exportData')}
           onPress={() => setExportedFlash(true)}
-          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+          style={[styles.pillBtn, { borderBottomColor: p.track }]}
         >
           <Text style={[styles.pillBtnText, { color: p.text }]}>
             {t('settings.exportData')}
@@ -267,7 +267,7 @@ export function SettingsScreen() {
           accessibilityRole="button"
           accessibilityLabel={t('settings.deleteData')}
           onPress={() => setConfirmingDelete((v) => !v)}
-          style={[styles.pillBtn, { backgroundColor: p.fillSubtle }]}
+          style={[styles.pillBtn, { borderBottomColor: p.track }]}
         >
           <Text style={[styles.pillBtnText, { color: p.danger }]}>
             {t('settings.deleteData')}
@@ -290,10 +290,10 @@ export function SettingsScreen() {
             </Pressable>
           </View>
         ) : null}
-      </Card>
+      </View>
 
       <Text style={kicker}>{t('settings.sections.subscription')}</Text>
-      <Card style={styles.card}>
+      <View style={[styles.card, { borderTopColor: p.track }]}>
         <View style={styles.subRow}>
           <View>
             <Text style={[styles.subLabel, { color: p.text }]}>
@@ -326,12 +326,16 @@ export function SettingsScreen() {
             </Text>
           </Pressable>
         </View>
-        <NotifRow
-          label={t('settings.devToggle')}
-          value={isPremium}
-          onChange={togglePremiumDev}
-        />
-      </Card>
+        {__DEV__ ? <NotifRow label={t('settings.devToggle')} value={isPremium} onChange={togglePremiumDev} /> : null}
+      </View>
+
+      <Text style={kicker}>{t('settings.sections.support')}</Text>
+      <View style={[styles.card, { borderTopColor: p.track }]}>
+        <Pressable accessibilityRole="button" accessibilityState={{ expanded: supportOpen }} accessibilityLabel={t('settings.supportTitle')} onPress={() => setSupportOpen((value) => !value)} style={[styles.pillBtn, { borderBottomColor: p.track }]}>
+          <Text style={[styles.pillBtnText, { color: p.text }]}>{t('settings.supportTitle')}</Text>
+        </Pressable>
+        {supportOpen ? <Text style={[styles.caption, { color: p.textMuted }]}>{t('settings.supportBody')}</Text> : null}
+      </View>
 
       <View style={styles.footer}>
         <Text style={[styles.caption, { color: p.textFaint }]}>
@@ -380,7 +384,7 @@ const styles = StyleSheet.create({
   },
   title: { ...typography.headlineSm },
   kicker: { ...typography.kicker, marginTop: spacing(2.5), marginBottom: spacing(1) },
-  card: { gap: spacing(1.25) },
+  card: { gap: spacing(1.25), borderTopWidth: 1, paddingTop: spacing(2) },
   gapSm: { gap: spacing(1) },
   gapMd: { gap: spacing(1.75) },
   gapLg: { gap: spacing(2) },
@@ -389,8 +393,9 @@ const styles = StyleSheet.create({
   caption: { ...typography.caption },
   pillBtn: {
     minHeight: 44,
-    borderRadius: radius.md,
-    alignItems: 'center',
+    borderRadius: 0,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    alignItems: 'flex-start',
     justifyContent: 'center',
     paddingHorizontal: spacing(2),
   },

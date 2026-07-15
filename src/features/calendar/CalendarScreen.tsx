@@ -14,7 +14,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { CalendarDayCell } from '@/components/cycle/CalendarDayCell';
-import { Card } from '@/components/ui/Card';
+import { SegmentedToggle } from '@/components/ui/SegmentedToggle';
 import { Screen } from '@/components/ui/Screen';
 import { DayDetailSheet } from '@/features/calendar/DayDetailSheet';
 import { getCyclePrediction, getDayInfo } from '@/services/cycleEngine';
@@ -44,6 +44,7 @@ export function CalendarScreen() {
   const lutealLength = useSettingsStore((s) => s.lutealLength);
   const [month, setMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [mode, setMode] = useState<'rhythm' | 'month'>('rhythm');
   const today = todayISO();
 
   if (!profile) return null;
@@ -62,13 +63,13 @@ export function CalendarScreen() {
 
   return (
     <Screen>
-      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
+      <View style={styles.hero}>
         <View>
           <Text style={[styles.kicker, { color: p.accent400 }]}>{t('calendar.title')}</Text>
-          <Text style={[styles.title, { color: '#f4ede1' }]}>
+          <Text style={[styles.title, { color: p.text }]}>
             {format(parseISO(today), 'EEEE, MMM d')}
           </Text>
-          <Text style={styles.subtitle}>
+          <Text style={[styles.subtitle, { color: p.textMuted }]}>
             {t('common.cycleDay', { day: prediction.cycleDay })} ·{' '}
             {t(prediction.isPmsWindow ? 'phases.pms' : `phases.${prediction.phase}`)}
           </Text>
@@ -83,25 +84,17 @@ export function CalendarScreen() {
         </View>
       </View>
 
-      <Card variant="glass" style={styles.timelineCard}>
-        <TimelineItem
-          color={p.accent}
-          label={t('calendar.legend.period')}
-          value={format(parseISO(prediction.nextPeriodStart), 'MMM d')}
-        />
-        <TimelineItem
-          color={p.accent400}
-          label={t('phases.pms')}
-          value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`}
-        />
-        <TimelineItem
-          color={p.accent400}
-          label={t('calendar.legend.ovulation')}
-          value={format(parseISO(prediction.ovulationEstimate), 'MMM d')}
-        />
-      </Card>
+      <SegmentedToggle label={t('calendar.title')} value={mode} onChange={setMode} options={[{ value: 'rhythm', label: t('calendar.legend.predicted') }, { value: 'month', label: format(month, 'MMMM') }]} />
 
-      <Card style={{ backgroundColor: p.surfaceSolid }}>
+      {mode === 'rhythm' ? (
+        <View style={styles.landscape}>
+          <View style={[styles.landscapeLine, { backgroundColor: p.track }]} />
+          <TimelineItem color={p.phase.menstrual} label={t('calendar.legend.period')} value={format(parseISO(prediction.nextPeriodStart), 'MMM d')} />
+          <TimelineItem color={p.phase.luteal} label={t('phases.pms')} value={`${format(parseISO(prediction.pmsWindowStart), 'MMM d')} - ${format(parseISO(prediction.pmsWindowEnd), 'MMM d')}`} />
+          <TimelineItem color={p.phase.ovulation} label={t('calendar.legend.ovulation')} value={format(parseISO(prediction.ovulationEstimate), 'MMM d')} />
+          <Text style={[styles.landscapeNote, { color: p.textMuted }]}>{t('disclaimer.predictions')}</Text>
+        </View>
+      ) : <View style={[styles.monthSurface, { borderTopColor: p.track }]}>
         <View style={styles.monthHeader}>
           <Pressable
             accessibilityRole="button"
@@ -154,19 +147,19 @@ export function CalendarScreen() {
             );
           })}
         </View>
-      </Card>
+      </View>}
 
-      <Card variant="glass" style={styles.legend}>
+      <View style={styles.legend}>
         <LegendItem color={p.accent} label={t('calendar.legend.period')} />
         <LegendItem
-          color={p.name === 'dark' ? 'rgba(225,173,102,0.28)' : p.accent200}
+          color={p.phaseSoft.menstrual}
           label={t('calendar.legend.predicted')}
         />
         <LegendItem color={p.phaseSoft.follicular} label={t('calendar.legend.fertile')} />
         <LegendItem color={p.success} label={t('calendar.legend.ovulation')} />
         <LegendItem color={p.phaseSoft.ovulation} label={t('calendar.legend.pms')} />
         <LegendItem color={p.accent600} label={t('calendar.legend.logged')} />
-      </Card>
+      </View>
 
       <DayDetailSheet
         date={selectedDate}
@@ -193,12 +186,13 @@ const styles = StyleSheet.create({
     marginTop: spacing(1.5),
     marginBottom: spacing(2),
     padding: spacing(2.5),
-    borderRadius: radius.sheet,
+    borderRadius: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: spacing(2),
     overflow: 'hidden',
+    paddingHorizontal: 0,
   },
   kicker: {
     ...typography.caption,
@@ -209,7 +203,6 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...typography.bodySmall,
-    color: 'rgba(244,237,225,0.78)',
     marginTop: spacing(0.5),
   },
   todayOrb: {
@@ -231,6 +224,10 @@ const styles = StyleSheet.create({
     gap: spacing(1),
     marginBottom: spacing(2),
   },
+  landscape: { minHeight: 330, justifyContent: 'center', gap: spacing(3), paddingVertical: spacing(3), position: 'relative' },
+  landscapeLine: { position: 'absolute', left: 13, top: 54, bottom: 76, width: 2 },
+  landscapeNote: { ...typography.bodySmall, marginTop: spacing(1) },
+  monthSurface: { marginTop: spacing(2), paddingTop: spacing(2), borderTopWidth: 1 },
   timelineItem: {
     flex: 1,
     gap: spacing(0.75),

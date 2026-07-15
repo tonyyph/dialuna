@@ -16,13 +16,13 @@ export function OnboardingStepHeader({ step }: Props) {
   return (
     <View style={styles.row}>
       <CircleButton icon="chevron-back" label={t('common.back')} onPress={() => router.back()} />
-      <View style={styles.dots}>
+      <View style={styles.sequence} accessibilityLabel={t('living.calibrationProgress', { step })}>
         {[1, 2, 3, 4].map((n) => (
           <View
             key={n}
             style={[
-              styles.dot,
-              { backgroundColor: n === step ? p.accent : p.fillSubtle },
+              styles.segment,
+              { backgroundColor: n <= step ? p.accent : p.fillSubtle, height: n === step ? 4 : 2 },
             ]}
           />
         ))}
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing(1),
     paddingBottom: spacing(1),
   },
-  dots: { flexDirection: 'row', gap: 6 },
-  dot: { width: 6, height: 6, borderRadius: 3 },
+  sequence: { width: 112, flexDirection: 'row', alignItems: 'center', gap: 4 },
+  segment: { flex: 1, borderRadius: 2 },
   spacer: { width: 38 },
 });

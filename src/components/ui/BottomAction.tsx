@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { sizes, spacing } from '@/theme';
+import { duration, sizes, spacing } from '@/theme';
 
 interface BottomActionProps {
   style?: StyleProp<ViewStyle>;
@@ -14,7 +14,7 @@ export function BottomAction({ children, style }: PropsWithChildren<BottomAction
 
   return (
     <Animated.View
-      entering={FadeInUp.duration(260)}
+      entering={FadeInUp.duration(duration.quick)}
       style={[
         styles.wrap,
         { paddingBottom: Math.max(insets.bottom, spacing(1.5)) },
