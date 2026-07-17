@@ -2,7 +2,6 @@ import * as Haptics from 'expo-haptics';
 import { PropsWithChildren } from 'react';
 import {
   ActivityIndicator,
-  Pressable,
   StyleProp,
   StyleSheet,
   Text,
@@ -10,6 +9,8 @@ import {
 } from 'react-native';
 
 import { radius, shadows, spacing, typography, useTheme } from '@/theme';
+
+import { Pressable } from './Pressable';
 
 export type AppButtonVariant = 'primary' | 'secondary' | 'ghost';
 
@@ -45,13 +46,12 @@ export function AppButton({
       accessibilityState={{ disabled: inactive, busy: loading }}
       disabled={inactive}
       onPress={handlePress}
-      style={({ pressed }) => [
+      style={() => [
         styles.base,
         variant === 'primary' && { backgroundColor: p.primaryBtn, ...shadows.button },
         variant === 'secondary' && { backgroundColor: p.surfaceStrong, ...shadows.tiny },
         variant === 'ghost' && styles.ghost,
         inactive && styles.disabled,
-        pressed && !inactive && styles.pressed,
         style,
       ]}
     >
@@ -87,10 +87,6 @@ const styles = StyleSheet.create({
     opacity: 0.48,
     shadowOpacity: 0,
     elevation: 0,
-  },
-  pressed: {
-    transform: [{ scale: 0.96 }],
-    opacity: 0.95,
   },
   label: {
     ...typography.button,

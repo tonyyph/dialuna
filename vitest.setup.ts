@@ -13,3 +13,12 @@ vi.mock('@react-native-async-storage/async-storage', () => ({
     clear: vi.fn(async () => null),
   },
 }));
+
+// Mock react-native-reanimated for theme tests
+vi.mock('react-native-reanimated', () => ({
+  Easing: {
+    out: (easing: any) => easing,
+    cubic: () => {},
+  },
+  WithSpringConfig: {},
+}));

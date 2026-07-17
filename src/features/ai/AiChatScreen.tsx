@@ -2,18 +2,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRef, useState } from 'react';
 import {
   FlatList,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { MessageBubble } from '@/components/ai/MessageBubble';
 import { SuggestedPrompts } from '@/components/ai/SuggestedPrompts';
 import { TypingDots } from '@/components/ai/TypingDots';
 import { DisclaimerBox } from '@/components/ui/DisclaimerBox';
+import { Pressable } from '@/components/ui/Pressable';
 import { Screen } from '@/components/ui/Screen';
 import { ChatMessage, useChat } from '@/features/ai/useChat';
 import { usePremiumStore } from '@/store';
@@ -35,78 +36,77 @@ export function AiChatScreen() {
 
   return (
     <Screen scroll={false} edgeToEdge keyboardAvoiding>
-      <View style={styles.header}>
-        <Text style={[styles.title, { color: p.text }]}>{t('ai.title')}</Text>
-        <Text style={[styles.counter, { color: p.textFaint }]}>
-          {isPremium
-            ? t('ai.unlimited')
-            : t('ai.remaining', { count: remaining() })}
-        </Text>
-      </View>
-
-      {messages.length === 0 ? (
-        <View style={[styles.emptyPanel, { backgroundColor: p.surface }]}>
-          <Text style={[styles.emptyTitle, { color: p.text }]}>
-            {t('ai.emptyTitle')}
-          </Text>
-          <Text style={[styles.emptyBody, { color: p.textMuted }]}>
-            {t('ai.emptyBody')}
+      <Animated.View entering={FadeIn.duration(280)} style={styles.flexFill}>
+        <View style={styles.header}>
+          <Text style={[styles.title, { color: p.text }]}>{t('ai.title')}</Text>
+          <Text style={[styles.counter, { color: p.textFaint }]}>
+            {isPremium
+              ? t('ai.unlimited')
+              : t('ai.remaining', { count: remaining() })}
           </Text>
         </View>
-      ) : (
-        <FlatList
-          ref={listRef}
-          data={messages}
-          keyExtractor={(m) => m.id}
-          renderItem={({ item }) => (
-            <MessageBubble role={item.role} text={item.text} />
-          )}
-          contentContainerStyle={styles.list}
-          onContentSizeChange={() =>
-            listRef.current?.scrollToEnd({ animated: true })
-          }
-          ListFooterComponent={typing ? <TypingDots /> : null}
-        />
-      )}
 
-      <SuggestedPrompts onSelect={submit} />
+        {messages.length === 0 ? (
+          <View style={[styles.emptyPanel, { backgroundColor: p.surface }]}>
+            <Text style={[styles.emptyTitle, { color: p.text }]}>
+              {t('ai.emptyTitle')}
+            </Text>
+            <Text style={[styles.emptyBody, { color: p.textMuted }]}>
+              {t('ai.emptyBody')}
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            ref={listRef}
+            data={messages}
+            keyExtractor={(m) => m.id}
+            renderItem={({ item }) => (
+              <MessageBubble role={item.role} text={item.text} />
+            )}
+            contentContainerStyle={styles.list}
+            onContentSizeChange={() =>
+              listRef.current?.scrollToEnd({ animated: true })
+            }
+            ListFooterComponent={typing ? <TypingDots /> : null}
+          />
+        )}
 
-      <View style={styles.inputRow}>
-        <TextInput
-          style={[
-            styles.input,
-            { backgroundColor: p.surfaceStrong, color: p.text },
-          ]}
-          value={input}
-          onChangeText={setInput}
-          placeholder={t('ai.placeholder')}
-          placeholderTextColor={p.textFaint}
-          accessibilityLabel={t('ai.placeholder')}
-          onSubmitEditing={() => submit(input)}
-          returnKeyType="send"
-        />
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('common.next')}
-          onPress={() => submit(input)}
-          style={({ pressed }) => [
-            styles.sendBtn,
-            { backgroundColor: p.primaryBtn },
-            pressed && styles.sendBtnPressed,
-          ]}
-        >
-          <Ionicons name="paper-plane" size={15} color={p.onPrimaryBtn} />
-        </Pressable>
-      </View>
+        <SuggestedPrompts onSelect={submit} />
 
-      <View style={styles.disclaimer}>
-        <DisclaimerBox text={t('disclaimer.ai')} />
-      </View>
+        <View style={styles.inputRow}>
+          <TextInput
+            style={[
+              styles.input,
+              { backgroundColor: p.surfaceStrong, color: p.text },
+            ]}
+            value={input}
+            onChangeText={setInput}
+            placeholder={t('ai.placeholder')}
+            placeholderTextColor={p.textFaint}
+            accessibilityLabel={t('ai.placeholder')}
+            onSubmitEditing={() => submit(input)}
+            returnKeyType="send"
+          />
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('common.next')}
+            onPress={() => submit(input)}
+            style={[styles.sendBtn, { backgroundColor: p.primaryBtn }]}
+          >
+            <Ionicons name="paper-plane" size={15} color={p.onPrimaryBtn} />
+          </Pressable>
+        </View>
+
+        <View style={styles.disclaimer}>
+          <DisclaimerBox text={t('disclaimer.ai')} />
+        </View>
+      </Animated.View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  flexFill: { flex: 1 },
   header: {
     paddingHorizontal: spacing(2.25),
     paddingTop: spacing(1),
@@ -160,9 +160,6 @@ const styles = StyleSheet.create({
     borderRadius: 21,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  sendBtnPressed: {
-    transform: [{ scale: 0.94 }],
   },
   disclaimer: {
     paddingHorizontal: spacing(2.5),

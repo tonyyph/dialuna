@@ -1,7 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { spacing, typography, useTheme } from '@/theme';
 
 interface Props {
@@ -17,7 +18,6 @@ export function PremiumBanner({ onPress }: Props) {
       accessibilityRole="button"
       accessibilityLabel={t('home.premiumBanner.title')}
       onPress={onPress}
-      style={({ pressed }) => [pressed && styles.pressed]}
     >
       <LinearGradient
         colors={p.premiumBannerGradient}
@@ -40,10 +40,6 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     padding: spacing(2.25),
     gap: spacing(0.5),
-  },
-  pressed: {
-    transform: [{ scale: 0.985 }],
-    opacity: 0.94,
   },
   kicker: {
     ...typography.kicker,

@@ -4,35 +4,35 @@
     "slug": "dialuna",
     "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/dialuna/app-icon.png",
     "scheme": "dialuna",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./assets/dialuna/app-icon.png",
       "bundleIdentifier": "com.cuongphan2.dialuna"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#F4E7DD",
+        "foregroundImage": "./assets/dialuna/app-icon.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.cuongphan2.dialuna"
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/dialuna/favicon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FFF8F2",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#FAF1EA",
+          "image": "./assets/dialuna/splash-screen.png",
+          "imageWidth": 414,
+          "resizeMode": "cover",
+          "enableFullScreenImage_legacy": true
         }
       ],
       "expo-localization"

@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/Button";
+import { BlobGlow } from '@/components/ui/BlobGlow';
 import { spacing, typography, useTheme } from "@/theme";
 
 export default function Welcome() {
@@ -12,8 +13,11 @@ export default function Welcome() {
   const p = useTheme();
   return (
     <LinearGradient colors={p.bgGradient} style={styles.fill}>
-      <View pointerEvents="none" style={styles.blobOuter} />
-      <View pointerEvents="none" style={styles.blobInner} />
+      <BlobGlow
+        size={260}
+        colors={['rgba(182,130,53,0.20)', 'rgba(182,130,53,0)']}
+        style={styles.blob}
+      />
       <SafeAreaView style={styles.safe}>
         <View style={styles.hero}>
           <View style={[styles.mark, { backgroundColor: p.primaryBtn }]}>
@@ -40,23 +44,10 @@ export default function Welcome() {
 
 const styles = StyleSheet.create({
   fill: { flex: 1 },
-  blobOuter: {
-    position: "absolute",
-    top: "6%",
-    left: "-18%",
-    width: 260,
-    height: 260,
-    borderRadius: 130,
-    backgroundColor: "rgba(182,130,53,0.10)"
-  },
-  blobInner: {
-    position: "absolute",
-    top: "10%",
-    left: "-10%",
-    width: 170,
-    height: 170,
-    borderRadius: 85,
-    backgroundColor: "rgba(182,130,53,0.14)"
+  blob: {
+    position: 'absolute',
+    top: '6%',
+    left: '-18%',
   },
   safe: { flex: 1, paddingHorizontal: spacing(4), paddingBottom: spacing(3) },
   hero: { flex: 1, alignItems: "center", justifyContent: "center" },

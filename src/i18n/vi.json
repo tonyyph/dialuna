@@ -150,6 +150,7 @@
     "logCtaBody": "Ghi lại triệu chứng, tâm trạng và năng lượng để dự báo chính xác hơn.",
     "logNow": "Ghi hôm nay",
     "weekForecast": "Dự báo 7 ngày",
+    "upcoming": "Sắp tới",
     "premiumBanner": {
       "kicker": "Dialuna Premium",
       "title": "Mở khóa Hormone Twin trọn vẹn",
@@ -192,7 +193,7 @@
     "note": "Ghi chú",
     "notePlaceholder": "Còn gì khác về hôm nay? Cơn thèm ăn, làn da, suy nghĩ…",
     "save": "Lưu nhật ký hôm nay",
-    "saved": "Đã lưu ✨",
+    "saved": "Đã lưu",
     "reflectionTitle": "Từ Hormone Twin của bạn",
     "reflection": {
       "menstrual": "Cảm ơn bạn đã ghi lại, {{name}}. Đau bụng hay ít năng lượng có thể phù hợp với kỳ hành kinh. Hơi ấm, uống đủ nước và nghỉ ngơi sẽ giúp ích hôm nay.",

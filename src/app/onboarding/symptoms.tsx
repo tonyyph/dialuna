@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/Button';
@@ -8,7 +9,7 @@ import { ChipGroup } from '@/components/ui/ChipGroup';
 import { Screen } from '@/components/ui/Screen';
 import { OnboardingStepHeader } from '@/features/onboarding/OnboardingStepHeader';
 import { useOnboardingDraft } from '@/features/onboarding/useOnboardingDraft';
-import { spacing, typography, useTheme } from '@/theme';
+import { spacing, staggerDelay, typography, useTheme } from '@/theme';
 import { ONBOARDING_SYMPTOMS } from '@/types';
 
 export default function Symptoms() {
@@ -31,13 +32,17 @@ export default function Symptoms() {
         {t('onboarding.symptoms.subtitle')}
       </Text>
       <ChipGroup>
-        {ONBOARDING_SYMPTOMS.map((symptom) => (
-          <Chip
+        {ONBOARDING_SYMPTOMS.map((symptom, index) => (
+          <Animated.View
             key={symptom}
-            label={t(`symptoms.${symptom}`)}
-            selected={draft.symptoms.includes(symptom)}
-            onPress={() => draft.toggleSymptom(symptom)}
-          />
+            entering={FadeInDown.delay(staggerDelay(index, 25)).duration(260)}
+          >
+            <Chip
+              label={t(`symptoms.${symptom}`)}
+              selected={draft.symptoms.includes(symptom)}
+              onPress={() => draft.toggleSymptom(symptom)}
+            />
+          </Animated.View>
         ))}
       </ChipGroup>
     </Screen>

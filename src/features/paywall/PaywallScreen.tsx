@@ -1,12 +1,19 @@
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  FadeIn,
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { usePremiumStore } from '@/store';
 import { paywallColors as pw, radius, spacing, typography } from '@/theme';
 
@@ -52,6 +59,7 @@ export function PaywallScreen() {
             accessibilityLabel={t('common.close')}
             hitSlop={8}
             onPress={() => router.back()}
+            scaleTo={0.94}
             style={styles.closeBtn}
           >
             <Ionicons name="close" size={16} color={pw.text} />
@@ -76,7 +84,7 @@ export function PaywallScreen() {
             </View>
             <Animated.View
               key={step}
-              entering={ZoomIn.duration(300)}
+              entering={FadeIn.duration(220)}
               pointerEvents="none"
               style={styles.slide}
             >
@@ -90,7 +98,7 @@ export function PaywallScreen() {
             </Animated.View>
           </View>
         ) : (
-          <Animated.View entering={FadeIn.duration(300)} style={styles.plansArea}>
+          <Animated.View entering={FadeIn.duration(220)} style={styles.plansArea}>
             <Text style={styles.plansTitle}>{t('paywall.choosePlan')}</Text>
             <Text style={styles.trialNote}>{t('paywall.trialNote')}</Text>
 
@@ -122,7 +130,7 @@ export function PaywallScreen() {
               accessibilityRole="button"
               accessibilityLabel={t('paywall.cta')}
               onPress={subscribe}
-              style={({ pressed }) => [styles.cta, pressed && styles.pressed]}
+              style={styles.cta}
             >
               <Text style={styles.ctaText}>{t('paywall.cta')}</Text>
             </Pressable>
@@ -157,6 +165,17 @@ function PlanRow({
   selected: boolean;
   onPress: () => void;
 }) {
+  const progress = useSharedValue(selected ? 1 : 0);
+
+  useEffect(() => {
+    progress.value = withTiming(selected ? 1 : 0, { duration: 150 });
+  }, [selected, progress]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    borderColor: interpolateColor(progress.value, [0, 1], [pw.border, pw.accent]),
+    backgroundColor: interpolateColor(progress.value, [0, 1], ['transparent', pw.accentTint]),
+  }));
+
   return (
     <Pressable
       accessibilityRole="button"
@@ -166,13 +185,8 @@ function PlanRow({
         Haptics.selectionAsync();
         onPress();
       }}
-      style={[
-        styles.planRow,
-        {
-          borderColor: selected ? pw.accent : pw.border,
-          backgroundColor: selected ? pw.accentTint : 'transparent',
-        },
-      ]}
+      scaleTo={0.98}
+      style={[styles.planRow, animatedStyle]}
     >
       <View>
         <Text style={styles.planLabel}>{label}</Text>
@@ -274,7 +288,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  pressed: { transform: [{ scale: 0.97 }], opacity: 0.95 },
   ctaText: { ...typography.button, fontFamily: 'Manrope_700Bold', color: pw.ctaText },
   footerRow: {
     flexDirection: 'row',

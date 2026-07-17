@@ -12,7 +12,7 @@ import { Screen } from '@/components/ui/Screen';
 import { useCycleToday } from '@/features/cycle/useCycleToday';
 import { generateLogReflection } from '@/services/aiCoachEngine';
 import { useLogStore } from '@/store';
-import { radius, spacing, typography, useTheme } from '@/theme';
+import { radius, spacing, staggerDelay, typography, useTheme } from '@/theme';
 import {
   ALL_FLOW_LEVELS,
   ALL_MOODS,
@@ -76,6 +76,7 @@ export function LogScreen() {
   );
   const [note, setNote] = useState(existing?.note ?? '');
   const [reflection, setReflection] = useState<string | null>(null);
+  const [savedFlash, setSavedFlash] = useState(false);
 
   const toggle = <T,>(list: T[], item: T): T[] =>
     list.includes(item) ? list.filter((x) => x !== item) : [...list, item];
@@ -97,6 +98,7 @@ export function LogScreen() {
     };
     saveLog(log);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setSavedFlash(true);
     if (ctx) {
       setReflection(
         generateLogReflection({
@@ -114,13 +116,23 @@ export function LogScreen() {
       keyboardAvoiding
       bottomAction={<Button label={t('log.save')} onPress={onSave} />}
     >
-      <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
-        <Text style={[styles.kicker, { color: p.accent400 }]}>{t('common.today')}</Text>
-        <Text style={[styles.title, { color: '#f4ede1' }]}>{t('log.title')}</Text>
-        <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
-      </View>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(0)).duration(340)}>
+        <View style={[styles.hero, { backgroundColor: '#2c2620' }]}>
+          <Text style={[styles.kicker, { color: p.accent400 }]}>{t('common.today')}</Text>
+          <Text style={[styles.title, { color: '#f4ede1' }]}>{t('log.title')}</Text>
+          <Text style={styles.subtitle}>{t('log.subtitle')}</Text>
+          {savedFlash ? (
+            <View style={[styles.savedPill, { backgroundColor: p.accent100 }]}>
+              <Text style={[styles.savedPillText, { color: p.accent800 }]}>
+                {t('log.saved')}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+      </Animated.View>
 
-      <Card variant="glass" style={styles.checkCard}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(1)).duration(340)}>
+        <Card variant="glass" style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.flow')}</Text>
           <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`flow.${flow}`)}</Text>
@@ -135,9 +147,11 @@ export function LogScreen() {
             />
           ))}
         </View>
-      </Card>
+        </Card>
+      </Animated.View>
 
-      <Card style={styles.checkCard}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(2)).duration(340)}>
+        <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.mood')}</Text>
           <Text style={[styles.cardMeta, { color: p.accent }]}>{moods.length}</Text>
@@ -171,9 +185,11 @@ export function LogScreen() {
             />
           ))}
         </View>
-      </Card>
+        </Card>
+      </Animated.View>
 
-      <Card variant="glass" style={styles.sliders}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(3)).duration(340)}>
+        <Card variant="glass" style={styles.sliders}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('home.twinScore')}</Text>
           <Text style={[styles.cardMeta, { color: p.accent }]}>{t('common.today')}</Text>
@@ -193,9 +209,11 @@ export function LogScreen() {
           value={stressLevel}
           onChange={setStressLevel}
         />
-      </Card>
+        </Card>
+      </Animated.View>
 
-      <Card style={styles.checkCard}>
+      <Animated.View entering={FadeInDown.delay(staggerDelay(4)).duration(340)}>
+        <Card style={styles.checkCard}>
         <View style={styles.cardHeader}>
           <Text style={styles.cardTitle}>{t('log.workout')}</Text>
           <Text style={[styles.cardMeta, { color: p.accent }]}>{t(`workouts.${workoutType}`)}</Text>
@@ -222,7 +240,8 @@ export function LogScreen() {
           accessibilityLabel={t('log.note')}
           multiline
         />
-      </Card>
+        </Card>
+      </Animated.View>
 
       {reflection && (
         <Animated.View entering={FadeInDown.duration(400)}>
@@ -256,6 +275,17 @@ const styles = StyleSheet.create({
     ...typography.bodySmall,
     color: 'rgba(244,237,225,0.78)',
     marginTop: spacing(0.5),
+  },
+  savedPill: {
+    alignSelf: 'flex-start',
+    borderRadius: radius.pill,
+    paddingHorizontal: spacing(1.5),
+    paddingVertical: spacing(0.5),
+    marginTop: spacing(1.5),
+  },
+  savedPillText: {
+    ...typography.caption,
+    fontWeight: '700',
   },
   checkCard: {
     gap: spacing(1.5),

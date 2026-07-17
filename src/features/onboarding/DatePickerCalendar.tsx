@@ -11,8 +11,9 @@ import {
 } from 'date-fns';
 import * as Haptics from 'expo-haptics';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { radius, spacing, typography, useTheme } from '@/theme';
 import { toISODate, todayISO } from '@/utils/date';
 

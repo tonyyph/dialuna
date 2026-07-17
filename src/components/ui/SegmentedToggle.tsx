@@ -1,7 +1,7 @@
-import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-
-import { radius, shadows, spacing, typography, useTheme } from '@/theme';
+import * as Haptics from "expo-haptics";
+import { StyleSheet, Text, View } from "react-native";
+import { radius, shadows, spacing, typography, useTheme } from "@/theme";
+import { Pressable } from "./Pressable";
 
 interface Option<T extends string> {
   value: T;
@@ -20,7 +20,7 @@ export function SegmentedToggle<T extends string>({
   options,
   value,
   onChange,
-  label,
+  label
 }: Props<T>) {
   const p = useTheme();
   return (
@@ -44,13 +44,13 @@ export function SegmentedToggle<T extends string>({
             }}
             style={[
               styles.segment,
-              selected && { backgroundColor: p.surfaceSolid, ...shadows.tiny },
+              selected && { backgroundColor: p.surfaceSolid, ...shadows.tiny }
             ]}
           >
             <Text
               style={[
                 styles.segLabel,
-                { color: selected ? p.text : p.textMuted },
+                { color: selected ? p.text : p.textMuted }
               ]}
             >
               {opt.label}
@@ -64,18 +64,18 @@ export function SegmentedToggle<T extends string>({
 
 const styles = StyleSheet.create({
   track: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: radius.md,
     padding: 3,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start"
   },
   segment: {
     paddingHorizontal: spacing(1.75),
     paddingVertical: spacing(0.75),
     borderRadius: radius.md - 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 32,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 32
   },
-  segLabel: { ...typography.caption, fontFamily: 'Manrope_600SemiBold' },
+  segLabel: { ...typography.caption, fontFamily: "Manrope_600SemiBold" }
 });

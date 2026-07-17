@@ -152,6 +152,7 @@
     "logCtaBody": "Log your symptoms, mood, and energy to sharpen your forecasts.",
     "logNow": "Log today",
     "weekForecast": "7-day forecast",
+    "upcoming": "Upcoming",
     "premiumBanner": {
       "kicker": "Dialuna Premium",
       "title": "Unlock your full Hormone Twin",
@@ -194,7 +195,7 @@
     "note": "Notes",
     "notePlaceholder": "Anything else about today? Cravings, skin, thoughts…",
     "save": "Save today's log",
-    "saved": "Saved ✨",
+    "saved": "Saved",
     "reflectionTitle": "From your Hormone Twin",
     "reflection": {
       "menstrual": "Thanks for logging, {{name}}. Cramps or low energy may fit your menstrual phase. Warmth, hydration, and rest can help today.",

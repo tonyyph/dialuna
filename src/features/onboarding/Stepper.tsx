@@ -1,6 +1,7 @@
 import * as Haptics from 'expo-haptics';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
+import { Pressable } from '@/components/ui/Pressable';
 import { shadows, spacing, typography, useTheme } from '@/theme';
 
 interface Props {
@@ -32,7 +33,8 @@ export function Stepper({ label, unit, value, min, max, onChange }: Props) {
           accessibilityRole="button"
           accessibilityLabel={`${label} -`}
           onPress={() => step(-1)}
-          style={({ pressed }) => [styles.btn, circle, pressed && styles.pressed]}
+          scaleTo={0.94}
+          style={[styles.btn, circle]}
         >
           <Text style={[styles.btnText, { color: p.text }]}>−</Text>
         </Pressable>
@@ -43,7 +45,8 @@ export function Stepper({ label, unit, value, min, max, onChange }: Props) {
           accessibilityRole="button"
           accessibilityLabel={`${label} +`}
           onPress={() => step(1)}
-          style={({ pressed }) => [styles.btn, circle, pressed && styles.pressed]}
+          scaleTo={0.94}
+          style={[styles.btn, circle]}
         >
           <Text style={[styles.btnText, { color: p.text }]}>+</Text>
         </Pressable>
@@ -68,7 +71,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...shadows.tiny,
   },
-  pressed: { transform: [{ scale: 0.94 }], opacity: 0.9 },
   btnText: { fontSize: 18, lineHeight: 22, fontFamily: 'Manrope_600SemiBold' },
   value: { ...typography.serifValue, minWidth: 80, textAlign: 'center' },
 });

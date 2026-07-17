@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import { Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 import { shadows, useTheme } from '@/theme';
+
+import { Pressable } from './Pressable';
 
 interface Props {
   icon: keyof typeof Ionicons.glyphMap;
@@ -24,7 +26,8 @@ export function CircleButton({ icon, onPress, label, size = 38, style }: Props) 
         Haptics.selectionAsync();
         onPress();
       }}
-      style={({ pressed }) => [
+      scaleTo={0.94}
+      style={[
         styles.base,
         {
           width: size,
@@ -32,7 +35,6 @@ export function CircleButton({ icon, onPress, label, size = 38, style }: Props) 
           borderRadius: size / 2,
           backgroundColor: p.surfaceStrong,
         },
-        pressed && styles.pressed,
         style,
       ]}
     >
@@ -43,5 +45,4 @@ export function CircleButton({ icon, onPress, label, size = 38, style }: Props) 
 
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center', ...shadows.tiny },
-  pressed: { transform: [{ scale: 0.94 }], opacity: 0.92 },
 });
